@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Shortcodes.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles the shortcodes for WP Job Manager.
+ * Handles the shortcodes for WP Event Manager.
  *
  * @since 1.0.0
  */
@@ -105,14 +105,14 @@ class WP_Job_Manager_Shortcodes {
 
 				// Check ownership.
 				if ( ! job_manager_user_can_edit_job( $job_id ) ) {
-					throw new Exception( __( 'Invalid ID', 'wp-job-manager' ) );
+					throw new Exception( __( 'Invalid ID', 'wp-event-manager' ) );
 				}
 
 				switch ( $action ) {
 					case 'mark_filled':
 						// Check status.
 						if ( 1 === intval( $job->_filled ) ) {
-							throw new Exception( __( 'This position has already been filled', 'wp-job-manager' ) );
+							throw new Exception( __( 'This position has already been filled', 'wp-event-manager' ) );
 						}
 
 						// Update.
@@ -120,12 +120,12 @@ class WP_Job_Manager_Shortcodes {
 
 						// Message.
 						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been filled', 'wp-job-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been filled', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
 						break;
 					case 'mark_not_filled':
 						// Check status.
 						if ( 1 !== intval( $job->_filled ) ) {
-							throw new Exception( __( 'This position is not filled', 'wp-job-manager' ) );
+							throw new Exception( __( 'This position is not filled', 'wp-event-manager' ) );
 						}
 
 						// Update.
@@ -133,7 +133,7 @@ class WP_Job_Manager_Shortcodes {
 
 						// Message.
 						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been marked as not filled', 'wp-job-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been marked as not filled', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
 						break;
 					case 'delete':
 						// Trash it.
@@ -141,12 +141,12 @@ class WP_Job_Manager_Shortcodes {
 
 						// Message.
 						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been deleted', 'wp-job-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been deleted', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
 
 						break;
 					case 'duplicate':
 						if ( ! job_manager_get_permalink( 'submit_job_form' ) ) {
-							throw new Exception( __( 'Missing submission page.', 'wp-job-manager' ) );
+							throw new Exception( __( 'Missing submission page.', 'wp-event-manager' ) );
 						}
 
 						$new_job_id = job_manager_duplicate_listing( $job_id );
@@ -160,7 +160,7 @@ class WP_Job_Manager_Shortcodes {
 					case 'relist':
 					case 'continue':
 						if ( ! job_manager_get_permalink( 'submit_job_form' ) ) {
-							throw new Exception( __( 'Missing submission page.', 'wp-job-manager' ) );
+							throw new Exception( __( 'Missing submission page.', 'wp-event-manager' ) );
 						}
 
 						// redirect to post page.
@@ -215,7 +215,7 @@ class WP_Job_Manager_Shortcodes {
 		);
 		$posts_per_page = $new_atts['posts_per_page'];
 
-		wp_enqueue_script( 'wp-job-manager-job-dashboard' );
+		wp_enqueue_script( 'wp-event-manager-job-dashboard' );
 
 		ob_start();
 
@@ -253,10 +253,10 @@ class WP_Job_Manager_Shortcodes {
 		$job_dashboard_columns = apply_filters(
 			'job_manager_job_dashboard_columns',
 			[
-				'job_title' => __( 'Title', 'wp-job-manager' ),
-				'filled'    => __( 'Filled?', 'wp-job-manager' ),
-				'date'      => __( 'Date Posted', 'wp-job-manager' ),
-				'expires'   => __( 'Listing Expires', 'wp-job-manager' ),
+				'job_title' => __( 'Title', 'wp-event-manager' ),
+				'filled'    => __( 'Filled?', 'wp-event-manager' ),
+				'date'      => __( 'Date Posted', 'wp-event-manager' ),
+				'expires'   => __( 'Listing Expires', 'wp-event-manager' ),
 			]
 		);
 
@@ -412,7 +412,7 @@ class WP_Job_Manager_Shortcodes {
 			get_job_manager_template( 'job-listings-end.php' );
 
 			if ( ! $atts['show_pagination'] && $atts['show_more'] ) {
-				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . esc_html__( 'Load more listings', 'wp-job-manager' ) . '</strong></a>';
+				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
 			}
 		} else {
 			$jobs = get_job_listings(
@@ -445,12 +445,12 @@ class WP_Job_Manager_Shortcodes {
 				}
 				get_job_manager_template( 'job-listings-end.php' );
 				if ( $jobs->found_posts > $atts['per_page'] && $atts['show_more'] ) {
-					wp_enqueue_script( 'wp-job-manager-ajax-filters' );
+					wp_enqueue_script( 'wp-event-manager-ajax-filters' );
 					if ( $atts['show_pagination'] ) {
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template output.
 						echo get_job_listing_pagination( $jobs->max_num_pages );
 					} else {
-						echo '<a class="load_more_jobs" href="#"><strong>' . esc_html__( 'Load more listings', 'wp-job-manager' ) . '</strong></a>';
+						echo '<a class="load_more_jobs" href="#"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
 					}
 				}
 			} else {

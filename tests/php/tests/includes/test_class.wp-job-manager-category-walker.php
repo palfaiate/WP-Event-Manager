@@ -5,7 +5,7 @@ class WP_Test_WP_Job_Manager_Category_Walker extends WPJM_BaseTest {
 
 	public function setUp() {
 		parent::setUp();
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-category-walker.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
 	}
 
 	/**

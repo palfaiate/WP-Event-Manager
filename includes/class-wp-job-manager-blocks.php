@@ -2,7 +2,7 @@
 /**
  * Handles Job Manager's Gutenberg Blocks.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.32.0
  */
 

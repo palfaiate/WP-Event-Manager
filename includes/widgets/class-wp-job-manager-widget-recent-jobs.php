@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Widget_Recent_Jobs.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Recent Jobs widget.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.0.0
  */
 class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
@@ -24,26 +24,26 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 		global $wp_post_types;
 
 		// translators: Placeholder %s is the plural label for the job listing post type.
-		$this->widget_name        = sprintf( __( 'Recent %s', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->name );
+		$this->widget_name        = sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name );
 		$this->widget_cssclass    = 'job_manager widget_recent_jobs';
-		$this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'wp-job-manager' );
+		$this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'wp-event-manager' );
 		$this->widget_id          = 'widget_recent_jobs';
 		$this->settings           = [
 			'title'     => [
 				'type'  => 'text',
 				// translators: Placeholder %s is the plural label for the job listing post type.
-				'std'   => sprintf( __( 'Recent %s', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->name ),
-				'label' => __( 'Title', 'wp-job-manager' ),
+				'std'   => sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name ),
+				'label' => __( 'Title', 'wp-event-manager' ),
 			],
 			'keyword'   => [
 				'type'  => 'text',
 				'std'   => '',
-				'label' => __( 'Keyword', 'wp-job-manager' ),
+				'label' => __( 'Keyword', 'wp-event-manager' ),
 			],
 			'location'  => [
 				'type'  => 'text',
 				'std'   => '',
-				'label' => __( 'Location', 'wp-job-manager' ),
+				'label' => __( 'Location', 'wp-event-manager' ),
 			],
 			'number'    => [
 				'type'  => 'number',
@@ -51,12 +51,12 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 				'min'   => 1,
 				'max'   => '',
 				'std'   => 10,
-				'label' => __( 'Number of listings to show', 'wp-job-manager' ),
+				'label' => __( 'Number of listings to show', 'wp-event-manager' ),
 			],
 			'show_logo' => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => esc_html__( 'Show Company Logo', 'wp-job-manager' ),
+				'label' => esc_html__( 'Show Company Logo', 'wp-event-manager' ),
 			],
 		];
 
@@ -71,7 +71,7 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		wp_enqueue_style( 'wp-job-manager-job-listings' );
+		wp_enqueue_style( 'wp-event-manager-job-listings' );
 
 		if ( $this->get_cached_widget( $args ) ) {
 			return;

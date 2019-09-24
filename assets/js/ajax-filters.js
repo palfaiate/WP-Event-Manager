@@ -229,9 +229,9 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		if ( result.showing_all ) {
-			$showing.addClass( 'wp-job-manager-showing-all' );
+			$showing.addClass( 'wp-event-manager-showing-all' );
 		} else {
-			$showing.removeClass( 'wp-job-manager-showing-all' );
+			$showing.removeClass( 'wp-event-manager-showing-all' );
 		}
 
 		if ( result.html ) {

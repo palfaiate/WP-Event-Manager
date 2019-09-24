@@ -25,7 +25,7 @@
 * Fix: Issue where a JS error could occur when submitting a job.
 
 = 1.33.4 =
-* Note: WP Job Manager now requires a minimum PHP version of 5.6.20.
+* Note: WP Event Manager now requires a minimum PHP version of 5.6.20.
 * Fix: Javascript error in job-submission.js on custom job description fields.
 * Fix: Checking typeof undefined should be in quotes in job_submission.js.
 * Fix: Plugin activation issue that didn't set up roles correctly.
@@ -158,7 +158,7 @@
 * Enhancement: Improved handling of alternative date formats when editing job expiration field in WP admin.
 * Enhancement: Added star indicator next to featured listings on `[job_dashboard]`.
 * Enhancement: Opt-in to usage tracking so we can better improve the plugin.
-* Enhancement: Introduced new asset enqueuing strategy that will be turned on in 1.32.0. Requires plugin and theme updates. (Dev notes: https://github.com/Automattic/WP-Job-Manager/pull/1354)
+* Enhancement: Introduced new asset enqueuing strategy that will be turned on in 1.32.0. Requires plugin and theme updates. (Dev notes: https://github.com/Automattic/wp-event-manager/pull/1354)
 * Fix: Use WordPress core checks for image formats to not confuse `docx` as an image. (@tripflex)
 * Fix: Issue with `[jobs]` shortcode when `categories` argument is provided.
 * Fix: Issue with double encoding HTML entities in custom text area fields.
@@ -185,7 +185,7 @@
 * Fix: Issue with paid add-on licenses not showing up when some third-party plugins were installed.
 * Dev: Runs new actions (`job_manager_recent_jobs_widget_before` and `job_manager_recent_jobs_widget_after`) inside Recent Jobs widget.
 * Dev: Change `wpjm_get_the_job_types()` to return an empty array when job types are disabled.
-* See all: https://github.com/Automattic/WP-Job-Manager/milestone/15?closed=1
+* See all: https://github.com/Automattic/wp-event-manager/milestone/15?closed=1
 
 = 1.29.0 =
 * Enhancement: Moves license and update management for official add-ons to the core plugin.
@@ -257,15 +257,15 @@
 * Dev: Updated inline documentation.
 
 = 1.25.3 =
-* Enhancement: Allow job types to be optional, just like categories. https://github.com/automattic/wp-job-manager/pull/789 Props Donncha.
-* Enhancement: Add get_job_listing_types filter. https://github.com/automattic/wp-job-manager/pull/824 Props Adam Heckler.
-* Enhancement: Various date format setting improvements. See https://github.com/automattic/wp-job-manager/pull/757 Props Christian Nolen.
-* Enhancement: Pass search values with the job_manager_get_listings_custom_filter_text filter. https://github.com/automattic/wp-job-manager/pull/845 Props Kraft.
-* Fix: Prevent a potential CSRF vector. https://github.com/automattic/wp-job-manager/pull/891 Props Jay Patel for the responsible disclosure.
-* Fix: Improve load time by removing unnecessary oEmbed call. https://github.com/automattic/wp-job-manager/pull/768 Props Myles McNamara.
-* Fix: Improve WPML compatability. https://github.com/automattic/wp-job-manager/pull/787 Props Spencer Finnell.
-* Fix: Add an implicit whitelist for API requests. https://github.com/automattic/wp-job-manager/pull/855 Props muddletoes.
-* Fix: Fixed taxonomy search conditions. See https://github.com/automattic/wp-job-manager/pull/859/ Props Jonas Vogel.
+* Enhancement: Allow job types to be optional, just like categories. https://github.com/automattic/wp-event-manager/pull/789 Props Donncha.
+* Enhancement: Add get_job_listing_types filter. https://github.com/automattic/wp-event-manager/pull/824 Props Adam Heckler.
+* Enhancement: Various date format setting improvements. See https://github.com/automattic/wp-event-manager/pull/757 Props Christian Nolen.
+* Enhancement: Pass search values with the job_manager_get_listings_custom_filter_text filter. https://github.com/automattic/wp-event-manager/pull/845 Props Kraft.
+* Fix: Prevent a potential CSRF vector. https://github.com/automattic/wp-event-manager/pull/891 Props Jay Patel for the responsible disclosure.
+* Fix: Improve load time by removing unnecessary oEmbed call. https://github.com/automattic/wp-event-manager/pull/768 Props Myles McNamara.
+* Fix: Improve WPML compatability. https://github.com/automattic/wp-event-manager/pull/787 Props Spencer Finnell.
+* Fix: Add an implicit whitelist for API requests. https://github.com/automattic/wp-event-manager/pull/855 Props muddletoes.
+* Fix: Fixed taxonomy search conditions. See https://github.com/automattic/wp-event-manager/pull/859/ Props Jonas Vogel.
 
 = 1.25.2 =
 * Fix - The date format of the expiry date picker was incorrect in translations so we added a comment to clarify, and fixed translations. 
@@ -340,7 +340,7 @@
 * Tweak - Improved uploader error handling and updated library.
 * Tweak - Improve job_manager_user_can_post_job and job_manager_user_can_edit_job capability handling in job-submit.php
 * Tweak - Clear transients in batches of 500.
-* Tweak - Removed transifex and translations - translation will take place on https://translate.wordpress.org/projects/wp-plugins/wp-job-manager
+* Tweak - Removed transifex and translations - translation will take place on https://translate.wordpress.org/projects/wp-plugins/wp-event-manager
 
 = 1.23.9 =
 * Fixed editing content with wp_editor. Can no longer be passed to function already escaped.
@@ -692,10 +692,10 @@
 * Delete previews via cron job.
 
 = 1.7.1 =
-* Updated textdomain to wp-job-manager
+* Updated textdomain to wp-event-manager
 * Re-done .pot file
 * Additonal filters for ajax responses
-* Moved localisations to Transifex https://www.transifex.com/projects/p/wp-job-manager/
+* Moved localisations to Transifex https://www.transifex.com/projects/p/wp-event-manager/
 
 = 1.7.0 =
 * Added geolocation to save location data to meta after posting or saving a job. This will be used by other plugins.

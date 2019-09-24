@@ -1,5 +1,5 @@
 <?php
-require_once WPJM_Unit_Tests_Bootstrap::instance()->includes_dir . '/stubs/class-wp-job-manager-email-template-valid.php';
+require_once WPJM_Unit_Tests_Bootstrap::instance()->includes_dir . '/stubs/class-wp-event-manager-email-template-valid.php';
 
 /**
  * Tests for WP_Job_Manager_Email_Template.

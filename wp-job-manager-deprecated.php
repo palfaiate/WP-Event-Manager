@@ -2,7 +2,7 @@
 /**
  * Deprecated functions. Do not use these.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! function_exists( 'order_featured_job_listing' ) ) :

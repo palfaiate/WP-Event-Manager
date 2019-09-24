@@ -2,14 +2,14 @@
 /**
  * File containing the class WP_Job_Manager_Form_Edit_Job.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once 'class-wp-job-manager-form-submit-job.php';
+require_once 'class-wp-event-manager-form-submit-job.php';
 
 /**
  * Handles the editing of Job Listings from the public facing frontend (from within `[job_dashboard]` shortcode).
@@ -105,7 +105,7 @@ class WP_Job_Manager_Form_Edit_Job extends WP_Job_Manager_Form_Submit_Job {
 		$job = get_post( $this->job_id );
 
 		if ( empty( $this->job_id ) ) {
-			echo wp_kses_post( wpautop( __( 'Invalid listing', 'wp-job-manager' ) ) );
+			echo wp_kses_post( wpautop( __( 'Invalid listing', 'wp-event-manager' ) ) );
 			return;
 		}
 
@@ -137,12 +137,12 @@ class WP_Job_Manager_Form_Edit_Job extends WP_Job_Manager_Form_Submit_Job {
 
 		$this->enqueue_job_form_assets();
 
-		$save_button_text = __( 'Save changes', 'wp-job-manager' );
+		$save_button_text = __( 'Save changes', 'wp-event-manager' );
 		if (
 			'publish' === get_post_status( $this->job_id )
 			&& wpjm_published_submission_edits_require_moderation()
 		) {
-			$save_button_text = __( 'Submit changes for approval', 'wp-job-manager' );
+			$save_button_text = __( 'Submit changes for approval', 'wp-event-manager' );
 		}
 
 		$save_button_text = apply_filters( 'update_job_form_submit_button_text', $save_button_text );
@@ -196,15 +196,15 @@ class WP_Job_Manager_Form_Edit_Job extends WP_Job_Manager_Form_Submit_Job {
 			$this->update_job_data( $values );
 
 			// Successful.
-			$save_message = __( 'Your changes have been saved.', 'wp-job-manager' );
+			$save_message = __( 'Your changes have been saved.', 'wp-event-manager' );
 			$post_status  = get_post_status( $this->job_id );
 
 			update_post_meta( $this->job_id, '_job_edited', time() );
 
 			if ( 'publish' === $post_status ) {
-				$save_message = $save_message . ' <a href="' . get_permalink( $this->job_id ) . '">' . __( 'View &rarr;', 'wp-job-manager' ) . '</a>';
+				$save_message = $save_message . ' <a href="' . get_permalink( $this->job_id ) . '">' . __( 'View &rarr;', 'wp-event-manager' ) . '</a>';
 			} elseif ( 'publish' === $original_post_status && 'pending' === $post_status ) {
-				$save_message = __( 'Your changes have been submitted and your listing will be visible again once approved.', 'wp-job-manager' );
+				$save_message = __( 'Your changes have been submitted and your listing will be visible again once approved.', 'wp-event-manager' );
 
 				/**
 				 * Resets the job expiration date when a user submits their job listing edit for approval.

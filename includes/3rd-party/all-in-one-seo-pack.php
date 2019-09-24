@@ -2,7 +2,7 @@
 /**
  * Adds additional compatibility with All in One SEO Pack.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 /**

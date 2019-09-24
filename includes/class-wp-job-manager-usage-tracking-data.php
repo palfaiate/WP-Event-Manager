@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Usage_Tracking_Data.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -323,7 +323,7 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	 */
 	private static function get_official_extensions( $licensed_only ) {
 		if ( ! class_exists( 'WP_Job_Manager_Helper' ) ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-job-manager-helper.php';
+			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
 		}
 
 		$helper         = WP_Job_Manager_Helper::instance();

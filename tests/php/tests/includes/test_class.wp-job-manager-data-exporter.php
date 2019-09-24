@@ -2,7 +2,7 @@
 /**
  * Defines a class to test the data exporter
  *
- * @package wp-job-manager-test
+ * @package wp-event-manager-test
  * @since 1.31.1
  */
 
@@ -111,7 +111,7 @@ class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 					'data' => [
 						[
 							'group_id'    => 'wpjm-user-data',
-							'group_label' => __( 'WP Job Manager User Data' ),
+							'group_label' => __( 'WP Event Manager User Data' ),
 							'item_id'     => '', // the item_id depends on the ID of the user.
 							'data'        => [
 								[
@@ -154,7 +154,7 @@ class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 					'data' => [
 						[
 							'group_id'    => 'wpjm-user-data',
-							'group_label' => __( 'WP Job Manager User Data' ),
+							'group_label' => __( 'WP Event Manager User Data' ),
 							'data'        => [
 								[
 									'name'  => 'Company Name',
@@ -187,7 +187,7 @@ class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 					'data' => [
 						[
 							'group_id'    => 'wpjm-user-data',
-							'group_label' => __( 'WP Job Manager User Data' ),
+							'group_label' => __( 'WP Event Manager User Data' ),
 							'item_id'     => '', // the item_id depends on the ID of the user.
 							'data'        => [],
 						],

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Forms.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Base class for all WP Job Manager forms.
+ * Base class for all WP Event Manager forms.
  *
  * @since 1.0.0
  */
@@ -65,12 +65,12 @@ class WP_Job_Manager_Forms {
 	 */
 	private function load_form_class( $form_name ) {
 		if ( ! class_exists( 'WP_Job_Manager_Form' ) ) {
-			include 'abstracts/abstract-wp-job-manager-form.php';
+			include 'abstracts/abstract-wp-event-manager-form.php';
 		}
 
 		// Now try to load the form_name.
 		$form_class = 'WP_Job_Manager_Form_' . str_replace( '-', '_', $form_name );
-		$form_file  = JOB_MANAGER_PLUGIN_DIR . '/includes/forms/class-wp-job-manager-form-' . $form_name . '.php';
+		$form_file  = JOB_MANAGER_PLUGIN_DIR . '/includes/forms/class-wp-event-manager-form-' . $form_name . '.php';
 
 		if ( class_exists( $form_class ) ) {
 			return call_user_func( [ $form_class, 'instance' ] );

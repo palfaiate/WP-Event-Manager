@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-wp_enqueue_script( 'wp-job-manager-datepicker' );
+wp_enqueue_script( 'wp-event-manager-datepicker' );
 wp_enqueue_style( 'jquery-ui' );
 
 ?>

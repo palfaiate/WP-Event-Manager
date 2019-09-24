@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.33.4
  */
@@ -29,16 +29,16 @@ $edit_post_link = admin_url( sprintf( 'post.php?post=%d&amp;action=edit', $job->
 echo '<p>';
 if ( $expiring_today ) {
 	// translators: %1$s placeholder is URL to the blog. %2$s placeholder is the name of the site.
-	echo wp_kses_post( sprintf( __( 'The following job listing is expiring today from <a href="%1$s">%2$s</a>.', 'wp-job-manager' ), esc_url( home_url() ), esc_html( get_bloginfo( 'name' ) ) ) );
+	echo wp_kses_post( sprintf( __( 'The following job listing is expiring today from <a href="%1$s">%2$s</a>.', 'wp-event-manager' ), esc_url( home_url() ), esc_html( get_bloginfo( 'name' ) ) ) );
 } else {
 	// translators: %1$s placeholder is URL to the blog. %2$s placeholder is the name of the site.
-	echo wp_kses_post( sprintf( __( 'The following job listing is expiring soon from <a href="%1$s">%2$s</a>.', 'wp-job-manager' ), esc_url( home_url() ), esc_html( get_bloginfo( 'name' ) ) ) );
+	echo wp_kses_post( sprintf( __( 'The following job listing is expiring soon from <a href="%1$s">%2$s</a>.', 'wp-event-manager' ), esc_url( home_url() ), esc_html( get_bloginfo( 'name' ) ) ) );
 }
 
 echo ' ';
 
 // translators: Placeholder is URL to site's WP admin.
-echo wp_kses_post( sprintf( __( 'Visit <a href="%s">WordPress admin</a> to manage the listing.', 'wp-job-manager' ), esc_url( $edit_post_link ) ) );
+echo wp_kses_post( sprintf( __( 'Visit <a href="%s">WordPress admin</a> to manage the listing.', 'wp-event-manager' ), esc_url( $edit_post_link ) ) );
 echo '</p>';
 
 /**

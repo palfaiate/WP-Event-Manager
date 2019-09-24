@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Helper.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles Job Manager's Ajax endpoints.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.29.0
  */
 class WP_Job_Manager_Helper {
@@ -64,8 +64,8 @@ class WP_Job_Manager_Helper {
 	 * Loads the class, runs on init.
 	 */
 	public function init() {
-		include_once dirname( __FILE__ ) . '/class-wp-job-manager-helper-options.php';
-		include_once dirname( __FILE__ ) . '/class-wp-job-manager-helper-api.php';
+		include_once dirname( __FILE__ ) . '/class-wp-event-manager-helper-options.php';
+		include_once dirname( __FILE__ ) . '/class-wp-event-manager-helper-api.php';
 
 		$this->api = WP_Job_Manager_Helper_API::instance();
 
@@ -276,13 +276,13 @@ class WP_Job_Manager_Helper {
 		$css_class    = '';
 		if ( $licence && ! empty( $licence['licence_key'] ) ) {
 			if ( ! empty( $licence['errors'] ) ) {
-				$manage_licence_label = __( 'Manage License (Requires Attention)', 'wp-job-manager' );
+				$manage_licence_label = __( 'Manage License (Requires Attention)', 'wp-event-manager' );
 				$css_class            = 'wpjm-activate-licence-link';
 			} else {
-				$manage_licence_label = __( 'Manage License', 'wp-job-manager' );
+				$manage_licence_label = __( 'Manage License', 'wp-event-manager' );
 			}
 		} else {
-			$manage_licence_label = __( 'Activate License', 'wp-job-manager' );
+			$manage_licence_label = __( 'Activate License', 'wp-event-manager' );
 			$css_class            = 'wpjm-activate-licence-link';
 		}
 		$actions[] = '<a class="' . esc_attr( $css_class ) . '" href="' . esc_url( admin_url( 'edit.php?post_type=job_listing&page=job-manager-addons&section=helper' ) ) . '">' . esc_html( $manage_licence_label ) . '</a>';
@@ -491,7 +491,7 @@ class WP_Job_Manager_Helper {
 		switch ( $_POST['action'] ) {
 			case 'activate':
 				if ( empty( $_POST['email'] ) || empty( $_POST['licence_key'] ) ) {
-					$this->add_error( $product_slug, __( 'Please enter a valid license key and email address in order to activate this plugin\'s license.', 'wp-job-manager' ) );
+					$this->add_error( $product_slug, __( 'Please enter a valid license key and email address in order to activate this plugin\'s license.', 'wp-event-manager' ) );
 					break;
 				}
 				$email       = sanitize_email( wp_unslash( $_POST['email'] ) );
@@ -523,7 +523,7 @@ class WP_Job_Manager_Helper {
 		$error = false;
 		if ( false === $response ) {
 			$error = 'connection_failed';
-			$this->add_error( $product_slug, __( 'Connection failed to the License Key API server - possible server issue.', 'wp-job-manager' ) );
+			$this->add_error( $product_slug, __( 'Connection failed to the License Key API server - possible server issue.', 'wp-event-manager' ) );
 		} elseif ( isset( $response['error_code'] ) && isset( $response['error'] ) ) {
 			$error = $response['error_code'];
 			$this->add_error( $product_slug, $response['error'] );
@@ -532,10 +532,10 @@ class WP_Job_Manager_Helper {
 			WP_Job_Manager_Helper_Options::update( $product_slug, 'email', $email );
 			WP_Job_Manager_Helper_Options::delete( $product_slug, 'errors' );
 			WP_Job_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
-			$this->add_success( $product_slug, __( 'Plugin license has been activated.', 'wp-job-manager' ) );
+			$this->add_success( $product_slug, __( 'Plugin license has been activated.', 'wp-event-manager' ) );
 		} else {
 			$error = 'unknown';
-			$this->add_error( $product_slug, __( 'An unknown error occurred while attempting to activate the license', 'wp-job-manager' ) );
+			$this->add_error( $product_slug, __( 'An unknown error occurred while attempting to activate the license', 'wp-event-manager' ) );
 		}
 
 		$event_properties = [ 'slug' => $product_slug ];
@@ -555,7 +555,7 @@ class WP_Job_Manager_Helper {
 	private function deactivate_licence( $product_slug ) {
 		$licence = $this->get_plugin_licence( $product_slug );
 		if ( empty( $licence['licence_key'] ) || empty( $licence['email'] ) ) {
-			$this->add_error( $product_slug, __( 'license is not active.', 'wp-job-manager' ) );
+			$this->add_error( $product_slug, __( 'license is not active.', 'wp-event-manager' ) );
 			return;
 		}
 		$this->api->deactivate(
@@ -571,7 +571,7 @@ class WP_Job_Manager_Helper {
 		WP_Job_Manager_Helper_Options::delete( $product_slug, 'errors' );
 		WP_Job_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
 		delete_site_transient( 'update_plugins' );
-		$this->add_success( $product_slug, __( 'Plugin license has been deactivated.', 'wp-job-manager' ) );
+		$this->add_success( $product_slug, __( 'Plugin license has been deactivated.', 'wp-event-manager' ) );
 
 		self::log_event(
 			'license_deactivated',

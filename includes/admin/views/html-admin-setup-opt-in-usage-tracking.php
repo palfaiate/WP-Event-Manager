@@ -2,7 +2,7 @@
 /**
  * File containing the view asking users to opt-in to usage tracking.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

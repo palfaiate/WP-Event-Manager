@@ -6,7 +6,7 @@
  *
  * @author      Mike Jolley
  * @category    Core
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @version     1.25.3
  */
 
@@ -152,7 +152,7 @@ function get_the_job_status( $post = null ) {
 	if ( isset( $statuses[ $status ] ) ) {
 		$status = $statuses[ $status ];
 	} else {
-		$status = esc_html__( 'Inactive', 'wp-job-manager' );
+		$status = esc_html__( 'Inactive', 'wp-event-manager' );
 	}
 
 	return apply_filters( 'the_job_status', $status, $post );
@@ -246,7 +246,7 @@ function get_the_job_application_method( $post = null ) {
 		$method->email     = antispambot( $apply );
 
 		// translators: %1$s is the job listing title; %2$s is the URL for the current WordPress instance.
-		$method->subject = apply_filters( 'job_manager_application_email_subject', sprintf( esc_html__( 'Application via %1$s listing on %2$s', 'wp-job-manager' ), esc_html( $post->post_title ), esc_url( home_url() ) ), $post );
+		$method->subject = apply_filters( 'job_manager_application_email_subject', sprintf( esc_html__( 'Application via %1$s listing on %2$s', 'wp-event-manager' ), esc_html( $post->post_title ), esc_url( home_url() ) ), $post );
 	} else {
 		if ( strpos( $apply, 'http' ) !== 0 ) {
 			$apply = 'http://' . $apply;
@@ -689,8 +689,8 @@ function wpjm_get_registration_fields() {
 	if ( job_manager_enable_registration() ) {
 		$registration_fields['create_account_email'] = [
 			'type'        => 'text',
-			'label'       => esc_html__( 'Your email', 'wp-job-manager' ),
-			'placeholder' => __( 'you@yourdomain.com', 'wp-job-manager' ),
+			'label'       => esc_html__( 'Your email', 'wp-event-manager' ),
+			'placeholder' => __( 'you@yourdomain.com', 'wp-event-manager' ),
 			'required'    => $account_required,
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Just used to populate value when validation failed.
 			'value'       => isset( $_POST['create_account_email'] ) ? sanitize_text_field( wp_unslash( $_POST['create_account_email'] ) ) : '',
@@ -698,7 +698,7 @@ function wpjm_get_registration_fields() {
 		if ( ! $generate_username_from_email ) {
 			$registration_fields['create_account_username'] = [
 				'type'     => 'text',
-				'label'    => esc_html__( 'Username', 'wp-job-manager' ),
+				'label'    => esc_html__( 'Username', 'wp-event-manager' ),
 				'required' => $account_required,
 				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Just used to populate value when validation failed.
 				'value'    => isset( $_POST['create_account_username'] ) ? sanitize_text_field( wp_unslash( $_POST['create_account_username'] ) ) : '',
@@ -707,7 +707,7 @@ function wpjm_get_registration_fields() {
 		if ( ! $use_standard_password_setup_email ) {
 			$registration_fields['create_account_password'] = [
 				'type'         => 'password',
-				'label'        => esc_html__( 'Password', 'wp-job-manager' ),
+				'label'        => esc_html__( 'Password', 'wp-event-manager' ),
 				'autocomplete' => false,
 				'required'     => $account_required,
 			];
@@ -717,7 +717,7 @@ function wpjm_get_registration_fields() {
 			}
 			$registration_fields['create_account_password_verify'] = [
 				'type'         => 'password',
-				'label'        => esc_html__( 'Verify Password', 'wp-job-manager' ),
+				'label'        => esc_html__( 'Verify Password', 'wp-event-manager' ),
 				'autocomplete' => false,
 				'required'     => $account_required,
 			];
@@ -744,10 +744,10 @@ function the_job_publish_date( $post = null ) {
 	$date_format = get_option( 'job_manager_date_format' );
 
 	if ( 'default' === $date_format ) {
-		$display_date = esc_html__( 'Posted on ', 'wp-job-manager' ) . date_i18n( get_option( 'date_format' ), get_post_time( 'U' ) );
+		$display_date = esc_html__( 'Posted on ', 'wp-event-manager' ) . date_i18n( get_option( 'date_format' ), get_post_time( 'U' ) );
 	} else {
 		// translators: Placeholder %s is the relative, human readable time since the job listing was posted.
-		$display_date = sprintf( esc_html__( 'Posted %s ago', 'wp-job-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
+		$display_date = sprintf( esc_html__( 'Posted %s ago', 'wp-event-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
 	}
 
 	echo '<time datetime="' . esc_attr( get_post_time( 'Y-m-d' ) ) . '">' . wp_kses_post( $display_date ) . '</time>';
@@ -768,7 +768,7 @@ function get_the_job_publish_date( $post = null ) {
 		return get_post_time( get_option( 'date_format' ) );
 	} else {
 		// translators: Placeholder %s is the relative, human readable time since the job listing was posted.
-		return sprintf( __( 'Posted %s ago', 'wp-job-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
+		return sprintf( __( 'Posted %s ago', 'wp-event-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
 	}
 }
 
@@ -798,7 +798,7 @@ function the_job_location( $map_link = true, $post = null ) {
 			echo wp_kses_post( $location );
 		}
 	} else {
-		echo wp_kses_post( apply_filters( 'the_job_location_anywhere_text', __( 'Anywhere', 'wp-job-manager' ) ) );
+		echo wp_kses_post( apply_filters( 'the_job_location_anywhere_text', __( 'Anywhere', 'wp-event-manager' ) ) );
 	}
 }
 

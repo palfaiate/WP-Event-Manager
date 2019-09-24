@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -27,20 +27,20 @@ $expiring_today = $args['expiring_today'];
 
 if ( $expiring_today ) {
 	printf(
-		esc_html__( 'The following job listing is expiring today from %s (%s).', 'wp-job-manager' ),
+		esc_html__( 'The following job listing is expiring today from %s (%s).', 'wp-event-manager' ),
 		esc_html( get_bloginfo( 'name' ) ),
 		esc_url( home_url() )
 	);
 } else {
 	printf(
-		esc_html__( 'The following job listing is expiring soon from %s (%s).', 'wp-job-manager' ),
+		esc_html__( 'The following job listing is expiring soon from %s (%s).', 'wp-event-manager' ),
 		esc_html( get_bloginfo( 'name' ) ),
 		esc_url( home_url() )
 	);
 }
 $edit_post_link = admin_url( sprintf( 'post.php?post=%d&amp;action=edit', $job->ID ) );
 printf(
-	' ' . esc_html__( 'Visit WordPress admin (%s) to manage the listing.', 'wp-job-manager' ),
+	' ' . esc_html__( 'Visit WordPress admin (%s) to manage the listing.', 'wp-event-manager' ),
 	esc_url( $edit_post_link )
 );
 

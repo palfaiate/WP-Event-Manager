@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Email_Admin_Expiring_Job.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,7 +31,7 @@ class WP_Job_Manager_Email_Admin_Expiring_Job extends WP_Job_Manager_Email_Emplo
 	 * @return string
 	 */
 	public static function get_name() {
-		return __( 'Admin Notice of Expiring Job Listings', 'wp-job-manager' );
+		return __( 'Admin Notice of Expiring Job Listings', 'wp-event-manager' );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class WP_Job_Manager_Email_Admin_Expiring_Job extends WP_Job_Manager_Email_Emplo
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send notices to the site administrator before a job listing expires.', 'wp-job-manager' );
+		return __( 'Send notices to the site administrator before a job listing expires.', 'wp-event-manager' );
 	}
 
 	/**

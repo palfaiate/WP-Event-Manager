@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -29,7 +29,7 @@ echo '<p>';
 if ( $expiring_today ) {
 	echo wp_kses_post(
 		sprintf(
-			__( 'The following job listing is expiring today from <a href="%s">%s</a>.', 'wp-job-manager' ),
+			__( 'The following job listing is expiring today from <a href="%s">%s</a>.', 'wp-event-manager' ),
 			home_url(),
 			get_bloginfo( 'name' )
 		)
@@ -37,7 +37,7 @@ if ( $expiring_today ) {
 } else {
 	echo wp_kses_post(
 		sprintf(
-			__( 'The following job listing is expiring soon from <a href="%s">%s</a>.', 'wp-job-manager' ),
+			__( 'The following job listing is expiring soon from <a href="%s">%s</a>.', 'wp-event-manager' ),
 			home_url(),
 			get_bloginfo( 'name' )
 		)
@@ -45,7 +45,7 @@ if ( $expiring_today ) {
 }
 echo wp_kses_post(
 	sprintf(
-		' ' . __( 'Visit the <a href="%s">job listing dashboard</a> to manage the listing.', 'wp-job-manager' ),
+		' ' . __( 'Visit the <a href="%s">job listing dashboard</a> to manage the listing.', 'wp-event-manager' ),
 		esc_url( job_manager_get_permalink( 'job_dashboard' ) )
 	)
 );

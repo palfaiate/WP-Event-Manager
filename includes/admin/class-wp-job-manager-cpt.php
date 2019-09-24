@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_CPT.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -78,30 +78,30 @@ class WP_Job_Manager_CPT {
 		$actions_handled                         = [];
 		$actions_handled['approve_jobs']         = [
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'label'   => __( 'Approve %s', 'wp-job-manager' ),
+			'label'   => __( 'Approve %s', 'wp-event-manager' ),
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'notice'  => __( '%s approved', 'wp-job-manager' ),
+			'notice'  => __( '%s approved', 'wp-event-manager' ),
 			'handler' => [ $this, 'bulk_action_handle_approve_job' ],
 		];
 		$actions_handled['expire_jobs']          = [
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'label'   => __( 'Expire %s', 'wp-job-manager' ),
+			'label'   => __( 'Expire %s', 'wp-event-manager' ),
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'notice'  => __( '%s expired', 'wp-job-manager' ),
+			'notice'  => __( '%s expired', 'wp-event-manager' ),
 			'handler' => [ $this, 'bulk_action_handle_expire_job' ],
 		];
 		$actions_handled['mark_jobs_filled']     = [
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'label'   => __( 'Mark %s Filled', 'wp-job-manager' ),
+			'label'   => __( 'Mark %s Filled', 'wp-event-manager' ),
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'notice'  => __( '%s marked as filled', 'wp-job-manager' ),
+			'notice'  => __( '%s marked as filled', 'wp-event-manager' ),
 			'handler' => [ $this, 'bulk_action_handle_mark_job_filled' ],
 		];
 		$actions_handled['mark_jobs_not_filled'] = [
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'label'   => __( 'Mark %s Not Filled', 'wp-job-manager' ),
+			'label'   => __( 'Mark %s Not Filled', 'wp-event-manager' ),
 			// translators: Placeholder (%s) is the plural name of the job listings post type.
-			'notice'  => __( '%s marked as not filled', 'wp-job-manager' ),
+			'notice'  => __( '%s marked as not filled', 'wp-event-manager' ),
 			'handler' => [ $this, 'bulk_action_handle_mark_job_not_filled' ],
 		];
 
@@ -306,7 +306,7 @@ class WP_Job_Manager_CPT {
 			return;
 		}
 
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-category-walker.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
 
 		$r                 = [];
 		$r['taxonomy']     = 'job_listing_category';
@@ -334,7 +334,7 @@ class WP_Job_Manager_CPT {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No changes or data exposed based on input.
 		$selected_category = isset( $_GET['job_listing_category'] ) ? sanitize_text_field( wp_unslash( $_GET['job_listing_category'] ) ) : '';
 		echo "<select name='job_listing_category' id='dropdown_job_listing_category'>";
-		echo '<option value="" ' . selected( $selected_category, '', false ) . '>' . esc_html__( 'Select category', 'wp-job-manager' ) . '</option>';
+		echo '<option value="" ' . selected( $selected_category, '', false ) . '>' . esc_html__( 'Select category', 'wp-event-manager' ) . '</option>';
 		echo wp_kses( $walker->walk( $terms, 0, $r ), $allowed_html );
 		echo '</select>';
 
@@ -359,15 +359,15 @@ class WP_Job_Manager_CPT {
 			[
 				[
 					'value' => '',
-					'text'  => __( 'Select Filled', 'wp-job-manager' ),
+					'text'  => __( 'Select Filled', 'wp-event-manager' ),
 				],
 				[
 					'value' => '1',
-					'text'  => __( 'Filled', 'wp-job-manager' ),
+					'text'  => __( 'Filled', 'wp-event-manager' ),
 				],
 				[
 					'value' => '0',
-					'text'  => __( 'Not Filled', 'wp-job-manager' ),
+					'text'  => __( 'Not Filled', 'wp-event-manager' ),
 				],
 			]
 		);
@@ -378,15 +378,15 @@ class WP_Job_Manager_CPT {
 			[
 				[
 					'value' => '',
-					'text'  => __( 'Select Featured', 'wp-job-manager' ),
+					'text'  => __( 'Select Featured', 'wp-event-manager' ),
 				],
 				[
 					'value' => '1',
-					'text'  => __( 'Featured', 'wp-job-manager' ),
+					'text'  => __( 'Featured', 'wp-event-manager' ),
 				],
 				[
 					'value' => '0',
-					'text'  => __( 'Not Featured', 'wp-job-manager' ),
+					'text'  => __( 'Not Featured', 'wp-event-manager' ),
 				],
 			]
 		);
@@ -432,7 +432,7 @@ class WP_Job_Manager_CPT {
 	 */
 	public function enter_title_here( $text, $post ) {
 		if ( 'job_listing' === $post->post_type ) {
-			return esc_html__( 'Position', 'wp-job-manager' );
+			return esc_html__( 'Position', 'wp-event-manager' );
 		}
 		return $text;
 	}
@@ -452,28 +452,28 @@ class WP_Job_Manager_CPT {
 		$messages['job_listing'] = [
 			0  => '',
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the URL to view the listing.
-			1  => sprintf( __( '%1$s updated. <a href="%2$s">View</a>', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
-			2  => __( 'Custom field updated.', 'wp-job-manager' ),
-			3  => __( 'Custom field deleted.', 'wp-job-manager' ),
+			1  => sprintf( __( '%1$s updated. <a href="%2$s">View</a>', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
+			2  => __( 'Custom field updated.', 'wp-event-manager' ),
+			3  => __( 'Custom field deleted.', 'wp-event-manager' ),
 			// translators: %s is the singular name of the job listing post type.
-			4  => sprintf( esc_html__( '%s updated.', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name ),
+			4  => sprintf( esc_html__( '%s updated.', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name ),
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the revision number.
-			5  => $revision_title ? sprintf( __( '%1$s restored to revision from %2$s', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name, $revision_title ) : false,
+			5  => $revision_title ? sprintf( __( '%1$s restored to revision from %2$s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name, $revision_title ) : false,
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the URL to view the listing.
-			6  => sprintf( __( '%1$s published. <a href="%2$s">View</a>', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
+			6  => sprintf( __( '%1$s published. <a href="%2$s">View</a>', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( get_permalink( $post_ID ) ) ),
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the URL to view the listing.
-			7  => sprintf( esc_html__( '%s saved.', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name ),
+			7  => sprintf( esc_html__( '%s saved.', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name ),
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the URL to preview the listing.
-			8  => sprintf( __( '%1$s submitted. <a target="_blank" href="%2$s">Preview</a>', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+			8  => sprintf( __( '%1$s submitted. <a target="_blank" href="%2$s">Preview</a>', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
 			9  => sprintf(
 				// translators: %1$s is the singular name of the post type; %2$s is the date the post will be published; %3$s is the URL to preview the listing.
-				__( '%1$s scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview</a>', 'wp-job-manager' ),
+				__( '%1$s scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview</a>', 'wp-event-manager' ),
 				$wp_post_types['job_listing']->labels->singular_name,
 				date_i18n( get_option( 'date_format' ) . ' @ ' . get_option( 'time_format' ), strtotime( $post->post_date ) ),
 				esc_url( get_permalink( $post_ID ) )
 			),
 			// translators: %1$s is the singular name of the job listing post type; %2$s is the URL to view the listing.
-			10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview</a>', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
+			10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview</a>', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name, esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) ),
 		];
 
 		return $messages;
@@ -492,16 +492,16 @@ class WP_Job_Manager_CPT {
 
 		unset( $columns['title'], $columns['date'], $columns['author'] );
 
-		$columns['job_position']         = __( 'Position', 'wp-job-manager' );
-		$columns['job_listing_type']     = __( 'Type', 'wp-job-manager' );
-		$columns['job_location']         = __( 'Location', 'wp-job-manager' );
-		$columns['job_status']           = '<span class="tips" data-tip="' . __( 'Status', 'wp-job-manager' ) . '">' . __( 'Status', 'wp-job-manager' ) . '</span>';
-		$columns['job_posted']           = __( 'Posted', 'wp-job-manager' );
-		$columns['job_expires']          = __( 'Expires', 'wp-job-manager' );
-		$columns['job_listing_category'] = __( 'Categories', 'wp-job-manager' );
-		$columns['featured_job']         = '<span class="tips" data-tip="' . __( 'Featured?', 'wp-job-manager' ) . '">' . __( 'Featured?', 'wp-job-manager' ) . '</span>';
-		$columns['filled']               = '<span class="tips" data-tip="' . __( 'Filled?', 'wp-job-manager' ) . '">' . __( 'Filled?', 'wp-job-manager' ) . '</span>';
-		$columns['job_actions']          = __( 'Actions', 'wp-job-manager' );
+		$columns['job_position']         = __( 'Position', 'wp-event-manager' );
+		$columns['job_listing_type']     = __( 'Type', 'wp-event-manager' );
+		$columns['job_location']         = __( 'Location', 'wp-event-manager' );
+		$columns['job_status']           = '<span class="tips" data-tip="' . __( 'Status', 'wp-event-manager' ) . '">' . __( 'Status', 'wp-event-manager' ) . '</span>';
+		$columns['job_posted']           = __( 'Posted', 'wp-event-manager' );
+		$columns['job_expires']          = __( 'Expires', 'wp-event-manager' );
+		$columns['job_listing_category'] = __( 'Categories', 'wp-event-manager' );
+		$columns['featured_job']         = '<span class="tips" data-tip="' . __( 'Featured?', 'wp-event-manager' ) . '">' . __( 'Featured?', 'wp-event-manager' ) . '</span>';
+		$columns['filled']               = '<span class="tips" data-tip="' . __( 'Filled?', 'wp-event-manager' ) . '">' . __( 'Filled?', 'wp-event-manager' ) . '</span>';
+		$columns['job_actions']          = __( 'Actions', 'wp-event-manager' );
 
 		if ( ! get_option( 'job_manager_enable_categories' ) ) {
 			unset( $columns['job_listing_category'] );
@@ -566,7 +566,7 @@ class WP_Job_Manager_CPT {
 			case 'job_position':
 				echo '<div class="job_position">';
 				// translators: %d is the post ID for the job listing.
-				echo '<a href="' . esc_url( admin_url( 'post.php?post=' . $post->ID . '&action=edit' ) ) . '" class="tips job_title" data-tip="' . sprintf( esc_html__( 'ID: %d', 'wp-job-manager' ), intval( $post->ID ) ) . '">' . esc_html( wpjm_get_the_job_title() ) . '</a>';
+				echo '<a href="' . esc_url( admin_url( 'post.php?post=' . $post->ID . '&action=edit' ) ) . '" class="tips job_title" data-tip="' . sprintf( esc_html__( 'ID: %d', 'wp-event-manager' ), intval( $post->ID ) ) . '">' . esc_html( wpjm_get_the_job_title() ) . '</a>';
 
 				echo '<div class="company">';
 
@@ -610,7 +610,7 @@ class WP_Job_Manager_CPT {
 			case 'job_posted':
 				echo '<strong>' . esc_html( date_i18n( get_option( 'date_format' ), strtotime( $post->post_date ) ) ) . '</strong><span>';
 				// translators: %s placeholder is the username of the user.
-				echo ( empty( $post->post_author ) ? esc_html__( 'by a guest', 'wp-job-manager' ) : sprintf( esc_html__( 'by %s', 'wp-job-manager' ), '<a href="' . esc_url( add_query_arg( 'author', $post->post_author ) ) . '">' . esc_html( get_the_author() ) . '</a>' ) ) . '</span>';
+				echo ( empty( $post->post_author ) ? esc_html__( 'by a guest', 'wp-event-manager' ) : sprintf( esc_html__( 'by %s', 'wp-event-manager' ), '<a href="' . esc_url( add_query_arg( 'author', $post->post_author ) ) . '">' . esc_html( get_the_author() ) . '</a>' ) ) . '</span>';
 				break;
 			case 'job_expires':
 				if ( $post->_job_expires ) {
@@ -629,7 +629,7 @@ class WP_Job_Manager_CPT {
 				if ( in_array( $post->post_status, [ 'pending', 'pending_payment' ], true ) && current_user_can( 'publish_post', $post->ID ) ) {
 					$admin_actions['approve'] = [
 						'action' => 'approve',
-						'name'   => __( 'Approve', 'wp-job-manager' ),
+						'name'   => __( 'Approve', 'wp-event-manager' ),
 						'url'    => wp_nonce_url( add_query_arg( 'approve_job', $post->ID ), 'approve_job' ),
 					];
 				}
@@ -637,21 +637,21 @@ class WP_Job_Manager_CPT {
 					if ( current_user_can( 'read_post', $post->ID ) ) {
 						$admin_actions['view'] = [
 							'action' => 'view',
-							'name'   => __( 'View', 'wp-job-manager' ),
+							'name'   => __( 'View', 'wp-event-manager' ),
 							'url'    => get_permalink( $post->ID ),
 						];
 					}
 					if ( current_user_can( 'edit_post', $post->ID ) ) {
 						$admin_actions['edit'] = [
 							'action' => 'edit',
-							'name'   => __( 'Edit', 'wp-job-manager' ),
+							'name'   => __( 'Edit', 'wp-event-manager' ),
 							'url'    => get_edit_post_link( $post->ID ),
 						];
 					}
 					if ( current_user_can( 'delete_post', $post->ID ) ) {
 						$admin_actions['delete'] = [
 							'action' => 'delete',
-							'name'   => __( 'Delete', 'wp-job-manager' ),
+							'name'   => __( 'Delete', 'wp-event-manager' ),
 							'url'    => get_delete_post_link( $post->ID ),
 						];
 					}

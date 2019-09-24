@@ -7,7 +7,7 @@
  * Example definition:
  *
  * 'test_radio' => array(
- * 		'label'    => __( 'Test Radio', 'wp-job-manager' ),
+ * 		'label'    => __( 'Test Radio', 'wp-event-manager' ),
  * 		'type'     => 'radio',
  * 		'required' => false,
  * 		'default'  => 'option2',
@@ -20,7 +20,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */

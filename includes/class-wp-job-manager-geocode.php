@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Geocode.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -222,7 +222,7 @@ class WP_Job_Manager_Geocode {
 						'timeout'     => 5,
 						'redirection' => 1,
 						'httpversion' => '1.1',
-						'user-agent'  => 'WordPress/WP-Job-Manager-' . JOB_MANAGER_VERSION . '; ' . get_bloginfo( 'url' ),
+						'user-agent'  => 'WordPress/wp-event-manager-' . JOB_MANAGER_VERSION . '; ' . get_bloginfo( 'url' ),
 						'sslverify'   => false,
 					]
 				);
@@ -231,17 +231,17 @@ class WP_Job_Manager_Geocode {
 
 				if ( $geocoded_address->status ) {
 					if ( 'ZERO_RESULTS' === $geocoded_address->status ) {
-						throw new Exception( __( 'No results found', 'wp-job-manager' ) );
+						throw new Exception( __( 'No results found', 'wp-event-manager' ) );
 					} elseif ( 'OVER_QUERY_LIMIT' === $geocoded_address->status ) {
 						set_transient( 'jm_geocode_over_query_limit', 1, HOUR_IN_SECONDS );
-						throw new Exception( __( 'Query limit reached', 'wp-job-manager' ) );
+						throw new Exception( __( 'Query limit reached', 'wp-event-manager' ) );
 					} elseif ( 'OK' === $geocoded_address->status && ! empty( $geocoded_address->results[0] ) ) {
 						set_transient( $transient_name, $geocoded_address, DAY_IN_SECONDS * 7 );
 					} else {
-						throw new Exception( __( 'Geocoding error', 'wp-job-manager' ) );
+						throw new Exception( __( 'Geocoding error', 'wp-event-manager' ) );
 					}
 				} else {
-					throw new Exception( __( 'Geocoding error', 'wp-job-manager' ) );
+					throw new Exception( __( 'Geocoding error', 'wp-event-manager' ) );
 				}
 			}
 		} catch ( Exception $e ) {

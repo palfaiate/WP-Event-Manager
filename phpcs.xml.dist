@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WP Job Manager">
+<ruleset name="WP Event Manager">
 	<description>A custom set of code standard rules to check for WordPress themes and plugins.</description>
 
 	<arg value="s"/>
@@ -31,14 +31,14 @@
 	<rule ref="WordPress.DB.DirectDatabaseQuery" />
 
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax">
-		<exclude-pattern>includes/class-wp-job-manager-dependency-checker.php</exclude-pattern>
-		<exclude-pattern>/wp-job-manager.php</exclude-pattern>
+		<exclude-pattern>includes/class-wp-event-manager-dependency-checker.php</exclude-pattern>
+		<exclude-pattern>/wp-event-manager.php</exclude-pattern>
 		<exclude-pattern>/uninstall.php</exclude-pattern>
 	</rule>
 
 	<rule ref="Generic.Arrays.DisallowShortArraySyntax">
-		<include-pattern>includes/class-wp-job-manager-dependency-checker.php</include-pattern>
-		<include-pattern>/wp-job-manager.php</include-pattern>
+		<include-pattern>includes/class-wp-event-manager-dependency-checker.php</include-pattern>
+		<include-pattern>/wp-event-manager.php</include-pattern>
 		<include-pattern>/uninstall.php</include-pattern>
 	</rule>
 
@@ -57,7 +57,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="wp-job-manager" />
+			<property name="text_domain" type="array" value="wp-event-manager" />
 		</properties>
 	</rule>
 

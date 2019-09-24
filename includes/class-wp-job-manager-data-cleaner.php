@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Data_Cleaner.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

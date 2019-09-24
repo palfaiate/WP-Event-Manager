@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -21,7 +21,7 @@ switch ( $job->post_status ) :
 	case 'publish' :
 		echo wp_kses_post(
 			sprintf(
-				__( '%s listed successfully. To view your listing <a href="%s">click here</a>.', 'wp-job-manager' ),
+				__( '%s listed successfully. To view your listing <a href="%s">click here</a>.', 'wp-event-manager' ),
 				esc_html( $wp_post_types['job_listing']->labels->singular_name ),
 				get_permalink( $job->ID )
 			)
@@ -30,7 +30,7 @@ switch ( $job->post_status ) :
 	case 'pending' :
 		echo wp_kses_post(
 			sprintf(
-				esc_html__( '%s submitted successfully. Your listing will be visible once approved.', 'wp-job-manager' ),
+				esc_html__( '%s submitted successfully. Your listing will be visible once approved.', 'wp-event-manager' ),
 				esc_html( $wp_post_types['job_listing']->labels->singular_name )
 			)
 		);

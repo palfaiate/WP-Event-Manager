@@ -145,13 +145,13 @@ module.exports = function( grunt ) {
 				type: 'wp-plugin',
 				domainPath: '/languages',
 				potHeaders: {
-					'report-msgid-bugs-to': 'https://github.com/Automattic/WP-Job-Manager/issues',
+					'report-msgid-bugs-to': 'https://github.com/palfaiate/wp-event-manager/issues',
 					'language-team': 'LANGUAGE <EMAIL@ADDRESS>',
 				},
 			},
 			dist: {
 				options: {
-					potFilename: 'wp-job-manager.pot',
+					potFilename: 'wp-event-manager.pot',
 					exclude: [ 'apigen/.*', 'tests/.*', 'tmp/.*', 'vendor/.*', 'node_modules/.*' ],
 				},
 			},
@@ -160,7 +160,7 @@ module.exports = function( grunt ) {
 		// Check textdomain errors.
 		checktextdomain: {
 			options: {
-				text_domain: 'wp-job-manager',
+				text_domain: 'wp-event-manager',
 				keywords: [
 					'__:1,2d',
 					'_e:1,2d',
@@ -194,7 +194,7 @@ module.exports = function( grunt ) {
 		addtextdomain: {
 			wpjobmanager: {
 				options: {
-					textdomain: 'wp-job-manager',
+					textdomain: 'wp-event-manager',
 				},
 				files: {
 					src: [ '*.php', '**/*.php', '!node_modules/**' ],
@@ -205,7 +205,7 @@ module.exports = function( grunt ) {
 		wp_deploy: {
 			deploy: {
 				options: {
-					plugin_slug: 'wp-job-manager',
+					plugin_slug: 'wp-event-manager',
 					build_dir: '<%= dirs.build %>',
 					tmp_dir: '<%= dirs.svn %>/',
 					max_buffer: 1024 * 1024,
@@ -217,7 +217,7 @@ module.exports = function( grunt ) {
 			main: {
 				cwd: '<%= dirs.build %>/',
 				src: [ '<%= dirs.build %>/**' ],
-				dest: 'tmp/wp-job-manager.zip',
+				dest: 'tmp/wp-event-manager.zip',
 				compression: 'DEFLATE',
 			},
 		},

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Category_Walker.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Walks through categories.
  *
  * @extends Walker
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.0.0
  */
 class WP_Job_Manager_Category_Walker extends Walker {

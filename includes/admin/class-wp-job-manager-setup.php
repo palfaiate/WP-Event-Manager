@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Setup.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -55,7 +55,7 @@ class WP_Job_Manager_Setup {
 	 * Adds setup link to admin dashboard menu briefly so the page callback is registered.
 	 */
 	public function admin_menu() {
-		add_dashboard_page( __( 'Setup', 'wp-job-manager' ), __( 'Setup', 'wp-job-manager' ), 'manage_options', 'job-manager-setup', [ $this, 'setup_page' ] );
+		add_dashboard_page( __( 'Setup', 'wp-event-manager' ), __( 'Setup', 'wp-event-manager' ), 'manage_options', 'job-manager-setup', [ $this, 'setup_page' ] );
 	}
 
 	/**
@@ -123,10 +123,10 @@ class WP_Job_Manager_Setup {
 					! isset( $_REQUEST['setup_wizard'] )
 					|| false === wp_verify_nonce( wp_unslash( $_REQUEST['setup_wizard'] ), 'step_3' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
 				) {
-					wp_die( 'Error in nonce. Try again.', 'wp-job-manager' );
+					wp_die( 'Error in nonce. Try again.', 'wp-event-manager' );
 				}
-				$create_pages    = isset( $_POST['wp-job-manager-create-page'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-job-manager-create-page'] ) ) : [];
-				$page_titles     = isset( $_POST['wp-job-manager-page-title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-job-manager-page-title'] ) ) : [];
+				$create_pages    = isset( $_POST['wp-event-manager-create-page'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-event-manager-create-page'] ) ) : [];
+				$page_titles     = isset( $_POST['wp-event-manager-page-title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-event-manager-page-title'] ) ) : [];
 				$pages_to_create = [
 					'submit_job_form' => '[submit_job_form]',
 					'job_dashboard'   => '[job_dashboard]',

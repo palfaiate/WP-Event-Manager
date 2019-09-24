@@ -1,6 +1,6 @@
 <?php
 
-require JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-writepanels.php';
+require JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-writepanels.php';
 
 class WP_Test_WP_Job_Manager_Writepanels extends WPJM_BaseTest {
 

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Writepanels.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -61,7 +61,7 @@ class WP_Job_Manager_Writepanels {
 
 		if ( $current_user->has_cap( 'edit_others_job_listings' ) ) {
 			$fields['_job_author'] = [
-				'label'    => __( 'Posted by', 'wp-job-manager' ),
+				'label'    => __( 'Posted by', 'wp-event-manager' ),
 				'type'     => 'author',
 				'priority' => 0,
 			];
@@ -111,7 +111,7 @@ class WP_Job_Manager_Writepanels {
 		/**
 		 * Filters job listing data fields shown in WP admin.
 		 *
-		 * To add job listing data fields, use the `job_manager_job_listing_data_fields` found in `includes/class-wp-job-manager-post-types.php`.
+		 * To add job listing data fields, use the `job_manager_job_listing_data_fields` found in `includes/class-wp-event-manager-post-types.php`.
 		 *
 		 * @since 1.33.0
 		 *
@@ -147,7 +147,7 @@ class WP_Job_Manager_Writepanels {
 		global $wp_post_types;
 
 		// translators: Placeholder %s is the singular name for a job listing post type.
-		add_meta_box( 'job_listing_data', sprintf( __( '%s Data', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name ), [ $this, 'job_listing_data' ], 'job_listing', 'normal', 'high' );
+		add_meta_box( 'job_listing_data', sprintf( __( '%s Data', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name ), [ $this, 'job_listing_data' ], 'job_listing', 'normal', 'high' );
 		if ( ! get_option( 'job_manager_enable_types' ) || 0 === intval( wp_count_terms( 'job_listing_type' ) ) ) {
 			remove_meta_box( 'job_listing_typediv', 'job_listing', 'side' );
 		} elseif ( false === job_manager_multi_job_type() ) {
@@ -224,17 +224,17 @@ class WP_Job_Manager_Writepanels {
 			if ( ! empty( $field['multiple'] ) ) {
 				foreach ( (array) $field['value'] as $value ) {
 					?>
-					<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>[]" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-job-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-job-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-job-manager' ); ?></button></span>
+					<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>[]" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
 					<?php
 				}
 			} else {
 				?>
-				<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-job-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-job-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-job-manager' ); ?></button></span>
+				<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
 				<?php
 			}
 			if ( ! empty( $field['multiple'] ) ) {
 				?>
-				<button class="button button-small wp_job_manager_add_another_file_button" data-field_name="<?php echo esc_attr( $key ); ?>" data-field_placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-job-manager' ); ?>" data-uploader_button="<?php esc_attr_e( 'Upload', 'wp-job-manager' ); ?>" data-view_button="<?php esc_attr_e( 'View', 'wp-job-manager' ); ?>"><?php esc_html_e( 'Add file', 'wp-job-manager' ); ?></button>
+				<button class="button button-small wp_job_manager_add_another_file_button" data-field_name="<?php echo esc_attr( $key ); ?>" data-field_placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>" data-uploader_button="<?php esc_attr_e( 'Upload', 'wp-event-manager' ); ?>" data-view_button="<?php esc_attr_e( 'View', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Add file', 'wp-event-manager' ); ?></button>
 				<?php
 			}
 			?>
@@ -468,21 +468,21 @@ class WP_Job_Manager_Writepanels {
 				if ( $posted_by ) {
 					$user_string = sprintf(
 						// translators: Used in user select. %1$s is the user's display name; #%2$s is the user ID; %3$s is the user email.
-						esc_html__( '%1$s (#%2$s – %3$s)', 'wp-job-manager' ),
+						esc_html__( '%1$s (#%2$s – %3$s)', 'wp-event-manager' ),
 						htmlentities( $posted_by->display_name ),
 						absint( $posted_by->ID ),
 						$posted_by->user_email
 					);
 					echo '<a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . absint( $author_id ) ) ) . '">#' . absint( $author_id ) . ' &ndash; ' . esc_html( $posted_by->user_login ) . '</a>';
 				} else {
-					$user_string = __( 'Guest User', 'wp-job-manager' );
+					$user_string = __( 'Guest User', 'wp-event-manager' );
 					echo esc_html( $user_string );
 				}
 				?>
-				<a href="#" class="change-author button button-small"><?php esc_html_e( 'Change', 'wp-job-manager' ); ?></a>
+				<a href="#" class="change-author button button-small"><?php esc_html_e( 'Change', 'wp-event-manager' ); ?></a>
 			</span>
 			<span class="hidden change-author">
-				<select class="wpjm-user-search" id="job_manager_user_search" name="<?php echo esc_attr( $name ); ?>" data-placeholder="<?php esc_attr_e( 'Guest', 'wp-job-manager' ); ?>" data-allow_clear="true">
+				<select class="wpjm-user-search" id="job_manager_user_search" name="<?php echo esc_attr( $name ); ?>" data-placeholder="<?php esc_attr_e( 'Guest', 'wp-event-manager' ); ?>" data-allow_clear="true">
 					<option value="<?php echo esc_attr( $author_id ); ?>" selected="selected"><?php echo esc_html( htmlspecialchars( $user_string ) ); ?></option>
 				</select>
 			</span>
@@ -553,7 +553,7 @@ class WP_Job_Manager_Writepanels {
 		if ( $user_edited_date ) {
 			echo '<p class="form-field">';
 			// translators: %1$s is placeholder for singular name of the job listing post type; %2$s is the intl formatted date the listing was last modified.
-			echo '<em>' . sprintf( esc_html__( '%1$s was last modified by the user on %2$s.', 'wp-job-manager' ), esc_html( $wp_post_types['job_listing']->labels->singular_name ), esc_html( date_i18n( get_option( 'date_format' ), $user_edited_date ) ) ) . '</em>';
+			echo '<em>' . sprintf( esc_html__( '%1$s was last modified by the user on %2$s.', 'wp-event-manager' ), esc_html( $wp_post_types['job_listing']->labels->singular_name ), esc_html( date_i18n( get_option( 'date_format' ), $user_edited_date ) ) ) . '</em>';
 			echo '</p>';
 		}
 

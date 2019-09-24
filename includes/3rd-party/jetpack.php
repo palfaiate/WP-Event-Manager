@@ -2,7 +2,7 @@
 /**
  * Adds additional compatibility with Jetpack.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 /**

@@ -2,7 +2,7 @@
 /**
  * Base class for testing Controllers
  *
- * @package wp-job-manager/tests
+ * @package wp-event-manager/tests
  */
 
 /**

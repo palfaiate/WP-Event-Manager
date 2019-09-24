@@ -65,7 +65,7 @@ class WPJM_Unit_Tests_Bootstrap {
 		update_option( 'job_manager_enable_types', true );
 		update_option( 'job_manager_enable_categories', true );
 
-		require_once $this->plugin_dir . '/wp-job-manager.php';
+		require_once $this->plugin_dir . '/wp-event-manager.php';
 	}
 
 	/**

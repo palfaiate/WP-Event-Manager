@@ -2,7 +2,7 @@
 /**
  * Load 3rd party compatibility tweaks.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 // Require files for each 3rd-party plugin.

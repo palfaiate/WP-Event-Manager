@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.32.0
  */
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div id="job-manager-job-dashboard">
-	<p><?php esc_html_e( 'Your listings are shown in the table below.', 'wp-job-manager' ); ?></p>
+	<p><?php esc_html_e( 'Your listings are shown in the table below.', 'wp-event-manager' ); ?></p>
 	<table class="job-manager-jobs">
 		<thead>
 			<tr>
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<tbody>
 			<?php if ( ! $jobs ) : ?>
 				<tr>
-					<td colspan="<?php echo intval( count( $job_dashboard_columns ) ); ?>"><?php esc_html_e( 'You do not have any active listings.', 'wp-job-manager' ); ?></td>
+					<td colspan="<?php echo intval( count( $job_dashboard_columns ) ); ?>"><?php esc_html_e( 'You do not have any active listings.', 'wp-event-manager' ); ?></td>
 				</tr>
 			<?php else : ?>
 				<?php foreach ( $jobs as $job ) : ?>
@@ -41,7 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<?php else : ?>
 										<?php wpjm_the_job_title( $job ); ?> <small>(<?php the_job_status( $job ); ?>)</small>
 									<?php endif; ?>
-									<?php echo is_position_featured( $job ) ? '<span class="featured-job-icon" title="' . esc_attr__( 'Featured Job', 'wp-job-manager' ) . '"></span>' : ''; ?>
+									<?php echo is_position_featured( $job ) ? '<span class="featured-job-icon" title="' . esc_attr__( 'Featured Job', 'wp-event-manager' ) . '"></span>' : ''; ?>
 									<ul class="job-dashboard-actions">
 										<?php
 											$actions = [];
@@ -49,34 +49,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 											switch ( $job->post_status ) {
 												case 'publish' :
 													if ( wpjm_user_can_edit_published_submissions() ) {
-														$actions[ 'edit' ] = [ 'label' => __( 'Edit', 'wp-job-manager' ), 'nonce' => false ];
+														$actions[ 'edit' ] = [ 'label' => __( 'Edit', 'wp-event-manager' ), 'nonce' => false ];
 													}
 													if ( is_position_filled( $job ) ) {
-														$actions['mark_not_filled'] = [ 'label' => __( 'Mark not filled', 'wp-job-manager' ), 'nonce' => true ];
+														$actions['mark_not_filled'] = [ 'label' => __( 'Mark not filled', 'wp-event-manager' ), 'nonce' => true ];
 													} else {
-														$actions['mark_filled'] = [ 'label' => __( 'Mark filled', 'wp-job-manager' ), 'nonce' => true ];
+														$actions['mark_filled'] = [ 'label' => __( 'Mark filled', 'wp-event-manager' ), 'nonce' => true ];
 													}
 
-													$actions['duplicate'] = [ 'label' => __( 'Duplicate', 'wp-job-manager' ), 'nonce' => true ];
+													$actions['duplicate'] = [ 'label' => __( 'Duplicate', 'wp-event-manager' ), 'nonce' => true ];
 													break;
 												case 'expired' :
 													if ( job_manager_get_permalink( 'submit_job_form' ) ) {
-														$actions['relist'] = [ 'label' => __( 'Relist', 'wp-job-manager' ), 'nonce' => true ];
+														$actions['relist'] = [ 'label' => __( 'Relist', 'wp-event-manager' ), 'nonce' => true ];
 													}
 													break;
 												case 'pending_payment' :
 												case 'pending' :
 													if ( job_manager_user_can_edit_pending_submissions() ) {
-														$actions['edit'] = [ 'label' => __( 'Edit', 'wp-job-manager' ), 'nonce' => false ];
+														$actions['edit'] = [ 'label' => __( 'Edit', 'wp-event-manager' ), 'nonce' => false ];
 													}
 												break;
 												case 'draft' :
 												case 'preview' :
-													$actions['continue'] = [ 'label' => __( 'Continue Submission', 'wp-job-manager' ), 'nonce' => true ];
+													$actions['continue'] = [ 'label' => __( 'Continue Submission', 'wp-event-manager' ), 'nonce' => true ];
 													break;
 											}
 
-											$actions['delete'] = [ 'label' => __( 'Delete', 'wp-job-manager' ), 'nonce' => true ];
+											$actions['delete'] = [ 'label' => __( 'Delete', 'wp-event-manager' ), 'nonce' => true ];
 											$actions           = apply_filters( 'job_manager_my_job_actions', $actions, $job );
 
 											foreach ( $actions as $action => $value ) {

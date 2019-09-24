@@ -2,7 +2,7 @@
 /**
  * Adds additional compatibility with WP All Import.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 add_action( 'pmxi_saved_post', 'wpjm_pmxi_saved_post', 10, 1 );

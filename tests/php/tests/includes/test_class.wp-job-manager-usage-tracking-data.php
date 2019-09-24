@@ -766,18 +766,18 @@ class WP_Test_WP_Job_Manager_Usage_Tracking_Data extends WPJM_BaseTest {
 	 * Adds fake license to one of the products.
 	 */
 	private function set_fake_license() {
-		WP_Job_Manager_Helper_Options::update( 'wp-job-manager-official-licensed-tester', 'licence_key', 'FAKE-LICENSE' );
-		WP_Job_Manager_Helper_Options::update( 'wp-job-manager-official-licensed-tester', 'email', 'fake@example.com' );
-		WP_Job_Manager_Helper_Options::update( 'wp-job-manager-official-licensed-tester', 'errors', [] );
+		WP_Job_Manager_Helper_Options::update( 'wp-event-manager-official-licensed-tester', 'licence_key', 'FAKE-LICENSE' );
+		WP_Job_Manager_Helper_Options::update( 'wp-event-manager-official-licensed-tester', 'email', 'fake@example.com' );
+		WP_Job_Manager_Helper_Options::update( 'wp-event-manager-official-licensed-tester', 'errors', [] );
 	}
 
 	/**
 	 * Removes fake license to one of the products.
 	 */
 	private function remove_fake_license() {
-		WP_Job_Manager_Helper_Options::delete( 'wp-job-manager-official-licensed-tester', 'licence_key' );
-		WP_Job_Manager_Helper_Options::delete( 'wp-job-manager-official-licensed-tester', 'email' );
-		WP_Job_Manager_Helper_Options::delete( 'wp-job-manager-official-licensed-tester', 'errors' );
+		WP_Job_Manager_Helper_Options::delete( 'wp-event-manager-official-licensed-tester', 'licence_key' );
+		WP_Job_Manager_Helper_Options::delete( 'wp-event-manager-official-licensed-tester', 'email' );
+		WP_Job_Manager_Helper_Options::delete( 'wp-event-manager-official-licensed-tester', 'errors' );
 	}
 
 	/**
@@ -809,46 +809,46 @@ class WP_Test_WP_Job_Manager_Usage_Tracking_Data extends WPJM_BaseTest {
 				'Title' => 'Hello Dolly',
 				'AuthorName' => 'Matt Mullenweg',
 			],
-			'wp-job-manager-tester/wp-job-manager-tester.php' =>  [
+			'wp-event-manager-tester/wp-event-manager-tester.php' =>  [
 				'WPJM-Product' => '',
-				'Name' => 'WP Job Manager Tester',
-				'PluginURI' => 'http://wordpress.org/plugins/wp-job-manager-tester/',
+				'Name' => 'WP Event Manager Tester',
+				'PluginURI' => 'http://wordpress.org/plugins/wp-event-manager-tester/',
 				'Version' => '1.0.0',
 				'Description' => 'Just a test plugin.',
 				'Author' => 'Example',
 				'AuthorURI' => 'http://example.com/',
-				'TextDomain' => 'wp-job-manager-tester',
+				'TextDomain' => 'wp-event-manager-tester',
 				'DomainPath' => '',
 				'Network' => false,
-				'Title' => 'WP Job Manager Tester',
+				'Title' => 'WP Event Manager Tester',
 				'AuthorName' => 'Example',
 			],
-			'wp-job-manager-official-tester/wp-job-manager-official-tester.php' =>  [
-				'WPJM-Product' => 'wp-job-manager-official-tester',
-				'Name' => 'WP Job Manager Official Tester',
+			'wp-event-manager-official-tester/wp-event-manager-official-tester.php' =>  [
+				'WPJM-Product' => 'wp-event-manager-official-tester',
+				'Name' => 'WP Event Manager Official Tester',
 				'PluginURI' => 'http://wpjobmanager.com',
 				'Version' => '1.0.0',
 				'Description' => 'Just a test plugin.',
 				'Author' => 'Example',
 				'AuthorURI' => 'http://example.com/',
-				'TextDomain' => 'wp-job-manager-official-tester',
+				'TextDomain' => 'wp-event-manager-official-tester',
 				'DomainPath' => '',
 				'Network' => false,
-				'Title' => 'WP Job Manager Official Tester',
+				'Title' => 'WP Event Manager Official Tester',
 				'AuthorName' => 'Example',
 			],
-			'wp-job-manager-official-licensed-tester/wp-job-manager-official-licensed-tester.php' =>  [
-				'WPJM-Product' => 'wp-job-manager-official-licensed-tester',
-				'Name' => 'WP Job Manager Official Licensed Tester',
+			'wp-event-manager-official-licensed-tester/wp-event-manager-official-licensed-tester.php' =>  [
+				'WPJM-Product' => 'wp-event-manager-official-licensed-tester',
+				'Name' => 'WP Event Manager Official Licensed Tester',
 				'PluginURI' => 'http://wpjobmanager.com',
 				'Version' => '1.0.0',
 				'Description' => 'Just a test plugin.',
 				'Author' => 'Example',
 				'AuthorURI' => 'http://example.com/',
-				'TextDomain' => 'wp-job-manager-official-licensed-tester',
+				'TextDomain' => 'wp-event-manager-official-licensed-tester',
 				'DomainPath' => '',
 				'Network' => false,
-				'Title' => 'WP Job Manager Official Licensed Tester',
+				'Title' => 'WP Event Manager Official Licensed Tester',
 				'AuthorName' => 'Example',
 			],
 		];

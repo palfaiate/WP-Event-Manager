@@ -1,6 +1,6 @@
 /* global job_manager_ajax_file_upload */
 jQuery(function($) {
-	$('.wp-job-manager-file-upload').each(function(){
+	$('.wp-event-manager-file-upload').each(function(){
 		$(this).fileupload({
 			dataType: 'json',
 			dropZone: $(this),

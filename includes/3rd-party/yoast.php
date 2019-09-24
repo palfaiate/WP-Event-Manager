@@ -4,7 +4,7 @@
  *
  * Yoast SEO will by default include the `job_listing` post type because it is flagged as public.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 /**

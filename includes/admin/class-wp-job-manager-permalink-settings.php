@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Permalink_Settings.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles front admin page for WP Job Manager.
+ * Handles front admin page for WP Event Manager.
  *
  * @see https://github.com/woocommerce/woocommerce/blob/3.0.8/includes/admin/class-wc-admin-permalink-settings.php  Based on WooCommerce's implementation.
  * @since 1.27.0
@@ -61,21 +61,21 @@ class WP_Job_Manager_Permalink_Settings {
 	public function setup_fields() {
 		add_settings_field(
 			'wpjm_job_base_slug',
-			__( 'Job base', 'wp-job-manager' ),
+			__( 'Job base', 'wp-event-manager' ),
 			[ $this, 'job_base_slug_input' ],
 			'permalink',
 			'optional'
 		);
 		add_settings_field(
 			'wpjm_job_category_slug',
-			__( 'Job category base', 'wp-job-manager' ),
+			__( 'Job category base', 'wp-event-manager' ),
 			[ $this, 'job_category_slug_input' ],
 			'permalink',
 			'optional'
 		);
 		add_settings_field(
 			'wpjm_job_type_slug',
-			__( 'Job type base', 'wp-job-manager' ),
+			__( 'Job type base', 'wp-event-manager' ),
 			[ $this, 'job_type_slug_input' ],
 			'permalink',
 			'optional'
@@ -83,7 +83,7 @@ class WP_Job_Manager_Permalink_Settings {
 		if ( current_theme_supports( 'job-manager-templates' ) ) {
 			add_settings_field(
 				'wpjm_job_listings_archive_slug',
-				__( 'Job listing archive page', 'wp-job-manager' ),
+				__( 'Job listing archive page', 'wp-event-manager' ),
 				[ $this, 'job_listings_archive_slug_input' ],
 				'permalink',
 				'optional'
@@ -105,7 +105,7 @@ class WP_Job_Manager_Permalink_Settings {
 	 */
 	public function job_base_slug_input() {
 		?>
-		<input name="wpjm_job_base_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['job_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job', 'Job permalink - resave permalinks after changing this', 'wp-job-manager' ); ?>" />
+		<input name="wpjm_job_base_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['job_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job', 'Job permalink - resave permalinks after changing this', 'wp-event-manager' ); ?>" />
 		<?php
 	}
 
@@ -114,7 +114,7 @@ class WP_Job_Manager_Permalink_Settings {
 	 */
 	public function job_category_slug_input() {
 		?>
-		<input name="wpjm_job_category_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['category_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job-category', 'Job category slug - resave permalinks after changing this', 'wp-job-manager' ); ?>" />
+		<input name="wpjm_job_category_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['category_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job-category', 'Job category slug - resave permalinks after changing this', 'wp-event-manager' ); ?>" />
 		<?php
 	}
 
@@ -123,7 +123,7 @@ class WP_Job_Manager_Permalink_Settings {
 	 */
 	public function job_type_slug_input() {
 		?>
-		<input name="wpjm_job_type_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['type_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job-type', 'Job type slug - resave permalinks after changing this', 'wp-job-manager' ); ?>" />
+		<input name="wpjm_job_type_slug" type="text" class="regular-text code" value="<?php echo esc_attr( $this->permalinks['type_base'] ); ?>" placeholder="<?php echo esc_attr_x( 'job-type', 'Job type slug - resave permalinks after changing this', 'wp-event-manager' ); ?>" />
 		<?php
 	}
 

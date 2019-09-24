@@ -2,7 +2,7 @@
 /**
  * File containing the view used in the footer of the setup pages.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

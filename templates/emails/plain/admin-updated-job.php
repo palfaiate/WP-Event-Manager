@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -20,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 $job = $args['job'];
 
-printf( esc_html__( 'A job listing has been updated on %s (%s).', 'wp-job-manager' ), esc_html( get_bloginfo( 'name' ) ), esc_url( home_url() ) );
+printf( esc_html__( 'A job listing has been updated on %s (%s).', 'wp-event-manager' ), esc_html( get_bloginfo( 'name' ) ), esc_url( home_url() ) );
 switch ( $job->post_status ) {
 	case 'publish':
-		printf( ' ' . esc_html__( 'The changes have been published and are now available to the public.', 'wp-job-manager' ) );
+		printf( ' ' . esc_html__( 'The changes have been published and are now available to the public.', 'wp-event-manager' ) );
 		break;
 	case 'pending':
-		printf( ' ' . esc_html__( 'The job listing is not publicly available until the changes are approved by an administrator in the site\'s WordPress admin (%s).', 'wp-job-manager' ), esc_url( admin_url( 'edit.php?post_type=job_listing' ) ) );
+		printf( ' ' . esc_html__( 'The job listing is not publicly available until the changes are approved by an administrator in the site\'s WordPress admin (%s).', 'wp-event-manager' ), esc_url( admin_url( 'edit.php?post_type=job_listing' ) ) );
 		break;
 }
 

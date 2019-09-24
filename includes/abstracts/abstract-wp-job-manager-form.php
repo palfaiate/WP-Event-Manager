@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Form.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -95,13 +95,13 @@ abstract class WP_Job_Manager_Form {
 		// reset cookie.
 		if (
 			isset( $_GET['new'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
-			isset( $_COOKIE['wp-job-manager-submitting-job-id'] ) &&
-			isset( $_COOKIE['wp-job-manager-submitting-job-key'] ) &&
-			get_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-job-manager-submitting-job-id'] ) ), '_submitting_key', true ) === $_COOKIE['wp-job-manager-submitting-job-key']
+			isset( $_COOKIE['wp-event-manager-submitting-job-id'] ) &&
+			isset( $_COOKIE['wp-event-manager-submitting-job-key'] ) &&
+			get_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-job-id'] ) ), '_submitting_key', true ) === $_COOKIE['wp-event-manager-submitting-job-key']
 		) {
-			delete_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-job-manager-submitting-job-id'] ) ), '_submitting_key' );
-			setcookie( 'wp-job-manager-submitting-job-id', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
-			setcookie( 'wp-job-manager-submitting-job-key', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
+			delete_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-job-id'] ) ), '_submitting_key' );
+			setcookie( 'wp-event-manager-submitting-job-id', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
+			setcookie( 'wp-event-manager-submitting-job-key', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
 			wp_safe_redirect( remove_query_arg( [ 'new', 'key' ] ) );
 			exit;
 		}
@@ -368,7 +368,7 @@ abstract class WP_Job_Manager_Form {
 		$recaptcha_field_label = get_option( 'job_manager_recaptcha_label' );
 		if ( empty( $input_recaptcha_response ) ) {
 			// translators: Placeholder is for the label of the reCAPTCHA field.
-			return new WP_Error( 'validation-error', sprintf( esc_html__( '"%s" check failed. Please try again.', 'wp-job-manager' ), $recaptcha_field_label ) );
+			return new WP_Error( 'validation-error', sprintf( esc_html__( '"%s" check failed. Please try again.', 'wp-event-manager' ), $recaptcha_field_label ) );
 		}
 
 		$default_remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
@@ -384,7 +384,7 @@ abstract class WP_Job_Manager_Form {
 		);
 
 		// translators: %s is the name of the form validation that failed.
-		$validation_error = new WP_Error( 'validation-error', sprintf( esc_html__( '"%s" check failed. Please try again.', 'wp-job-manager' ), $recaptcha_field_label ) );
+		$validation_error = new WP_Error( 'validation-error', sprintf( esc_html__( '"%s" check failed. Please try again.', 'wp-event-manager' ), $recaptcha_field_label ) );
 
 		if ( is_wp_error( $response ) || empty( $response['body'] ) ) {
 			return $validation_error;

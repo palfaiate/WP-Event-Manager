@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Email_Employer_Expiring_Job.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,7 +34,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 * @return string
 	 */
 	public static function get_name() {
-		return __( 'Employer Notice of Expiring Job Listings', 'wp-job-manager' );
+		return __( 'Employer Notice of Expiring Job Listings', 'wp-event-manager' );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send notices to employers before a job listing expires.', 'wp-job-manager' );
+		return __( 'Send notices to employers before a job listing expires.', 'wp-event-manager' );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 		$job = $args['job'];
 
 		// translators: Placeholder %s is the job listing post title.
-		return sprintf( __( 'Job Listing Expiring: %s', 'wp-job-manager' ), $job->post_title );
+		return sprintf( __( 'Job Listing Expiring: %s', 'wp-event-manager' ), $job->post_title );
 	}
 
 	/**
@@ -129,9 +129,9 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 		$fields[] = [
 			'name'       => self::SETTING_NOTICE_PERIOD_NAME,
 			'std'        => self::SETTING_NOTICE_PERIOD_DEFAULT,
-			'label'      => __( 'Notice Period', 'wp-job-manager' ),
+			'label'      => __( 'Notice Period', 'wp-event-manager' ),
 			'type'       => 'number',
-			'after'      => ' ' . __( 'days', 'wp-job-manager' ),
+			'after'      => ' ' . __( 'days', 'wp-event-manager' ),
 			'attributes' => [ 'min' => 0 ],
 		];
 		return $fields;

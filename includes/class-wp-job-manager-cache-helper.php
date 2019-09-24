@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Cache_Helper.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Assists in cache management for WP Job Management posts and terms.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.0.0
  */
 class WP_Job_Manager_Cache_Helper {

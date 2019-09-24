@@ -4,8 +4,8 @@ class WP_Test_WP_Job_Manager_Forms extends WPJM_BaseTest {
 
 	public function setUp() {
 		parent::setUp();
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-job-manager-form.php';
-		include_once WPJM_Unit_Tests_Bootstrap::instance()->includes_dir . '/stubs/class-wp-job-manager-form-test.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-form.php';
+		include_once WPJM_Unit_Tests_Bootstrap::instance()->includes_dir . '/stubs/class-wp-event-manager-form-test.php';
 	}
 
 	/**

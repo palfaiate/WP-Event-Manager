@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Form_Submit_Job.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -79,19 +79,19 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			'submit_job_steps',
 			[
 				'submit'  => [
-					'name'     => __( 'Submit Details', 'wp-job-manager' ),
+					'name'     => __( 'Submit Details', 'wp-event-manager' ),
 					'view'     => [ $this, 'submit' ],
 					'handler'  => [ $this, 'submit_handler' ],
 					'priority' => 10,
 				],
 				'preview' => [
-					'name'     => __( 'Preview', 'wp-job-manager' ),
+					'name'     => __( 'Preview', 'wp-event-manager' ),
 					'view'     => [ $this, 'preview' ],
 					'handler'  => [ $this, 'preview_handler' ],
 					'priority' => 20,
 				],
 				'done'    => [
-					'name'     => __( 'Done', 'wp-job-manager' ),
+					'name'     => __( 'Done', 'wp-event-manager' ),
 					'before'   => [ $this, 'done_before' ],
 					'view'     => [ $this, 'done' ],
 					'priority' => 30,
@@ -124,10 +124,10 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 				'before' === get_option( 'job_manager_paid_listings_flow' )
 				|| ! $this->job_id
 			)
-			&& ! empty( $_COOKIE['wp-job-manager-submitting-job-id'] )
-			&& ! empty( $_COOKIE['wp-job-manager-submitting-job-key'] )
+			&& ! empty( $_COOKIE['wp-event-manager-submitting-job-id'] )
+			&& ! empty( $_COOKIE['wp-event-manager-submitting-job-key'] )
 		) {
-			$job_id     = absint( $_COOKIE['wp-job-manager-submitting-job-id'] );
+			$job_id     = absint( $_COOKIE['wp-event-manager-submitting-job-id'] );
 			$job_status = get_post_status( $job_id );
 
 			if (
@@ -135,7 +135,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 					'preview' === $job_status
 					|| 'pending_payment' === $job_status
 				)
-				&& get_post_meta( $job_id, '_submitting_key', true ) === $_COOKIE['wp-job-manager-submitting-job-key']
+				&& get_post_meta( $job_id, '_submitting_key', true ) === $_COOKIE['wp-event-manager-submitting-job-key']
 			) {
 				$this->job_id      = $job_id;
 				$this->resume_edit = get_post_meta( $job_id, '_submitting_key', true );
@@ -177,18 +177,18 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 		$allowed_application_method = get_option( 'job_manager_allowed_application_method', '' );
 		switch ( $allowed_application_method ) {
 			case 'email':
-				$application_method_label       = __( 'Application email', 'wp-job-manager' );
-				$application_method_placeholder = __( 'you@example.com', 'wp-job-manager' );
+				$application_method_label       = __( 'Application email', 'wp-event-manager' );
+				$application_method_placeholder = __( 'you@example.com', 'wp-event-manager' );
 				$application_method_sanitizer   = 'email';
 				break;
 			case 'url':
-				$application_method_label       = __( 'Application URL', 'wp-job-manager' );
-				$application_method_placeholder = __( 'https://', 'wp-job-manager' );
+				$application_method_label       = __( 'Application URL', 'wp-event-manager' );
+				$application_method_placeholder = __( 'https://', 'wp-event-manager' );
 				$application_method_sanitizer   = 'url';
 				break;
 			default:
-				$application_method_label       = __( 'Application email/URL', 'wp-job-manager' );
-				$application_method_placeholder = __( 'Enter an email address or website URL', 'wp-job-manager' );
+				$application_method_label       = __( 'Application email/URL', 'wp-event-manager' );
+				$application_method_placeholder = __( 'Enter an email address or website URL', 'wp-event-manager' );
 				$application_method_sanitizer   = 'url_or_email';
 				break;
 		}
@@ -203,31 +203,31 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			[
 				'job'     => [
 					'job_title'       => [
-						'label'       => __( 'Job Title', 'wp-job-manager' ),
+						'label'       => __( 'Job Title', 'wp-event-manager' ),
 						'type'        => 'text',
 						'required'    => true,
 						'placeholder' => '',
 						'priority'    => 1,
 					],
 					'job_location'    => [
-						'label'       => __( 'Location', 'wp-job-manager' ),
-						'description' => __( 'Leave this blank if the location is not important', 'wp-job-manager' ),
+						'label'       => __( 'Location', 'wp-event-manager' ),
+						'description' => __( 'Leave this blank if the location is not important', 'wp-event-manager' ),
 						'type'        => 'text',
 						'required'    => false,
-						'placeholder' => __( 'e.g. "London"', 'wp-job-manager' ),
+						'placeholder' => __( 'e.g. "London"', 'wp-event-manager' ),
 						'priority'    => 2,
 					],
 					'job_type'        => [
-						'label'       => __( 'Job type', 'wp-job-manager' ),
+						'label'       => __( 'Job type', 'wp-event-manager' ),
 						'type'        => $job_type,
 						'required'    => true,
-						'placeholder' => __( 'Choose job type&hellip;', 'wp-job-manager' ),
+						'placeholder' => __( 'Choose job type&hellip;', 'wp-event-manager' ),
 						'priority'    => 3,
 						'default'     => 'full-time',
 						'taxonomy'    => 'job_listing_type',
 					],
 					'job_category'    => [
-						'label'       => __( 'Job category', 'wp-job-manager' ),
+						'label'       => __( 'Job category', 'wp-event-manager' ),
 						'type'        => 'term-multiselect',
 						'required'    => true,
 						'placeholder' => '',
@@ -236,7 +236,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 						'taxonomy'    => 'job_listing_category',
 					],
 					'job_description' => [
-						'label'    => __( 'Description', 'wp-job-manager' ),
+						'label'    => __( 'Description', 'wp-event-manager' ),
 						'type'     => 'wp-editor',
 						'required' => true,
 						'priority' => 5,
@@ -252,45 +252,45 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 				],
 				'company' => [
 					'company_name'    => [
-						'label'       => __( 'Company name', 'wp-job-manager' ),
+						'label'       => __( 'Company name', 'wp-event-manager' ),
 						'type'        => 'text',
 						'required'    => true,
-						'placeholder' => __( 'Enter the name of the company', 'wp-job-manager' ),
+						'placeholder' => __( 'Enter the name of the company', 'wp-event-manager' ),
 						'priority'    => 1,
 					],
 					'company_website' => [
-						'label'       => __( 'Website', 'wp-job-manager' ),
+						'label'       => __( 'Website', 'wp-event-manager' ),
 						'type'        => 'text',
 						'sanitizer'   => 'url',
 						'required'    => false,
-						'placeholder' => __( 'http://', 'wp-job-manager' ),
+						'placeholder' => __( 'http://', 'wp-event-manager' ),
 						'priority'    => 2,
 					],
 					'company_tagline' => [
-						'label'       => __( 'Tagline', 'wp-job-manager' ),
+						'label'       => __( 'Tagline', 'wp-event-manager' ),
 						'type'        => 'text',
 						'required'    => false,
-						'placeholder' => __( 'Briefly describe your company', 'wp-job-manager' ),
+						'placeholder' => __( 'Briefly describe your company', 'wp-event-manager' ),
 						'maxlength'   => 64,
 						'priority'    => 3,
 					],
 					'company_video'   => [
-						'label'       => __( 'Video', 'wp-job-manager' ),
+						'label'       => __( 'Video', 'wp-event-manager' ),
 						'type'        => 'text',
 						'sanitizer'   => 'url',
 						'required'    => false,
-						'placeholder' => __( 'A link to a video about your company', 'wp-job-manager' ),
+						'placeholder' => __( 'A link to a video about your company', 'wp-event-manager' ),
 						'priority'    => 4,
 					],
 					'company_twitter' => [
-						'label'       => __( 'Twitter username', 'wp-job-manager' ),
+						'label'       => __( 'Twitter username', 'wp-event-manager' ),
 						'type'        => 'text',
 						'required'    => false,
-						'placeholder' => __( '@yourcompany', 'wp-job-manager' ),
+						'placeholder' => __( '@yourcompany', 'wp-event-manager' ),
 						'priority'    => 5,
 					],
 					'company_logo'    => [
-						'label'              => __( 'Logo', 'wp-job-manager' ),
+						'label'              => __( 'Logo', 'wp-event-manager' ),
 						'type'               => 'file',
 						'required'           => false,
 						'placeholder'        => '',
@@ -340,7 +340,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			foreach ( $group_fields as $key => $field ) {
 				if ( $field['required'] && empty( $values[ $group_key ][ $key ] ) ) {
 					// translators: Placeholder %s is the label for the required field.
-					return new WP_Error( 'validation-error', sprintf( __( '%s is a required field', 'wp-job-manager' ), $field['label'] ) );
+					return new WP_Error( 'validation-error', sprintf( __( '%s is a required field', 'wp-event-manager' ), $field['label'] ) );
 				}
 				if ( ! empty( $field['taxonomy'] ) && in_array( $field['type'], [ 'term-checklist', 'term-select', 'term-multiselect' ], true ) ) {
 					if ( is_array( $values[ $group_key ][ $key ] ) ) {
@@ -351,7 +351,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 					foreach ( $check_value as $term ) {
 						if ( ! term_exists( $term, $field['taxonomy'] ) ) {
 							// translators: Placeholder %s is the field label that is did not validate.
-							return new WP_Error( 'validation-error', sprintf( __( '%s is invalid', 'wp-job-manager' ), $field['label'] ) );
+							return new WP_Error( 'validation-error', sprintf( __( '%s is invalid', 'wp-event-manager' ), $field['label'] ) );
 						}
 					}
 				}
@@ -368,7 +368,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 							}
 							$file_url = esc_url( $file_url, [ 'http', 'https' ] );
 							if ( empty( $file_url ) ) {
-								throw new Exception( __( 'Invalid attachment provided.', 'wp-job-manager' ) );
+								throw new Exception( __( 'Invalid attachment provided.', 'wp-event-manager' ) );
 							}
 						}
 					}
@@ -386,7 +386,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 
 							if ( ! is_numeric( $file_url ) && $file_info && ! in_array( $file_info['type'], $field['allowed_mime_types'], true ) ) {
 								// translators: Placeholder %1$s is field label; %2$s is the file mime type; %3$s is the allowed mime-types.
-								throw new Exception( sprintf( __( '"%1$s" (filetype %2$s) needs to be one of the following file types: %3$s', 'wp-job-manager' ), $field['label'], $file_info['ext'], implode( ', ', array_keys( $field['allowed_mime_types'] ) ) ) );
+								throw new Exception( sprintf( __( '"%1$s" (filetype %2$s) needs to be one of the following file types: %3$s', 'wp-event-manager' ), $field['label'], $file_info['ext'], implode( ', ', array_keys( $field['allowed_mime_types'] ) ) ) );
 							}
 						}
 					}
@@ -403,7 +403,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 					}
 					if ( count( $check_value ) > $file_limit ) {
 						// translators: Placeholder %d is the number of files to that users are limited to.
-						$message = esc_html__( 'You are only allowed to upload a maximum of %d files.', 'wp-job-manager' );
+						$message = esc_html__( 'You are only allowed to upload a maximum of %d files.', 'wp-event-manager' );
 						if ( ! empty( $field['file_limit_message'] ) ) {
 							$message = $field['file_limit_message'];
 						}
@@ -421,7 +421,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			switch ( $allowed_application_method ) {
 				case 'email':
 					if ( ! is_email( $values['job']['application'] ) ) {
-						throw new Exception( __( 'Please enter a valid application email address', 'wp-job-manager' ) );
+						throw new Exception( __( 'Please enter a valid application email address', 'wp-event-manager' ) );
 					}
 					break;
 				case 'url':
@@ -430,7 +430,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 						$values['job']['application'] = 'http://' . $values['job']['application'];
 					}
 					if ( ! filter_var( $values['job']['application'], FILTER_VALIDATE_URL ) ) {
-						throw new Exception( __( 'Please enter a valid application URL', 'wp-job-manager' ) );
+						throw new Exception( __( 'Please enter a valid application URL', 'wp-event-manager' ) );
 					}
 					break;
 				default:
@@ -440,7 +440,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 							$values['job']['application'] = 'http://' . $values['job']['application'];
 						}
 						if ( ! filter_var( $values['job']['application'], FILTER_VALIDATE_URL ) ) {
-							throw new Exception( __( 'Please enter a valid application email address or URL', 'wp-job-manager' ) );
+							throw new Exception( __( 'Please enter a valid application email address or URL', 'wp-event-manager' ) );
 						}
 					}
 					break;
@@ -463,12 +463,12 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 	 * Enqueues scripts and styles for editing and posting a job listing.
 	 */
 	protected function enqueue_job_form_assets() {
-		wp_enqueue_script( 'wp-job-manager-job-submission' );
-		wp_enqueue_style( 'wp-job-manager-job-submission', JOB_MANAGER_PLUGIN_URL . '/assets/css/job-submission.css', [], JOB_MANAGER_VERSION );
+		wp_enqueue_script( 'wp-event-manager-job-submission' );
+		wp_enqueue_style( 'wp-event-manager-job-submission', JOB_MANAGER_PLUGIN_URL . '/assets/css/job-submission.css', [], JOB_MANAGER_VERSION );
 
 		// Register datepicker JS. It will be enqueued if needed when a date.
 		// field is rendered.
-		wp_register_script( 'wp-job-manager-datepicker', JOB_MANAGER_PLUGIN_URL . '/assets/js/datepicker.min.js', [ 'jquery', 'jquery-ui-datepicker' ], JOB_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-datepicker', JOB_MANAGER_PLUGIN_URL . '/assets/js/datepicker.min.js', [ 'jquery', 'jquery-ui-datepicker' ], JOB_MANAGER_VERSION, true );
 
 		// Localize scripts after the fields are rendered.
 		add_action( 'submit_job_form_end', [ $this, 'localize_job_form_scripts' ] );
@@ -483,11 +483,11 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			wp_localize_jquery_ui_datepicker();
 		} else {
 			wp_localize_script(
-				'wp-job-manager-datepicker',
+				'wp-event-manager-datepicker',
 				'job_manager_datepicker',
 				[
 					/* translators: jQuery date format, see http://api.jqueryui.com/datepicker/#utility-formatDate */
-					'date_format' => _x( 'yy-mm-dd', 'Date format for jQuery datepicker.', 'wp-job-manager' ),
+					'date_format' => _x( 'yy-mm-dd', 'Date format for jQuery datepicker.', 'wp-event-manager' ),
 				]
 			);
 		}
@@ -575,7 +575,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 				'company_fields'     => $this->get_fields( 'company' ),
 				'step'               => $this->get_step(),
 				'can_continue_later' => $this->can_continue_later(),
-				'submit_button_text' => apply_filters( 'submit_job_form_submit_button_text', __( 'Preview', 'wp-job-manager' ) ),
+				'submit_button_text' => apply_filters( 'submit_job_form_submit_button_text', __( 'Preview', 'wp-event-manager' ) ),
 			]
 		);
 	}
@@ -634,29 +634,29 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 				if ( job_manager_enable_registration() ) {
 					if ( job_manager_user_requires_account() ) {
 						if ( ! job_manager_generate_username_from_email() && empty( $input_create_account_username ) ) {
-							throw new Exception( __( 'Please enter a username.', 'wp-job-manager' ) );
+							throw new Exception( __( 'Please enter a username.', 'wp-event-manager' ) );
 						}
 						if ( ! wpjm_use_standard_password_setup_email() ) {
 							if ( empty( $input_create_account_password ) ) {
-								throw new Exception( __( 'Please enter a password.', 'wp-job-manager' ) );
+								throw new Exception( __( 'Please enter a password.', 'wp-event-manager' ) );
 							}
 						}
 						if ( empty( $input_create_account_email ) ) {
-							throw new Exception( __( 'Please enter your email address.', 'wp-job-manager' ) );
+							throw new Exception( __( 'Please enter your email address.', 'wp-event-manager' ) );
 						}
 					}
 
 					if ( ! wpjm_use_standard_password_setup_email() && ! empty( $input_create_account_password ) ) {
 						if ( empty( $input_create_account_password_verify ) || $input_create_account_password_verify !== $input_create_account_password ) {
-							throw new Exception( __( 'Passwords must match.', 'wp-job-manager' ) );
+							throw new Exception( __( 'Passwords must match.', 'wp-event-manager' ) );
 						}
 						if ( ! wpjm_validate_new_password( sanitize_text_field( wp_unslash( $input_create_account_password ) ) ) ) {
 							$password_hint = wpjm_get_password_rules_hint();
 							if ( $password_hint ) {
 								// translators: Placeholder %s is the password hint.
-								throw new Exception( sprintf( __( 'Invalid Password: %s', 'wp-job-manager' ), $password_hint ) );
+								throw new Exception( sprintf( __( 'Invalid Password: %s', 'wp-event-manager' ), $password_hint ) );
 							} else {
-								throw new Exception( __( 'Password is not valid.', 'wp-job-manager' ) );
+								throw new Exception( __( 'Password is not valid.', 'wp-event-manager' ) );
 							}
 						}
 					}
@@ -679,7 +679,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			}
 
 			if ( job_manager_user_requires_account() && ! is_user_logged_in() ) {
-				throw new Exception( __( 'You must be signed in to post a new listing.', 'wp-job-manager' ) );
+				throw new Exception( __( 'You must be signed in to post a new listing.', 'wp-event-manager' ) );
 			}
 
 			$post_status = '';
@@ -702,7 +702,7 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 				$job_dashboard_page_id = get_option( 'job_manager_job_dashboard_page_id', false );
 
 				// translators: placeholder is the URL to the job dashboard page.
-				$this->add_message( sprintf( __( 'Draft was saved. Job listing drafts can be resumed from the <a href="%s">job dashboard</a>.', 'wp-job-manager' ), get_permalink( $job_dashboard_page_id ) ) );
+				$this->add_message( sprintf( __( 'Draft was saved. Job listing drafts can be resumed from the <a href="%s">job dashboard</a>.', 'wp-event-manager' ), get_permalink( $job_dashboard_page_id ) ) );
 			} else {
 				// Successful, show next step.
 				$this->step++;
@@ -779,8 +779,8 @@ class WP_Job_Manager_Form_Submit_Job extends WP_Job_Manager_Form {
 			if ( ! headers_sent() ) {
 				$submitting_key = uniqid();
 
-				setcookie( 'wp-job-manager-submitting-job-id', $this->job_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
-				setcookie( 'wp-job-manager-submitting-job-key', $submitting_key, false, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'wp-event-manager-submitting-job-id', $this->job_id, false, COOKIEPATH, COOKIE_DOMAIN, false );
+				setcookie( 'wp-event-manager-submitting-job-key', $submitting_key, false, COOKIEPATH, COOKIE_DOMAIN, false );
 
 				update_post_meta( $this->job_id, '_submitting_key', $submitting_key );
 			}

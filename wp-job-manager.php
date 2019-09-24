@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Job Manager
+ * Plugin Name: WP Event Manager
  * Plugin URI: https://wpjobmanager.com/
  * Description: Manage job listings from the WordPress admin panel, and allow users to post jobs directly to your site.
  * Version: 1.34.0-beta.1
@@ -9,11 +9,11 @@
  * Requires at least: 4.9
  * Tested up to: 5.2
  * Requires PHP: 5.6
- * Text Domain: wp-job-manager
+ * Text Domain: wp-event-manager
  * Domain Path: /languages/
  * License: GPL2+
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,17 +26,17 @@ define( 'JOB_MANAGER_PLUGIN_DIR', untrailingslashit( plugin_dir_path( __FILE__ )
 define( 'JOB_MANAGER_PLUGIN_URL', untrailingslashit( plugins_url( basename( plugin_dir_path( __FILE__ ) ), basename( __FILE__ ) ) ) );
 define( 'JOB_MANAGER_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
-require_once dirname( __FILE__ ) . '/includes/class-wp-job-manager-dependency-checker.php';
+require_once dirname( __FILE__ ) . '/includes/class-wp-event-manager-dependency-checker.php';
 if ( ! WP_Job_Manager_Dependency_Checker::check_dependencies() ) {
 	return;
 }
 
-require_once dirname( __FILE__ ) . '/includes/class-wp-job-manager.php';
+require_once dirname( __FILE__ ) . '/includes/class-wp-event-manager.php';
 
 /**
- * Main instance of WP Job Manager.
+ * Main instance of WP Event Manager.
  *
- * Returns the main instance of WP Job Manager to prevent the need to use globals.
+ * Returns the main instance of WP Event Manager to prevent the need to use globals.
  *
  * @since  1.26
  * @return WP_Job_Manager

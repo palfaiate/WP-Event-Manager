@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -26,7 +26,7 @@ if ( isset( $field['value'] ) ) {
 	$selected = '';
 }
 
-wp_enqueue_script( 'wp-job-manager-term-multiselect' );
+wp_enqueue_script( 'wp-event-manager-term-multiselect' );
 
 $args = [
 	'taxonomy'     => $field['taxonomy'],

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Widget_Featured_Jobs.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Featured Jobs widget.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.21.0
  */
 class WP_Job_Manager_Widget_Featured_Jobs extends WP_Job_Manager_Widget {
@@ -24,16 +24,16 @@ class WP_Job_Manager_Widget_Featured_Jobs extends WP_Job_Manager_Widget {
 		global $wp_post_types;
 
 		// translators: Placeholder %s is the plural label for the job listing post type.
-		$this->widget_name        = sprintf( __( 'Featured %s', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->name );
+		$this->widget_name        = sprintf( __( 'Featured %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name );
 		$this->widget_cssclass    = 'job_manager widget_featured_jobs';
-		$this->widget_description = __( 'Display a list of featured listings on your site.', 'wp-job-manager' );
+		$this->widget_description = __( 'Display a list of featured listings on your site.', 'wp-event-manager' );
 		$this->widget_id          = 'widget_featured_jobs';
 		$this->settings           = [
 			'title'     => [
 				'type'  => 'text',
 				// translators: Placeholder %s is the plural label for the job listing post type.
-				'std'   => sprintf( __( 'Featured %s', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->name ),
-				'label' => __( 'Title', 'wp-job-manager' ),
+				'std'   => sprintf( __( 'Featured %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name ),
+				'label' => __( 'Title', 'wp-event-manager' ),
 			],
 			'number'    => [
 				'type'  => 'number',
@@ -41,32 +41,32 @@ class WP_Job_Manager_Widget_Featured_Jobs extends WP_Job_Manager_Widget {
 				'min'   => 1,
 				'max'   => '',
 				'std'   => 10,
-				'label' => __( 'Number of listings to show', 'wp-job-manager' ),
+				'label' => __( 'Number of listings to show', 'wp-event-manager' ),
 			],
 			'orderby'   => [
 				'type'    => 'select',
 				'std'     => 'date',
-				'label'   => __( 'Sort By', 'wp-job-manager' ),
+				'label'   => __( 'Sort By', 'wp-event-manager' ),
 				'options' => [
-					'date'          => __( 'Date', 'wp-job-manager' ),
-					'title'         => __( 'Title', 'wp-job-manager' ),
-					'author'        => __( 'Author', 'wp-job-manager' ),
-					'rand_featured' => __( 'Random', 'wp-job-manager' ),
+					'date'          => __( 'Date', 'wp-event-manager' ),
+					'title'         => __( 'Title', 'wp-event-manager' ),
+					'author'        => __( 'Author', 'wp-event-manager' ),
+					'rand_featured' => __( 'Random', 'wp-event-manager' ),
 				],
 			],
 			'order'     => [
 				'type'    => 'select',
 				'std'     => 'DESC',
-				'label'   => __( 'Sort Direction', 'wp-job-manager' ),
+				'label'   => __( 'Sort Direction', 'wp-event-manager' ),
 				'options' => [
-					'ASC'  => __( 'Ascending', 'wp-job-manager' ),
-					'DESC' => __( 'Descending', 'wp-job-manager' ),
+					'ASC'  => __( 'Ascending', 'wp-event-manager' ),
+					'DESC' => __( 'Descending', 'wp-event-manager' ),
 				],
 			],
 			'show_logo' => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => esc_html__( 'Show Company Logo', 'wp-job-manager' ),
+				'label' => esc_html__( 'Show Company Logo', 'wp-event-manager' ),
 			],
 		];
 		parent::__construct();
@@ -80,7 +80,7 @@ class WP_Job_Manager_Widget_Featured_Jobs extends WP_Job_Manager_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		wp_enqueue_style( 'wp-job-manager-job-listings' );
+		wp_enqueue_style( 'wp-event-manager-job-listings' );
 
 		if ( $this->get_cached_widget( $args ) ) {
 			return;

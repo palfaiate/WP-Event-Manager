@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since   1.33.0
  */
 
@@ -25,9 +25,9 @@ class WP_Job_Manager {
 	private static $instance = null;
 
 	/**
-	 * Main WP Job Manager Instance.
+	 * Main WP Event Manager Instance.
 	 *
-	 * Ensures only one instance of WP Job Manager is loaded or can be loaded.
+	 * Ensures only one instance of WP Event Manager is loaded or can be loaded.
 	 *
 	 * @since  1.26.0
 	 * @static
@@ -46,23 +46,23 @@ class WP_Job_Manager {
 	 */
 	public function __construct() {
 		// Includes.
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-install.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-post-types.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-ajax.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-shortcodes.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-api.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-forms.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-geocode.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-blocks.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-cache-helper.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-job-manager-helper.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-job-manager-email.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-job-manager-email-template.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-email-notifications.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-data-exporter.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-install.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-post-types.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-ajax.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-shortcodes.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-api.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-forms.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-geocode.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-blocks.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-cache-helper.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email-template.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-email-notifications.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-data-exporter.php';
 
 		if ( is_admin() ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-admin.php';
+			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin.php';
 		}
 
 		// Load 3rd party customizations.
@@ -134,18 +134,18 @@ class WP_Job_Manager {
 		}
 
 		$content = sprintf(
-			// translators: Placeholders %1$s and %2$s are the names of the two cookies used in WP Job Manager.
+			// translators: Placeholders %1$s and %2$s are the names of the two cookies used in WP Event Manager.
 			__(
 				'This site adds the following cookies to help users resume job submissions that they
 				have started but have not completed: %1$s and %2$s',
-				'wp-job-manager'
+				'wp-event-manager'
 			),
-			'<code>wp-job-manager-submitting-job-id</code>',
-			'<code>wp-job-manager-submitting-job-key</code>'
+			'<code>wp-event-manager-submitting-job-id</code>',
+			'<code>wp-event-manager-submitting-job-key</code>'
 		);
 
 		wp_add_privacy_policy_content(
-			'WP Job Manager',
+			'WP Event Manager',
 			wp_kses_post( wpautop( $content, false ) )
 		);
 	}
@@ -154,24 +154,24 @@ class WP_Job_Manager {
 	 * Loads textdomain for plugin.
 	 */
 	public function load_plugin_textdomain() {
-		load_textdomain( 'wp-job-manager', WP_LANG_DIR . '/wp-job-manager/wp-job-manager-' . apply_filters( 'plugin_locale', get_locale(), 'wp-job-manager' ) . '.mo' );
-		load_plugin_textdomain( 'wp-job-manager', false, JOB_MANAGER_PLUGIN_DIR . '/languages/' );
+		load_textdomain( 'wp-event-manager', WP_LANG_DIR . '/wp-event-manager/wp-event-manager-' . apply_filters( 'plugin_locale', get_locale(), 'wp-event-manager' ) . '.mo' );
+		load_plugin_textdomain( 'wp-event-manager', false, JOB_MANAGER_PLUGIN_DIR . '/languages/' );
 	}
 
 	/**
 	 * Loads plugin's core helper template functions.
 	 */
 	public function include_template_functions() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-job-manager-deprecated.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-job-manager-functions.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-job-manager-template.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-deprecated.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-functions.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-template.php';
 	}
 
 	/**
 	 * Loads the REST API functionality.
 	 */
 	public function rest_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-rest-api.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-rest-api.php';
 		WP_Job_Manager_REST_API::init();
 	}
 
@@ -179,17 +179,17 @@ class WP_Job_Manager {
 	 * Loads plugin's widgets.
 	 */
 	public function widgets_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-widget.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-job-manager-widget-recent-jobs.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-job-manager-widget-featured-jobs.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-widget.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-recent-jobs.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-featured-jobs.php';
 	}
 
 	/**
 	 * Initialize the Usage Tracking system.
 	 */
 	public function usage_tracking_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-usage-tracking.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-usage-tracking-data.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking-data.php';
 
 		WP_Job_Manager_Usage_Tracking::get_instance()->set_callback(
 			[ 'WP_Job_Manager_Usage_Tracking_Data', 'get_usage_data' ]
@@ -235,11 +235,11 @@ class WP_Job_Manager {
 	 * Cleanup job posting cookies.
 	 */
 	public function cleanup_job_posting_cookies() {
-		if ( isset( $_COOKIE['wp-job-manager-submitting-job-id'] ) ) {
-			setcookie( 'wp-job-manager-submitting-job-id', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( isset( $_COOKIE['wp-event-manager-submitting-job-id'] ) ) {
+			setcookie( 'wp-event-manager-submitting-job-id', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
-		if ( isset( $_COOKIE['wp-job-manager-submitting-job-key'] ) ) {
-			setcookie( 'wp-job-manager-submitting-job-key', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( isset( $_COOKIE['wp-event-manager-submitting-job-key'] ) ) {
+			setcookie( 'wp-event-manager-submitting-job-key', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
 	}
 
@@ -273,7 +273,7 @@ class WP_Job_Manager {
 		$ajax_data        = [
 			'ajax_url'                => $ajax_url,
 			'is_rtl'                  => is_rtl() ? 1 : 0,
-			'i18n_load_prev_listings' => __( 'Load previous listings', 'wp-job-manager' ),
+			'i18n_load_prev_listings' => __( 'Load previous listings', 'wp-event-manager' ),
 		];
 
 		/**
@@ -346,8 +346,8 @@ class WP_Job_Manager {
 		 */
 		if ( apply_filters( 'job_manager_enhanced_select_enabled', $enhanced_select_used_on_page ) ) {
 			self::register_select2_assets();
-			wp_register_script( 'wp-job-manager-term-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/term-multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
-			wp_register_script( 'wp-job-manager-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
+			wp_register_script( 'wp-event-manager-term-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/term-multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
+			wp_register_script( 'wp-event-manager-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
 			wp_enqueue_style( 'select2' );
 
 			$ajax_filter_deps[] = 'select2';
@@ -369,7 +369,7 @@ class WP_Job_Manager {
 		if ( job_manager_user_can_upload_file_via_ajax() ) {
 			wp_register_script( 'jquery-iframe-transport', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.iframe-transport.js', array( 'jquery' ), '10.1.0', true );
 			wp_register_script( 'jquery-fileupload', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.fileupload.js', array( 'jquery', 'jquery-iframe-transport', 'jquery-ui-widget' ), '10.1.0', true );
-			wp_register_script( 'wp-job-manager-ajax-file-upload', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-file-upload.min.js', array( 'jquery', 'jquery-fileupload' ), JOB_MANAGER_VERSION, true );
+			wp_register_script( 'wp-event-manager-ajax-file-upload', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-file-upload.min.js', array( 'jquery', 'jquery-fileupload' ), JOB_MANAGER_VERSION, true );
 
 			ob_start();
 			get_job_manager_template(
@@ -394,46 +394,46 @@ class WP_Job_Manager {
 			$js_field_html = ob_get_clean();
 
 			wp_localize_script(
-				'wp-job-manager-ajax-file-upload',
+				'wp-event-manager-ajax-file-upload',
 				'job_manager_ajax_file_upload',
 				[
 					'ajax_url'               => $ajax_url,
 					'js_field_html_img'      => esc_js( str_replace( "\n", '', $js_field_html_img ) ),
 					'js_field_html'          => esc_js( str_replace( "\n", '', $js_field_html ) ),
-					'i18n_invalid_file_type' => esc_html__( 'Invalid file type. Accepted types:', 'wp-job-manager' ),
+					'i18n_invalid_file_type' => esc_html__( 'Invalid file type. Accepted types:', 'wp-event-manager' ),
 				]
 			);
 		}
 
 		wp_register_script( 'jquery-deserialize', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-deserialize/jquery.deserialize.js', [ 'jquery' ], '1.2.1', true );
-		wp_register_script( 'wp-job-manager-ajax-filters', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-job-manager-job-dashboard', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-dashboard.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-job-manager-job-application', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-application.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-job-manager-job-submission', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-submission.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_localize_script( 'wp-job-manager-ajax-filters', 'job_manager_ajax_filters', $ajax_data );
+		wp_register_script( 'wp-event-manager-ajax-filters', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, JOB_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-job-dashboard', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-dashboard.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-job-application', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-application.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-job-submission', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-submission.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
+		wp_localize_script( 'wp-event-manager-ajax-filters', 'job_manager_ajax_filters', $ajax_data );
 
 		wp_localize_script(
-			'wp-job-manager-job-submission',
+			'wp-event-manager-job-submission',
 			'job_manager_job_submission',
 			[
 				// translators: Placeholder %d is the number of files to that users are limited to.
-				'i18n_over_upload_limit' => esc_html__( 'You are only allowed to upload a maximum of %d files.', 'wp-job-manager' ),
+				'i18n_over_upload_limit' => esc_html__( 'You are only allowed to upload a maximum of %d files.', 'wp-event-manager' ),
 			]
 		);
 
 		wp_localize_script(
-			'wp-job-manager-job-dashboard',
+			'wp-event-manager-job-dashboard',
 			'job_manager_job_dashboard',
 			[
-				'i18n_confirm_delete' => esc_html__( 'Are you sure you want to delete this listing?', 'wp-job-manager' ),
+				'i18n_confirm_delete' => esc_html__( 'Are you sure you want to delete this listing?', 'wp-event-manager' ),
 			]
 		);
 
 		wp_localize_script(
-			'wp-job-manager-job-submission',
+			'wp-event-manager-job-submission',
 			'job_manager_job_submission',
 			[
-				'i18n_required_field' => __( 'This field is required.', 'wp-job-manager' ),
+				'i18n_required_field' => __( 'This field is required.', 'wp-event-manager' ),
 			]
 		);
 
@@ -462,9 +462,9 @@ class WP_Job_Manager {
 		 * @param bool $is_frontend_style_enabled
 		 */
 		if ( apply_filters( 'job_manager_enqueue_frontend_style', is_wpjm() ) ) {
-			wp_enqueue_style( 'wp-job-manager-frontend', JOB_MANAGER_PLUGIN_URL . '/assets/css/frontend.css', [], JOB_MANAGER_VERSION );
+			wp_enqueue_style( 'wp-event-manager-frontend', JOB_MANAGER_PLUGIN_URL . '/assets/css/frontend.css', [], JOB_MANAGER_VERSION );
 		} else {
-			wp_register_style( 'wp-job-manager-job-listings', JOB_MANAGER_PLUGIN_URL . '/assets/css/job-listings.css', [], JOB_MANAGER_VERSION );
+			wp_register_style( 'wp-event-manager-job-listings', JOB_MANAGER_PLUGIN_URL . '/assets/css/job-listings.css', [], JOB_MANAGER_VERSION );
 		}
 	}
 }

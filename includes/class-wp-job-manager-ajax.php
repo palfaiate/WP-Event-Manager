@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Ajax.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -182,7 +182,7 @@ class WP_Job_Manager_Ajax {
 
 		if ( $jobs->post_count && ( $search_location || $search_keywords || $search_categories || $job_types_filtered ) ) {
 			// translators: Placeholder %d is the number of found search results.
-			$message               = sprintf( _n( 'Search completed. Found %d matching record.', 'Search completed. Found %d matching records.', $jobs->found_posts, 'wp-job-manager' ), $jobs->found_posts );
+			$message               = sprintf( _n( 'Search completed. Found %d matching record.', 'Search completed. Found %d matching records.', $jobs->found_posts, 'wp-event-manager' ), $jobs->found_posts );
 			$result['showing_all'] = true;
 		} else {
 			$message = '';
@@ -269,7 +269,7 @@ class WP_Job_Manager_Ajax {
 			$result['pagination'] = get_job_listing_pagination( $jobs->max_num_pages, $page );
 		}
 
-		/** This filter is documented in includes/class-wp-job-manager-ajax.php (above) */
+		/** This filter is documented in includes/class-wp-event-manager-ajax.php (above) */
 		wp_send_json( apply_filters( 'job_manager_get_listings_result', $result, $jobs ) );
 	}
 
@@ -280,7 +280,7 @@ class WP_Job_Manager_Ajax {
 	 */
 	public function upload_file() {
 		if ( ! job_manager_user_can_upload_file_via_ajax() ) {
-			wp_send_json_error( __( 'You must be logged in to upload files using this method.', 'wp-job-manager' ) );
+			wp_send_json_error( __( 'You must be logged in to upload files using this method.', 'wp-event-manager' ) );
 			return;
 		}
 		$data = [
@@ -415,7 +415,7 @@ class WP_Job_Manager_Ajax {
 		foreach ( $users as $user ) {
 			$found_users[ $user->ID ] = sprintf(
 				// translators: Used in user select. %1$s is the user's display name; #%2$s is the user ID; %3$s is the user email.
-				esc_html__( '%1$s (#%2$s – %3$s)', 'wp-job-manager' ),
+				esc_html__( '%1$s (#%2$s – %3$s)', 'wp-event-manager' ),
 				htmlentities( $user->display_name ),
 				absint( $user->ID ),
 				$user->user_email

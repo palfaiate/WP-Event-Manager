@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Usage_Tracking.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -49,7 +49,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	}
 
 	/**
-	 * Track a WP Job Manager event.
+	 * Track a WP Event Manager event.
 	 *
 	 * @since 1.33.0
 	 *
@@ -187,7 +187,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 * @return string
 	 */
 	protected function get_text_domain() {
-		return 'wp-job-manager';
+		return 'wp-event-manager';
 	}
 
 	/**
@@ -226,10 +226,10 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 		return sprintf(
 			// translators: Placeholder %s is a URL to the document on wpjobmanager.com with info on usage tracking.
 			__(
-				'We\'d love if you helped us make WP Job Manager better by allowing us to collect
+				'We\'d love if you helped us make WP Event Manager better by allowing us to collect
 				<a href="%s">usage tracking data</a>. No sensitive information is
 				collected, and you can opt out at any time.',
-				'wp-job-manager'
+				'wp-event-manager'
 			),
 			self::WPJM_TRACKING_INFO_URL
 		);
@@ -295,10 +295,10 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 			 * telling users what data WPJM tracks.
 			 */
 			__(
-				'Help us make WP Job Manager better by allowing us to collect
+				'Help us make WP Event Manager better by allowing us to collect
 				<a href="%s">usage tracking data</a>.
 				No sensitive information is collected.',
-				'wp-job-manager'
+				'wp-event-manager'
 			),
 			self::WPJM_TRACKING_INFO_URL
 		);
@@ -321,7 +321,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 			'std'      => '0',
 			'type'     => 'checkbox',
 			'desc'     => '',
-			'label'    => __( 'Enable Usage Tracking', 'wp-job-manager' ),
+			'label'    => __( 'Enable Usage Tracking', 'wp-event-manager' ),
 			'cb_label' => $this->opt_in_checkbox_text(),
 		];
 

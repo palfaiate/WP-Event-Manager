@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.33.0
  */
@@ -26,8 +26,8 @@ if ( ! empty( $field['multiple'] ) && ! empty( $field['file_limit'] ) ) {
 }
 
 if ( ! empty( $field['ajax'] ) && job_manager_user_can_upload_file_via_ajax() ) {
-	wp_enqueue_script( 'wp-job-manager-ajax-file-upload' );
-	$classes[] = 'wp-job-manager-file-upload';
+	wp_enqueue_script( 'wp-event-manager-ajax-file-upload' );
+	$classes[] = 'wp-event-manager-file-upload';
 }
 ?>
 <div class="job-manager-uploaded-files">
@@ -57,6 +57,6 @@ if ( ! empty( $field['ajax'] ) && job_manager_user_can_upload_file_via_ajax() ) 
 	<?php if ( ! empty( $field['description'] ) ) : ?>
 		<?php echo wp_kses_post( $field['description'] ); ?>
 	<?php else : ?>
-		<?php printf( esc_html__( 'Maximum file size: %s.', 'wp-job-manager' ), size_format( wp_max_upload_size() ) ); ?>
+		<?php printf( esc_html__( 'Maximum file size: %s.', 'wp-event-manager' ), size_format( wp_max_upload_size() ) ); ?>
 	<?php endif; ?>
 </small>

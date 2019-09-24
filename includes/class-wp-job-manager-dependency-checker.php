@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Dependency_Checker.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since   1.33.0
  */
 
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles checking for WP Job Manager's dependencies.
+ * Handles checking for WP Event Manager's dependencies.
  *
  * @since 1.33.0
  */
@@ -20,7 +20,7 @@ class WP_Job_Manager_Dependency_Checker {
 	const MINIMUM_WP_VERSION  = '4.9.0';
 
 	/**
-	 * Check if WP Job Manager's dependencies have been met.
+	 * Check if WP Event Manager's dependencies have been met.
 	 *
 	 * @return bool True if we should continue to load the plugin.
 	 */
@@ -62,8 +62,8 @@ class WP_Job_Manager_Dependency_Checker {
 			return;
 		}
 
-		// translators: %1$s is version of PHP that WP Job Manager requires; %2$s is the version of PHP WordPress is running on.
-		$message = sprintf( __( '<strong>WP Job Manager</strong> requires a minimum PHP version of %1$s, but you are running %2$s.', 'wp-job-manager' ), self::MINIMUM_PHP_VERSION, phpversion() );
+		// translators: %1$s is version of PHP that WP Event Manager requires; %2$s is the version of PHP WordPress is running on.
+		$message = sprintf( __( '<strong>WP Event Manager</strong> requires a minimum PHP version of %1$s, but you are running %2$s.', 'wp-event-manager' ), self::MINIMUM_PHP_VERSION, phpversion() );
 
 		echo '<div class="error"><p>';
 		echo wp_kses( $message, array( 'strong' => array() ) );
@@ -74,9 +74,9 @@ class WP_Job_Manager_Dependency_Checker {
 		printf(
 			'<p><a class="button button-primary" href="%1$s" target="_blank" rel="noopener noreferrer">%2$s <span class="screen-reader-text">%3$s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a></p>',
 			esc_url( $php_update_url ),
-			esc_html__( 'Learn more about updating PHP', 'wp-job-manager' ),
+			esc_html__( 'Learn more about updating PHP', 'wp-event-manager' ),
 			/* translators: accessibility text */
-			esc_html__( '(opens in a new tab)', 'wp-job-manager' )
+			esc_html__( '(opens in a new tab)', 'wp-event-manager' )
 		);
 		echo '</p></div>';
 	}
@@ -119,7 +119,7 @@ class WP_Job_Manager_Dependency_Checker {
 		}
 
 		echo '<div class="error">';
-		echo '<p>' . wp_kses_post( __( '<strong>WP Job Manager</strong> requires a more recent version of WordPress.', 'wp-job-manager' ) . $update_action_link ) . '</p>';
+		echo '<p>' . wp_kses_post( __( '<strong>WP Event Manager</strong> requires a more recent version of WordPress.', 'wp-event-manager' ) . $update_action_link ) . '</p>';
 		echo '</div>';
 	}
 
@@ -133,9 +133,9 @@ class WP_Job_Manager_Dependency_Checker {
 	 */
 	public static function wp_version_plugin_action_notice( $actions ) {
 		if ( ! current_user_can( 'update_core' ) ) {
-			$actions[] = '<strong style="color: red">' . esc_html__( 'WordPress Update Required', 'wp-job-manager' ) . '</strong>';
+			$actions[] = '<strong style="color: red">' . esc_html__( 'WordPress Update Required', 'wp-event-manager' ) . '</strong>';
 		} else {
-			$actions[] = '<a href="' . esc_url( self_admin_url( 'update-core.php' ) ) . '" style="color: red">' . esc_html__( 'WordPress Update Required', 'wp-job-manager' ) . '</a>';
+			$actions[] = '<a href="' . esc_url( self_admin_url( 'update-core.php' ) ) . '" style="color: red">' . esc_html__( 'WordPress Update Required', 'wp-event-manager' ) . '</a>';
 		}
 		return $actions;
 	}

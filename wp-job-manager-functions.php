@@ -1,10 +1,10 @@
 <?php
 /**
- * Global WP Job Manager functions.
+ * Global WP Event Manager functions.
  *
  * New global functions are discouraged whenever possible.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! function_exists( 'get_job_listings' ) ) :
@@ -154,7 +154,7 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 			unset( $query_args['tax_query'] );
 		}
 
-		/** This filter is documented in wp-job-manager.php */
+		/** This filter is documented in wp-event-manager.php */
 		$query_args['lang'] = apply_filters( 'wpjm_lang', null );
 
 		// Filter args.
@@ -331,12 +331,12 @@ if ( ! function_exists( 'get_job_listing_post_statuses' ) ) :
 		return apply_filters(
 			'job_listing_post_statuses',
 			[
-				'draft'           => _x( 'Draft', 'post status', 'wp-job-manager' ),
-				'expired'         => _x( 'Expired', 'post status', 'wp-job-manager' ),
-				'preview'         => _x( 'Preview', 'post status', 'wp-job-manager' ),
-				'pending'         => _x( 'Pending approval', 'post status', 'wp-job-manager' ),
-				'pending_payment' => _x( 'Pending payment', 'post status', 'wp-job-manager' ),
-				'publish'         => _x( 'Active', 'post status', 'wp-job-manager' ),
+				'draft'           => _x( 'Draft', 'post status', 'wp-event-manager' ),
+				'expired'         => _x( 'Expired', 'post status', 'wp-event-manager' ),
+				'preview'         => _x( 'Preview', 'post status', 'wp-event-manager' ),
+				'pending'         => _x( 'Pending approval', 'post status', 'wp-event-manager' ),
+				'pending_payment' => _x( 'Pending payment', 'post status', 'wp-event-manager' ),
+				'publish'         => _x( 'Active', 'post status', 'wp-event-manager' ),
 			]
 		);
 	}
@@ -457,11 +457,11 @@ if ( ! function_exists( 'job_manager_get_filtered_links' ) ) :
 			'job_manager_job_filters_showing_jobs_links',
 			[
 				'reset'    => [
-					'name' => __( 'Reset', 'wp-job-manager' ),
+					'name' => __( 'Reset', 'wp-event-manager' ),
 					'url'  => '#',
 				],
 				'rss_link' => [
-					'name' => __( 'RSS', 'wp-job-manager' ),
+					'name' => __( 'RSS', 'wp-event-manager' ),
 					'url'  => get_job_listing_rss_link(
 						apply_filters(
 							'job_manager_get_listings_custom_filter_rss_args',
@@ -569,7 +569,7 @@ if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
 		$email    = apply_filters( 'user_registration_email', sanitize_email( $args['email'] ) );
 
 		if ( empty( $email ) ) {
-			return new WP_Error( 'validation-error', __( 'Invalid email address.', 'wp-job-manager' ) );
+			return new WP_Error( 'validation-error', __( 'Invalid email address.', 'wp-event-manager' ) );
 		}
 
 		if ( empty( $username ) ) {
@@ -577,11 +577,11 @@ if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
 		}
 
 		if ( ! is_email( $email ) ) {
-			return new WP_Error( 'validation-error', __( 'Your email address isn&#8217;t correct.', 'wp-job-manager' ) );
+			return new WP_Error( 'validation-error', __( 'Your email address isn&#8217;t correct.', 'wp-event-manager' ) );
 		}
 
 		if ( email_exists( $email ) ) {
-			return new WP_Error( 'validation-error', __( 'This email is already registered, please choose another one.', 'wp-job-manager' ) );
+			return new WP_Error( 'validation-error', __( 'This email is already registered, please choose another one.', 'wp-event-manager' ) );
 		}
 
 		// Ensure username is unique.
@@ -890,14 +890,14 @@ function wpjm_use_standard_password_setup_email() {
  */
 function wpjm_job_listing_employment_type_options() {
 	$employment_types               = [];
-	$employment_types['FULL_TIME']  = __( 'Full Time', 'wp-job-manager' );
-	$employment_types['PART_TIME']  = __( 'Part Time', 'wp-job-manager' );
-	$employment_types['CONTRACTOR'] = __( 'Contractor', 'wp-job-manager' );
-	$employment_types['TEMPORARY']  = __( 'Temporary', 'wp-job-manager' );
-	$employment_types['INTERN']     = __( 'Intern', 'wp-job-manager' );
-	$employment_types['VOLUNTEER']  = __( 'Volunteer', 'wp-job-manager' );
-	$employment_types['PER_DIEM']   = __( 'Per Diem', 'wp-job-manager' );
-	$employment_types['OTHER']      = __( 'Other', 'wp-job-manager' );
+	$employment_types['FULL_TIME']  = __( 'Full Time', 'wp-event-manager' );
+	$employment_types['PART_TIME']  = __( 'Part Time', 'wp-event-manager' );
+	$employment_types['CONTRACTOR'] = __( 'Contractor', 'wp-event-manager' );
+	$employment_types['TEMPORARY']  = __( 'Temporary', 'wp-event-manager' );
+	$employment_types['INTERN']     = __( 'Intern', 'wp-event-manager' );
+	$employment_types['VOLUNTEER']  = __( 'Volunteer', 'wp-event-manager' );
+	$employment_types['PER_DIEM']   = __( 'Per Diem', 'wp-event-manager' );
+	$employment_types['OTHER']      = __( 'Other', 'wp-event-manager' );
 
 	/**
 	 * Filter the list of employment types.
@@ -964,7 +964,7 @@ function wpjm_get_password_rules_hint() {
 	 *
 	 * @param string $password_rules Password rules description.
 	 */
-	return apply_filters( 'wpjm_password_rules_hint', __( 'Passwords must be at least 8 characters long.', 'wp-job-manager' ) );
+	return apply_filters( 'wpjm_password_rules_hint', __( 'Passwords must be at least 8 characters long.', 'wp-event-manager' ) );
 }
 
 /**
@@ -1083,9 +1083,9 @@ function job_manager_dropdown_categories( $args = '' ) {
 		'value'           => 'id',
 		'multiple'        => true,
 		'show_option_all' => false,
-		'placeholder'     => __( 'Choose a category&hellip;', 'wp-job-manager' ),
-		'no_results_text' => __( 'No results match', 'wp-job-manager' ),
-		'multiple_text'   => __( 'Select Some Options', 'wp-job-manager' ),
+		'placeholder'     => __( 'Choose a category&hellip;', 'wp-event-manager' ),
+		'no_results_text' => __( 'No results match', 'wp-event-manager' ),
+		'multiple_text'   => __( 'Select Some Options', 'wp-event-manager' ),
 	];
 
 	$r = wp_parse_args( $args, $defaults );
@@ -1094,7 +1094,7 @@ function job_manager_dropdown_categories( $args = '' ) {
 		$r['pad_counts'] = true;
 	}
 
-	/** This filter is documented in wp-job-manager.php */
+	/** This filter is documented in wp-event-manager.php */
 	$r['lang'] = apply_filters( 'wpjm_lang', null );
 
 	// Store in a transient to help sites with many cats.
@@ -1126,7 +1126,7 @@ function job_manager_dropdown_categories( $args = '' ) {
 	}
 
 	if ( ! empty( $categories ) ) {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-job-manager-category-walker.php';
+		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
 
 		$walker = new WP_Job_Manager_Category_Walker();
 
@@ -1305,10 +1305,10 @@ function job_manager_upload_file( $file, $args = [] ) {
 
 		if ( $args['file_label'] ) {
 			// translators: %1$s is the file field label; %2$s is the file type; %3$s is the list of allowed file types.
-			return new WP_Error( 'upload', sprintf( __( '"%1$s" (filetype %2$s) needs to be one of the following file types: %3$s', 'wp-job-manager' ), $args['file_label'], $file['type'], $allowed_file_extensions ) );
+			return new WP_Error( 'upload', sprintf( __( '"%1$s" (filetype %2$s) needs to be one of the following file types: %3$s', 'wp-event-manager' ), $args['file_label'], $file['type'], $allowed_file_extensions ) );
 		} else {
 			// translators: %s is the list of allowed file types.
-			return new WP_Error( 'upload', sprintf( __( 'Uploaded files need to be one of the following file types: %s', 'wp-job-manager' ), $allowed_file_extensions ) );
+			return new WP_Error( 'upload', sprintf( __( 'Uploaded files need to be one of the following file types: %s', 'wp-event-manager' ), $allowed_file_extensions ) );
 		}
 	} else {
 		$upload = wp_handle_upload( $file, apply_filters( 'submit_job_wp_handle_upload_overrides', [ 'test_form' => false ] ) );

@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @since       1.0.0
  * @version     1.28.0
@@ -20,7 +20,7 @@ global $post;
 ?>
 <div class="single_job_listing">
 	<?php if ( get_option( 'job_manager_hide_expired_content', 1 ) && 'expired' === $post->post_status ) : ?>
-		<div class="job-manager-info"><?php _e( 'This listing has expired.', 'wp-job-manager' ); ?></div>
+		<div class="job-manager-info"><?php _e( 'This listing has expired.', 'wp-event-manager' ); ?></div>
 	<?php else : ?>
 		<?php
 			/**

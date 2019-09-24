@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Taxonomy_Meta.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -84,7 +84,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 		if ( ! empty( $employment_types ) ) {
 			?>
 			<tr class="form-field term-group-wrap">
-			<th scope="row"><label for="feature-group"><?php esc_html_e( 'Employment Type', 'wp-job-manager' ); ?></label></th>
+			<th scope="row"><label for="feature-group"><?php esc_html_e( 'Employment Type', 'wp-event-manager' ); ?></label></th>
 			<td><select class="postform" id="employment_type" name="employment_type">
 					<option value=""></option>
 					<?php foreach ( $employment_types as $key => $employment_type ) : ?>
@@ -107,7 +107,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 		if ( ! empty( $employment_types ) ) {
 			?>
 			<div class="form-field term-group">
-			<label for="feature-group"><?php esc_html_e( 'Employment Type', 'wp-job-manager' ); ?></label>
+			<label for="feature-group"><?php esc_html_e( 'Employment Type', 'wp-event-manager' ); ?></label>
 			<select class="postform" id="employment_type" name="employment_type">
 					<option value=""></option>
 					<?php foreach ( $employment_types as $key => $employment_type ) : ?>
@@ -126,7 +126,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 	 * @return array
 	 */
 	public function add_employment_type_column( $columns ) {
-		$columns['employment_type'] = __( 'Employment Type', 'wp-job-manager' );
+		$columns['employment_type'] = __( 'Employment Type', 'wp-event-manager' );
 		return $columns;
 	}
 

@@ -1,6 +1,6 @@
 <?php
-require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-job-manager-helper-options.php';
-require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-job-manager-helper-api.php';
+require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-options.php';
+require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-api.php';
 
 class WPJM_Helper_Base_Test extends WPJM_BaseTest {
 	protected function plugin_data_with_update() {

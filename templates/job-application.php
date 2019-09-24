@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -16,12 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <?php if ( $apply = get_the_job_application_method() ) :
-	wp_enqueue_script( 'wp-job-manager-job-application' );
+	wp_enqueue_script( 'wp-event-manager-job-application' );
 	?>
 	<div class="job_application application">
 		<?php do_action( 'job_application_start', $apply ); ?>
 
-		<input type="button" class="application_button button" value="<?php esc_attr_e( 'Apply for job', 'wp-job-manager' ); ?>" />
+		<input type="button" class="application_button button" value="<?php esc_attr_e( 'Apply for job', 'wp-event-manager' ); ?>" />
 
 		<div class="application_details">
 			<?php

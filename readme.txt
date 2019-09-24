@@ -1,4 +1,4 @@
-=== WP Job Manager ===
+=== WP Event Manager ===
 Contributors: mikejolley, automattic, adamkheckler, alexsanford1, annezazu, cena, chaselivingston, csonnek, davor.altman, donnapep, donncha, drawmyface, erania-pinnera, jacobshere, jakeom, jeherve, jenhooks, jgs, jonryan, kraftbj, lamdayap, lschuyler, macmanx, nancythanki, orangesareorange, rachelsquirrel, ryancowles, richardmtl, scarstocea
 Tags: job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, manager, recruiting, recruitment, talent
 Requires at least: 4.9
@@ -12,7 +12,7 @@ Manage job listings from the WordPress admin panel, and allow users to post job 
 
 == Description ==
 
-WP Job Manager is a **lightweight** job listing plugin for adding job-board like functionality to your WordPress site. Being shortcode based, it can work with any theme (given a bit of CSS styling) and is really simple to setup.
+WP Event Manager is a **lightweight** job listing plugin for adding job-board like functionality to your WordPress site. Being shortcode based, it can work with any theme (given a bit of CSS styling) and is really simple to setup.
 
 = Features =
 
@@ -27,7 +27,7 @@ WP Job Manager is a **lightweight** job listing plugin for adding job-board like
 
 The plugin comes with several shortcodes to output jobs in various formats, and since its built with Custom Post Types you are free to extend it further through themes.
 
-[Read more about WP Job Manager](https://wpjobmanager.com/).
+[Read more about WP Event Manager](https://wpjobmanager.com/).
 
 = Documentation =
 
@@ -35,7 +35,7 @@ Documentation for the core plugin and add-ons can be found [on the docs site her
 
 = Add-ons =
 
-The core WP Job Manager plugin is free and always will be. It covers all functionality we consider 'core' to running a simple job board site.
+The core WP Event Manager plugin is free and always will be. It covers all functionality we consider 'core' to running a simple job board site.
 
 Additional, advanced functionality is available through add-ons. Not only do these extend the usefulness of the core plugin, they also help fund the development and support of core.
 
@@ -51,7 +51,7 @@ Paid listing functionality powered by WooCommerce. Create custom job packages wh
 
 **[Resume Manager](https://wpjobmanager.com/add-ons/resume-manager/)**
 
-Resume Manager is a plugin built on top of WP Job Manager which adds a resume submission form to your site and resume listings, all manageable from WordPress admin.
+Resume Manager is a plugin built on top of WP Event Manager which adds a resume submission form to your site and resume listings, all manageable from WordPress admin.
 
 **[Job Alerts](https://wpjobmanager.com/add-ons/job-alerts/)**
 
@@ -63,13 +63,13 @@ You can get the above add-ons and several others at discount with our [Core Add-
 
 = Contributing and reporting bugs =
 
-You can contribute code to this plugin via GitHub: [https://github.com/Automattic/WP-Job-Manager](https://github.com/Automattic/WP-Job-Manager) and localizations via [https://translate.wordpress.org/projects/wp-plugins/wp-job-manager](https://translate.wordpress.org/projects/wp-plugins/wp-job-manager)
+You can contribute code to this plugin via GitHub: [https://github.com/Automattic/wp-event-manager](https://github.com/Automattic/wp-event-manager) and localizations via [https://translate.wordpress.org/projects/wp-plugins/wp-event-manager](https://translate.wordpress.org/projects/wp-plugins/wp-event-manager)
 
 Thanks to all of our contributors.
 
 = Support =
 
-Use the WordPress.org forums for community support where we try to help all users. If you spot a bug, you can log it (or fix it) on [Github](https://github.com/Automattic/WP-Job-Manager) where we can act upon them more efficiently.
+Use the WordPress.org forums for community support where we try to help all users. If you spot a bug, you can log it (or fix it) on [Github](https://github.com/Automattic/wp-event-manager) where we can act upon them more efficiently.
 
 If you need help with one of our add-ons, [please raise a ticket in our help desk](https://wpjobmanager.com/support/).
 
@@ -81,7 +81,7 @@ If you want help with a customization, please consider hiring a developer! [http
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don't even need to leave your web browser. To do an automatic install, log in to your WordPress admin panel, navigate to the Plugins menu and click Add New.
 
-In the search field type "WP Job Manager" and click Search Plugins. Once you've found the plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by clicking _Install Now_.
+In the search field type "WP Event Manager" and click Search Plugins. Once you've found the plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by clicking _Install Now_.
 
 = Manual installation =
 
@@ -105,23 +105,23 @@ For more information, [read the documentation](https://wpjobmanager.com/document
 
 == Frequently Asked Questions ==
 
-= How do I setup WP Job Manager? =
-View the getting [installation](https://wpjobmanager.com/document/installation/) and [setup](https://wpjobmanager.com/document/setting-up-wp-job-manager/) guide for advice getting started with the plugin. In most cases it's just a case of adding some shortcodes to your pages!
+= How do I setup WP Event Manager? =
+View the getting [installation](https://wpjobmanager.com/document/installation/) and [setup](https://wpjobmanager.com/document/setting-up-wp-event-manager/) guide for advice getting started with the plugin. In most cases it's just a case of adding some shortcodes to your pages!
 
-= Can I use WP Job Manager without frontend job submission? =
+= Can I use WP Event Manager without frontend job submission? =
 Yes! If you don't setup the [submit_job_form] shortcode, you can just post from the admin backend.
 
 = How can I customize the job application process? =
-There are several ways to customize the job application process in WP Job Manager, including using some extra plugins (some are free on Wordpress.org).
+There are several ways to customize the job application process in WP Event Manager, including using some extra plugins (some are free on Wordpress.org).
 
 See: [Customizing the Job Application Process](https://wpjobmanager.com/document/customising-job-application-process/)
 
 = How can I customize the job submission form? =
-There are three ways to customize the fields in WP Job Manager;
+There are three ways to customize the fields in WP Event Manager;
 
 1. For simple text changes, using a localisation file or a plugin such as https://wordpress.org/plugins/say-what/
 2. For field changes, or adding new fields, using functions/filters inside your theme's functions.php file: [https://wpjobmanager.com/document/editing-job-submission-fields/](https://wpjobmanager.com/document/editing-job-submission-fields/)
-3. Use a 3rd party plugin such as [https://plugins.smyl.es/wp-job-manager-field-editor/](https://plugins.smyl.es/wp-job-manager-field-editor/?in=1) which has a UI for field editing.
+3. Use a 3rd party plugin such as [https://plugins.smyl.es/wp-event-manager-field-editor/](https://plugins.smyl.es/wp-event-manager-field-editor/?in=1) which has a UI for field editing.
 
 If you'd like to learn about WordPress filters, here is a great place to start: [https://pippinsplugins.com/a-quick-introduction-to-using-filters/](https://pippinsplugins.com/a-quick-introduction-to-using-filters/)
 
@@ -129,7 +129,7 @@ If you'd like to learn about WordPress filters, here is a great place to start: 
 If you wish to be notified of new postings on your site you can use a plugin such as [Post Status Notifier](http://wordpress.org/plugins/post-status-notifier-lite/).
 
 = What language files are available? =
-You can view (and contribute) translations via the [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-job-manager).
+You can view (and contribute) translations via the [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/wp-event-manager).
 
 == Unit Testing ==
 
@@ -179,7 +179,7 @@ It then creates a database based on the parameters passed to it.
 * Fix: Issue where a JS error could occur when submitting a job.
 
 = 1.33.4 =
-* Note: WP Job Manager now requires a minimum PHP version of 5.6.20.
+* Note: WP Event Manager now requires a minimum PHP version of 5.6.20.
 * Fix: Javascript error in job-submission.js on custom job description fields.
 * Fix: Checking typeof undefined should be in quotes in job_submission.js.
 * Fix: Plugin activation issue that didn't set up roles correctly.
@@ -315,7 +315,7 @@ It then creates a database based on the parameters passed to it.
 * Enhancement: Improved handling of alternative date formats when editing job expiration field in WP admin.
 * Enhancement: Added star indicator next to featured listings on `[job_dashboard]`.
 * Enhancement: Opt-in to usage tracking so we can better improve the plugin.
-* Enhancement: Introduced new asset enqueuing strategy that will be turned on in 1.32.0. Requires plugin and theme updates. (Dev notes: https://github.com/Automattic/WP-Job-Manager/pull/1354)
+* Enhancement: Introduced new asset enqueuing strategy that will be turned on in 1.32.0. Requires plugin and theme updates. (Dev notes: https://github.com/Automattic/wp-event-manager/pull/1354)
 * Fix: Use WordPress core checks for image formats to not confuse `docx` as an image. (@tripflex)
 * Fix: Issue with `[jobs]` shortcode when `categories` argument is provided.
 * Fix: Issue with double encoding HTML entities in custom text area fields.
@@ -342,7 +342,7 @@ It then creates a database based on the parameters passed to it.
 * Fix: Issue with paid add-on licenses not showing up when some third-party plugins were installed.
 * Dev: Runs new actions (`job_manager_recent_jobs_widget_before` and `job_manager_recent_jobs_widget_after`) inside Recent Jobs widget.
 * Dev: Change `wpjm_get_the_job_types()` to return an empty array when job types are disabled.
-* See all: https://github.com/Automattic/WP-Job-Manager/milestone/15?closed=1
+* See all: https://github.com/Automattic/wp-event-manager/milestone/15?closed=1
 
 = 1.29.0 =
 * Enhancement: Moves license and update management for official add-ons to the core plugin.

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Email_Admin_Updated_Job.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,7 +31,7 @@ class WP_Job_Manager_Email_Admin_Updated_Job extends WP_Job_Manager_Email_Templa
 	 * @return string
 	 */
 	public static function get_name() {
-		return __( 'Admin Notice of Updated Listing', 'wp-job-manager' );
+		return __( 'Admin Notice of Updated Listing', 'wp-event-manager' );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class WP_Job_Manager_Email_Admin_Updated_Job extends WP_Job_Manager_Email_Templa
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send a notice to the site administrator when a job is updated on the frontend.', 'wp-job-manager' );
+		return __( 'Send a notice to the site administrator when a job is updated on the frontend.', 'wp-event-manager' );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class WP_Job_Manager_Email_Admin_Updated_Job extends WP_Job_Manager_Email_Templa
 		$job = $args['job'];
 
 		// translators: Placeholder %s is the job listing post title.
-		return sprintf( __( 'Job Listing Updated: %s', 'wp-job-manager' ), $job->post_title );
+		return sprintf( __( 'Job Listing Updated: %s', 'wp-event-manager' ), $job->post_title );
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * Uninstall file for the plugin. Runs when plugin is deleted in WordPress Admin.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -10,7 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Cleanup all data.
-require 'includes/class-wp-job-manager-data-cleaner.php';
+require 'includes/class-wp-event-manager-data-cleaner.php';
 
 if ( ! is_multisite() ) {
 
@@ -42,5 +42,5 @@ if ( ! is_multisite() ) {
 	switch_to_blog( $original_blog_id );
 }
 
-require dirname( __FILE__ ) . '/includes/class-wp-job-manager-usage-tracking.php';
+require dirname( __FILE__ ) . '/includes/class-wp-event-manager-usage-tracking.php';
 WP_Job_Manager_Usage_Tracking::get_instance()->clear_options();

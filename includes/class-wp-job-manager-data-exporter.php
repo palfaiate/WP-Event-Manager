@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Data_Exporter.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,8 +23,8 @@ class WP_Job_Manager_Data_Exporter {
 	 * @return array $exporters The exporter array.
 	 */
 	public static function register_wpjm_user_data_exporter( $exporters ) {
-		$exporters['wp-job-manager'] = [
-			'exporter_friendly_name' => __( 'WP Job Manager', 'wp-job-manager' ),
+		$exporters['wp-event-manager'] = [
+			'exporter_friendly_name' => __( 'WP Event Manager', 'wp-event-manager' ),
 			'callback'               => [ __CLASS__, 'user_data_exporter' ],
 		];
 		return $exporters;
@@ -48,12 +48,12 @@ class WP_Job_Manager_Data_Exporter {
 
 		$user_data_to_export = [];
 		$user_meta_keys      = [
-			'_company_logo'    => __( 'Company Logo', 'wp-job-manager' ),
-			'_company_name'    => __( 'Company Name', 'wp-job-manager' ),
-			'_company_website' => __( 'Company Website', 'wp-job-manager' ),
-			'_company_tagline' => __( 'Company Tagline', 'wp-job-manager' ),
-			'_company_twitter' => __( 'Company Twitter', 'wp-job-manager' ),
-			'_company_video'   => __( 'Company Video', 'wp-job-manager' ),
+			'_company_logo'    => __( 'Company Logo', 'wp-event-manager' ),
+			'_company_name'    => __( 'Company Name', 'wp-event-manager' ),
+			'_company_website' => __( 'Company Website', 'wp-event-manager' ),
+			'_company_tagline' => __( 'Company Tagline', 'wp-event-manager' ),
+			'_company_twitter' => __( 'Company Twitter', 'wp-event-manager' ),
+			'_company_video'   => __( 'Company Video', 'wp-event-manager' ),
 		];
 
 		foreach ( $user_meta_keys as $user_meta_key => $name ) {
@@ -78,7 +78,7 @@ class WP_Job_Manager_Data_Exporter {
 
 		$export_items[] = [
 			'group_id'    => 'wpjm-user-data',
-			'group_label' => __( 'WP Job Manager User Data', 'wp-job-manager' ),
+			'group_label' => __( 'WP Event Manager User Data', 'wp-event-manager' ),
 			'item_id'     => "wpjm-user-data-{$user->ID}",
 			'data'        => $user_data_to_export,
 		];

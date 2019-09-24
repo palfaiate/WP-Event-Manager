@@ -8,7 +8,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @since       1.14.0
  * @version     1.28.0
@@ -39,9 +39,9 @@ do_action( 'single_job_listing_meta_before' ); ?>
 	<li class="date-posted"><?php the_job_publish_date(); ?></li>
 
 	<?php if ( is_position_filled() ) : ?>
-		<li class="position-filled"><?php _e( 'This position has been filled', 'wp-job-manager' ); ?></li>
+		<li class="position-filled"><?php _e( 'This position has been filled', 'wp-event-manager' ); ?></li>
 	<?php elseif ( ! candidates_can_apply() && 'preview' !== $post->post_status ) : ?>
-		<li class="listing-expired"><?php _e( 'Applications have closed', 'wp-job-manager' ); ?></li>
+		<li class="listing-expired"><?php _e( 'Applications have closed', 'wp-event-manager' ); ?></li>
 	<?php endif; ?>
 
 	<?php do_action( 'single_job_listing_meta_end' ); ?>

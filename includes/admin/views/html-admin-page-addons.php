@@ -1,15 +1,15 @@
 <?php
 /**
- * File containing the view for displaying the list of add-ons available to extend WP Job Manager.
+ * File containing the view for displaying the list of add-ons available to extend WP Event Manager.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-echo '<h1 class="screen-reader-text">' . esc_html__( 'WP Job Manager Add-ons', 'wp-job-manager' ) . '</h1>';
+echo '<h1 class="screen-reader-text">' . esc_html__( 'WP Event Manager Add-ons', 'wp-event-manager' ) . '</h1>';
 if ( ! empty( $messages ) ) {
 	foreach ( $messages as $message ) {
 		if ( empty( $message->message ) ) {
@@ -20,7 +20,7 @@ if ( ! empty( $messages ) ) {
 		&& in_array( $message->type, [ 'info', 'success', 'warning', 'error' ], true ) ) {
 			$message_type = $message->type;
 		}
-		$action_label  = isset( $message->action_label ) ? esc_attr( $message->action_label ) : __( 'More Information &rarr;', 'wp-job-manager' );
+		$action_label  = isset( $message->action_label ) ? esc_attr( $message->action_label ) : __( 'More Information &rarr;', 'wp-event-manager' );
 		$action_url    = isset( $message->action_url ) ? esc_url( $message->action_url, [ 'http', 'https' ] ) : false;
 		$action_target = isset( $message->action_target ) && 'self' === $message->action_target ? '_self' : '_blank';
 		$action_str    = '';
@@ -51,7 +51,7 @@ if ( ! empty( $categories ) ) {
 echo '<br class="clear" />';
 
 if ( empty( $add_ons ) ) {
-	echo '<div class="notice notice-warning below-h2"><p><strong>' . esc_html__( 'No add-ons were found.', 'wp-job-manager' ) . '</strong></p></div>';
+	echo '<div class="notice notice-warning below-h2"><p><strong>' . esc_html__( 'No add-ons were found.', 'wp-event-manager' ) . '</strong></p></div>';
 } else {
 	echo '<ul class="products">';
 	foreach ( $add_ons as $add_on ) {

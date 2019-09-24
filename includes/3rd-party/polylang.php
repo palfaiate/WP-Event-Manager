@@ -2,7 +2,7 @@
 /**
  * Only load these if Polylang plugin is installed and active.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 /**

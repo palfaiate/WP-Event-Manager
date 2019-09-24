@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Install.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,14 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles the installation of the WP Job Manager plugin.
+ * Handles the installation of the WP Event Manager plugin.
  *
  * @since 1.0.0
  */
 class WP_Job_Manager_Install {
 
 	/**
-	 * Installs WP Job Manager.
+	 * Installs WP Event Manager.
 	 */
 	public static function install() {
 		global $wpdb;
@@ -29,7 +29,7 @@ class WP_Job_Manager_Install {
 
 		// Fresh installs should be prompted to set up their instance.
 		if ( ! get_option( 'wp_job_manager_version' ) ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-job-manager-admin-notices.php';
+			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin-notices.php';
 			WP_Job_Manager_Admin_Notices::add_notice( WP_Job_Manager_Admin_Notices::NOTICE_CORE_SETUP );
 			$is_new_install = true;
 		}
@@ -81,7 +81,7 @@ class WP_Job_Manager_Install {
 		if ( is_object( $roles ) ) {
 			add_role(
 				'employer',
-				__( 'Employer', 'wp-job-manager' ),
+				__( 'Employer', 'wp-event-manager' ),
 				[
 					'read'         => true,
 					'edit_posts'   => false,
@@ -132,7 +132,7 @@ class WP_Job_Manager_Install {
 	}
 
 	/**
-	 * Sets up the default WP Job Manager terms.
+	 * Sets up the default WP Event Manager terms.
 	 */
 	private static function default_terms() {
 		if ( 1 === intval( get_option( 'job_manager_installed_terms' ) ) ) {
@@ -157,7 +157,7 @@ class WP_Job_Manager_Install {
 	}
 
 	/**
-	 * Default taxonomy terms to set up in WP Job Manager.
+	 * Default taxonomy terms to set up in WP Event Manager.
 	 *
 	 * @return array Default taxonomy terms.
 	 */
@@ -184,7 +184,7 @@ class WP_Job_Manager_Install {
 	}
 
 	/**
-	 * Adds the employment type to default job types when updating from a previous WP Job Manager version.
+	 * Adds the employment type to default job types when updating from a previous WP Event Manager version.
 	 */
 	private static function add_employment_types() {
 		$taxonomies = self::get_default_taxonomy_terms();

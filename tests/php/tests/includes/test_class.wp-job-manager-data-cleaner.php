@@ -1,6 +1,6 @@
 <?php
 
-require 'includes/class-wp-job-manager-data-cleaner.php';
+require 'includes/class-wp-event-manager-data-cleaner.php';
 
 class WP_Job_Manager_Data_Cleaner_Test extends WP_UnitTestCase {
 	// Posts.

@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Admin_Notices.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -96,7 +96,7 @@ class WP_Job_Manager_Admin_Notices {
 	 * Note: For internal use only. Do not call manually.
 	 */
 	public static function init_core_notices() {
-		// core_setup: Notice is used when first activating WP Job Manager.
+		// core_setup: Notice is used when first activating WP Event Manager.
 		add_action( 'job_manager_admin_notice_' . self::NOTICE_CORE_SETUP, [ __CLASS__, 'display_core_setup' ] );
 	}
 
@@ -106,11 +106,11 @@ class WP_Job_Manager_Admin_Notices {
 	public static function dismiss_notices() {
 		if ( isset( $_GET['wpjm_hide_notice'] ) && isset( $_GET['_wpjm_notice_nonce'] ) ) {
 			if ( ! wp_verify_nonce( wp_unslash( $_GET['_wpjm_notice_nonce'] ), 'job_manager_hide_notices_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
-				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'wp-job-manager' ) );
+				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'wp-event-manager' ) );
 			}
 
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( esc_html__( 'You don&#8217;t have permission to do this.', 'wp-job-manager' ) );
+				wp_die( esc_html__( 'You don&#8217;t have permission to do this.', 'wp-event-manager' ) );
 			}
 
 			$hide_notice = sanitize_key( wp_unslash( $_GET['wpjm_hide_notice'] ) );

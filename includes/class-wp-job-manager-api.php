@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_API.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles API requests for WP Job Manager.
+ * Handles API requests for WP Event Manager.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  * @since 1.0.0
  */
 class WP_Job_Manager_API {

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: WP Job Manager (Draft; Some endpoints missing)
+  title: WP Event Manager (Draft; Some endpoints missing)
 basePath: /wp-json
 schemes:
   - http

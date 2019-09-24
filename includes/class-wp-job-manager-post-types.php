@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Post_Types.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -151,8 +151,8 @@ class WP_Job_Manager_Post_Types {
 		 * Taxonomies
 		 */
 		if ( get_option( 'job_manager_enable_categories' ) ) {
-			$singular = __( 'Job category', 'wp-job-manager' );
-			$plural   = __( 'Job categories', 'wp-job-manager' );
+			$singular = __( 'Job category', 'wp-event-manager' );
+			$plural   = __( 'Job categories', 'wp-event-manager' );
 
 			if ( current_theme_supports( 'job-manager-templates' ) ) {
 				$rewrite = [
@@ -180,21 +180,21 @@ class WP_Job_Manager_Post_Types {
 							'singular_name'     => $singular,
 							'menu_name'         => ucwords( $plural ),
 							// translators: Placeholder %s is the plural label of the job listing category taxonomy type.
-							'search_items'      => sprintf( __( 'Search %s', 'wp-job-manager' ), $plural ),
+							'search_items'      => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
 							// translators: Placeholder %s is the plural label of the job listing category taxonomy type.
-							'all_items'         => sprintf( __( 'All %s', 'wp-job-manager' ), $plural ),
+							'all_items'         => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'parent_item'       => sprintf( __( 'Parent %s', 'wp-job-manager' ), $singular ),
+							'parent_item'       => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-job-manager' ), $singular ),
+							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'edit_item'         => sprintf( __( 'Edit %s', 'wp-job-manager' ), $singular ),
+							'edit_item'         => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'update_item'       => sprintf( __( 'Update %s', 'wp-job-manager' ), $singular ),
+							'update_item'       => sprintf( __( 'Update %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-job-manager' ), $singular ),
+							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
-							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-job-manager' ), $singular ),
+							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-event-manager' ), $singular ),
 						],
 						'show_ui'               => true,
 						'show_tagcloud'         => false,
@@ -215,8 +215,8 @@ class WP_Job_Manager_Post_Types {
 		}
 
 		if ( get_option( 'job_manager_enable_types' ) ) {
-			$singular = __( 'Job type', 'wp-job-manager' );
-			$plural   = __( 'Job types', 'wp-job-manager' );
+			$singular = __( 'Job type', 'wp-event-manager' );
+			$plural   = __( 'Job types', 'wp-event-manager' );
 
 			if ( current_theme_supports( 'job-manager-templates' ) ) {
 				$rewrite = [
@@ -243,21 +243,21 @@ class WP_Job_Manager_Post_Types {
 							'singular_name'     => $singular,
 							'menu_name'         => ucwords( $plural ),
 							// translators: Placeholder %s is the plural label of the job listing job type taxonomy type.
-							'search_items'      => sprintf( __( 'Search %s', 'wp-job-manager' ), $plural ),
+							'search_items'      => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
 							// translators: Placeholder %s is the plural label of the job listing job type taxonomy type.
-							'all_items'         => sprintf( __( 'All %s', 'wp-job-manager' ), $plural ),
+							'all_items'         => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'parent_item'       => sprintf( __( 'Parent %s', 'wp-job-manager' ), $singular ),
+							'parent_item'       => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-job-manager' ), $singular ),
+							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'edit_item'         => sprintf( __( 'Edit %s', 'wp-job-manager' ), $singular ),
+							'edit_item'         => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'update_item'       => sprintf( __( 'Update %s', 'wp-job-manager' ), $singular ),
+							'update_item'       => sprintf( __( 'Update %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-job-manager' ), $singular ),
+							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-event-manager' ), $singular ),
 							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
-							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-job-manager' ), $singular ),
+							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-event-manager' ), $singular ),
 						],
 						'show_ui'              => true,
 						'show_tagcloud'        => false,
@@ -284,7 +284,7 @@ class WP_Job_Manager_Post_Types {
 						'show_in_rest'      => true,
 						'type'              => 'string',
 						'single'            => true,
-						'description'       => esc_html__( 'Employment Type', 'wp-job-manager' ),
+						'description'       => esc_html__( 'Employment Type', 'wp-event-manager' ),
 						'sanitize_callback' => [ $this, 'sanitize_employment_type' ],
 					]
 				);
@@ -294,8 +294,8 @@ class WP_Job_Manager_Post_Types {
 		/**
 		 * Post types
 		 */
-		$singular = __( 'Job', 'wp-job-manager' );
-		$plural   = __( 'Jobs', 'wp-job-manager' );
+		$singular = __( 'Job', 'wp-event-manager' );
+		$plural   = __( 'Jobs', 'wp-event-manager' );
 
 		/**
 		 * Set whether to add archive page support when registering the job listing post type.
@@ -325,36 +325,36 @@ class WP_Job_Manager_Post_Types {
 					'labels'                => [
 						'name'                  => $plural,
 						'singular_name'         => $singular,
-						'menu_name'             => __( 'Job Listings', 'wp-job-manager' ),
+						'menu_name'             => __( 'Job Listings', 'wp-event-manager' ),
 						// translators: Placeholder %s is the plural label of the job listing post type.
-						'all_items'             => sprintf( __( 'All %s', 'wp-job-manager' ), $plural ),
-						'add_new'               => __( 'Add New', 'wp-job-manager' ),
+						'all_items'             => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
+						'add_new'               => __( 'Add New', 'wp-event-manager' ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'add_new_item'          => sprintf( __( 'Add %s', 'wp-job-manager' ), $singular ),
-						'edit'                  => __( 'Edit', 'wp-job-manager' ),
+						'add_new_item'          => sprintf( __( 'Add %s', 'wp-event-manager' ), $singular ),
+						'edit'                  => __( 'Edit', 'wp-event-manager' ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'edit_item'             => sprintf( __( 'Edit %s', 'wp-job-manager' ), $singular ),
+						'edit_item'             => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'new_item'              => sprintf( __( 'New %s', 'wp-job-manager' ), $singular ),
+						'new_item'              => sprintf( __( 'New %s', 'wp-event-manager' ), $singular ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'view'                  => sprintf( __( 'View %s', 'wp-job-manager' ), $singular ),
+						'view'                  => sprintf( __( 'View %s', 'wp-event-manager' ), $singular ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'view_item'             => sprintf( __( 'View %s', 'wp-job-manager' ), $singular ),
+						'view_item'             => sprintf( __( 'View %s', 'wp-event-manager' ), $singular ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'search_items'          => sprintf( __( 'Search %s', 'wp-job-manager' ), $plural ),
+						'search_items'          => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'not_found'             => sprintf( __( 'No %s found', 'wp-job-manager' ), $plural ),
+						'not_found'             => sprintf( __( 'No %s found', 'wp-event-manager' ), $plural ),
 						// translators: Placeholder %s is the plural label of the job listing post type.
-						'not_found_in_trash'    => sprintf( __( 'No %s found in trash', 'wp-job-manager' ), $plural ),
+						'not_found_in_trash'    => sprintf( __( 'No %s found in trash', 'wp-event-manager' ), $plural ),
 						// translators: Placeholder %s is the singular label of the job listing post type.
-						'parent'                => sprintf( __( 'Parent %s', 'wp-job-manager' ), $singular ),
-						'featured_image'        => __( 'Company Logo', 'wp-job-manager' ),
-						'set_featured_image'    => __( 'Set company logo', 'wp-job-manager' ),
-						'remove_featured_image' => __( 'Remove company logo', 'wp-job-manager' ),
-						'use_featured_image'    => __( 'Use as company logo', 'wp-job-manager' ),
+						'parent'                => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
+						'featured_image'        => __( 'Company Logo', 'wp-event-manager' ),
+						'set_featured_image'    => __( 'Set company logo', 'wp-event-manager' ),
+						'remove_featured_image' => __( 'Remove company logo', 'wp-event-manager' ),
+						'use_featured_image'    => __( 'Use as company logo', 'wp-event-manager' ),
 					],
 					// translators: Placeholder %s is the plural label of the job listing post type.
-					'description'           => sprintf( __( 'This is where you can create and manage %s.', 'wp-job-manager' ), $plural ),
+					'description'           => sprintf( __( 'This is where you can create and manage %s.', 'wp-event-manager' ), $plural ),
 					'public'                => true,
 					'show_ui'               => true,
 					'capability_type'       => 'job_listing',
@@ -389,26 +389,26 @@ class WP_Job_Manager_Post_Types {
 		register_post_status(
 			'expired',
 			[
-				'label'                     => _x( 'Expired', 'post status', 'wp-job-manager' ),
+				'label'                     => _x( 'Expired', 'post status', 'wp-event-manager' ),
 				'public'                    => true,
 				'protected'                 => true,
 				'exclude_from_search'       => true,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
 				// translators: Placeholder %s is the number of expired posts of this type.
-				'label_count'               => _n_noop( 'Expired <span class="count">(%s)</span>', 'Expired <span class="count">(%s)</span>', 'wp-job-manager' ),
+				'label_count'               => _n_noop( 'Expired <span class="count">(%s)</span>', 'Expired <span class="count">(%s)</span>', 'wp-event-manager' ),
 			]
 		);
 		register_post_status(
 			'preview',
 			[
-				'label'                     => _x( 'Preview', 'post status', 'wp-job-manager' ),
+				'label'                     => _x( 'Preview', 'post status', 'wp-event-manager' ),
 				'public'                    => false,
 				'exclude_from_search'       => true,
 				'show_in_admin_all_list'    => false,
 				'show_in_admin_status_list' => true,
 				// translators: Placeholder %s is the number of posts in a preview state.
-				'label_count'               => _n_noop( 'Preview <span class="count">(%s)</span>', 'Preview <span class="count">(%s)</span>', 'wp-job-manager' ),
+				'label_count'               => _n_noop( 'Preview <span class="count">(%s)</span>', 'Preview <span class="count">(%s)</span>', 'wp-event-manager' ),
 			]
 		);
 	}
@@ -428,7 +428,7 @@ class WP_Job_Manager_Post_Types {
 
 		// Try to pull menu_name from post type object to support themes/plugins that change the menu string.
 		$post_type = get_post_type_object( 'job_listing' );
-		$plural    = isset( $post_type->labels, $post_type->labels->menu_name ) ? $post_type->labels->menu_name : __( 'Job Listings', 'wp-job-manager' );
+		$plural    = isset( $post_type->labels, $post_type->labels->menu_name ) ? $post_type->labels->menu_name : __( 'Job Listings', 'wp-event-manager' );
 
 		foreach ( $menu as $key => $menu_item ) {
 			if ( strpos( $menu_item[0], $plural ) === 0 ) {
@@ -927,7 +927,7 @@ class WP_Job_Manager_Post_Types {
 			$permalink_settings['jobs_archive'] = '';
 			if ( current_theme_supports( 'job-manager-templates' ) ) {
 				// This isn't the first activation and the theme supports it. Set the default to legacy value.
-				$permalink_settings['jobs_archive'] = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'wp-job-manager' );
+				$permalink_settings['jobs_archive'] = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'wp-event-manager' );
 			}
 			update_option( self::PERMALINK_OPTION_NAME, wp_json_encode( $permalink_settings ) );
 		}
@@ -943,9 +943,9 @@ class WP_Job_Manager_Post_Types {
 		);
 
 		// Ensure rewrite slugs are set. Use legacy translation options if not.
-		$permalinks['job_rewrite_slug']          = untrailingslashit( empty( $permalinks['job_base'] ) ? _x( 'job', 'Job permalink - resave permalinks after changing this', 'wp-job-manager' ) : $permalinks['job_base'] );
-		$permalinks['category_rewrite_slug']     = untrailingslashit( empty( $permalinks['category_base'] ) ? _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'wp-job-manager' ) : $permalinks['category_base'] );
-		$permalinks['type_rewrite_slug']         = untrailingslashit( empty( $permalinks['type_base'] ) ? _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'wp-job-manager' ) : $permalinks['type_base'] );
+		$permalinks['job_rewrite_slug']          = untrailingslashit( empty( $permalinks['job_base'] ) ? _x( 'job', 'Job permalink - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['job_base'] );
+		$permalinks['category_rewrite_slug']     = untrailingslashit( empty( $permalinks['category_base'] ) ? _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['category_base'] );
+		$permalinks['type_rewrite_slug']         = untrailingslashit( empty( $permalinks['type_base'] ) ? _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['type_base'] );
 		$permalinks['jobs_archive_rewrite_slug'] = untrailingslashit( empty( $permalinks['jobs_archive'] ) ? 'job-listings' : $permalinks['jobs_archive'] );
 
 		// Restore the original locale.
@@ -1142,7 +1142,7 @@ class WP_Job_Manager_Post_Types {
 
 		$structured_data = wpjm_get_job_listing_structured_data();
 		if ( ! empty( $structured_data ) ) {
-			echo '<!-- WP Job Manager Structured Data -->' . "\r\n";
+			echo '<!-- WP Event Manager Structured Data -->' . "\r\n";
 			echo '<script type="application/ld+json">' . wpjm_esc_json( wp_json_encode( $structured_data ), true ) . '</script>';
 		}
 	}
@@ -1208,22 +1208,22 @@ class WP_Job_Manager_Post_Types {
 		];
 
 		$allowed_application_method     = get_option( 'job_manager_allowed_application_method', '' );
-		$application_method_label       = __( 'Application email/URL', 'wp-job-manager' );
-		$application_method_placeholder = __( 'Enter an email address or website URL', 'wp-job-manager' );
+		$application_method_label       = __( 'Application email/URL', 'wp-event-manager' );
+		$application_method_placeholder = __( 'Enter an email address or website URL', 'wp-event-manager' );
 
 		if ( 'email' === $allowed_application_method ) {
-			$application_method_label       = __( 'Application email', 'wp-job-manager' );
-			$application_method_placeholder = __( 'you@example.com', 'wp-job-manager' );
+			$application_method_label       = __( 'Application email', 'wp-event-manager' );
+			$application_method_placeholder = __( 'you@example.com', 'wp-event-manager' );
 		} elseif ( 'url' === $allowed_application_method ) {
-			$application_method_label       = __( 'Application URL', 'wp-job-manager' );
-			$application_method_placeholder = __( 'https://', 'wp-job-manager' );
+			$application_method_label       = __( 'Application URL', 'wp-event-manager' );
+			$application_method_placeholder = __( 'https://', 'wp-event-manager' );
 		}
 
 		$fields = [
 			'_job_location'    => [
-				'label'         => __( 'Location', 'wp-job-manager' ),
-				'placeholder'   => __( 'e.g. "London"', 'wp-job-manager' ),
-				'description'   => __( 'Leave this blank if the location is not important.', 'wp-job-manager' ),
+				'label'         => __( 'Location', 'wp-event-manager' ),
+				'placeholder'   => __( 'e.g. "London"', 'wp-event-manager' ),
+				'description'   => __( 'Leave this blank if the location is not important.', 'wp-event-manager' ),
 				'priority'      => 1,
 				'data_type'     => 'string',
 				'show_in_admin' => true,
@@ -1232,7 +1232,7 @@ class WP_Job_Manager_Post_Types {
 			'_application'     => [
 				'label'             => $application_method_label,
 				'placeholder'       => $application_method_placeholder,
-				'description'       => __( 'This field is required for the "application" area to appear beneath the listing.', 'wp-job-manager' ),
+				'description'       => __( 'This field is required for the "application" area to appear beneath the listing.', 'wp-event-manager' ),
 				'priority'          => 2,
 				'data_type'         => 'string',
 				'show_in_admin'     => true,
@@ -1240,7 +1240,7 @@ class WP_Job_Manager_Post_Types {
 				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_application' ],
 			],
 			'_company_name'    => [
-				'label'         => __( 'Company Name', 'wp-job-manager' ),
+				'label'         => __( 'Company Name', 'wp-event-manager' ),
 				'placeholder'   => '',
 				'priority'      => 3,
 				'data_type'     => 'string',
@@ -1248,7 +1248,7 @@ class WP_Job_Manager_Post_Types {
 				'show_in_rest'  => true,
 			],
 			'_company_website' => [
-				'label'             => __( 'Company Website', 'wp-job-manager' ),
+				'label'             => __( 'Company Website', 'wp-event-manager' ),
 				'placeholder'       => '',
 				'priority'          => 4,
 				'data_type'         => 'string',
@@ -1257,15 +1257,15 @@ class WP_Job_Manager_Post_Types {
 				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
 			],
 			'_company_tagline' => [
-				'label'         => __( 'Company Tagline', 'wp-job-manager' ),
-				'placeholder'   => __( 'Brief description about the company', 'wp-job-manager' ),
+				'label'         => __( 'Company Tagline', 'wp-event-manager' ),
+				'placeholder'   => __( 'Brief description about the company', 'wp-event-manager' ),
 				'priority'      => 5,
 				'data_type'     => 'string',
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
 			],
 			'_company_twitter' => [
-				'label'         => __( 'Company Twitter', 'wp-job-manager' ),
+				'label'         => __( 'Company Twitter', 'wp-event-manager' ),
 				'placeholder'   => '@yourcompany',
 				'priority'      => 6,
 				'data_type'     => 'string',
@@ -1273,8 +1273,8 @@ class WP_Job_Manager_Post_Types {
 				'show_in_rest'  => true,
 			],
 			'_company_video'   => [
-				'label'             => __( 'Company Video', 'wp-job-manager' ),
-				'placeholder'       => __( 'URL to the company video', 'wp-job-manager' ),
+				'label'             => __( 'Company Video', 'wp-event-manager' ),
+				'placeholder'       => __( 'URL to the company video', 'wp-event-manager' ),
 				'type'              => 'file',
 				'priority'          => 8,
 				'data_type'         => 'string',
@@ -1283,18 +1283,18 @@ class WP_Job_Manager_Post_Types {
 				'sanitize_callback' => [ __CLASS__, 'sanitize_meta_field_url' ],
 			],
 			'_filled'          => [
-				'label'         => __( 'Position Filled', 'wp-job-manager' ),
+				'label'         => __( 'Position Filled', 'wp-event-manager' ),
 				'type'          => 'checkbox',
 				'priority'      => 9,
 				'data_type'     => 'integer',
 				'show_in_admin' => true,
 				'show_in_rest'  => true,
-				'description'   => __( 'Filled listings will no longer accept applications.', 'wp-job-manager' ),
+				'description'   => __( 'Filled listings will no longer accept applications.', 'wp-event-manager' ),
 			],
 			'_featured'        => [
-				'label'              => __( 'Featured Listing', 'wp-job-manager' ),
+				'label'              => __( 'Featured Listing', 'wp-event-manager' ),
 				'type'               => 'checkbox',
-				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager' ),
+				'description'        => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-event-manager' ),
 				'priority'           => 10,
 				'data_type'          => 'integer',
 				'show_in_admin'      => true,
@@ -1302,7 +1302,7 @@ class WP_Job_Manager_Post_Types {
 				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_job_listings' ],
 			],
 			'_job_expires'     => [
-				'label'              => __( 'Listing Expiry Date', 'wp-job-manager' ),
+				'label'              => __( 'Listing Expiry Date', 'wp-event-manager' ),
 				'priority'           => 11,
 				'show_in_admin'      => true,
 				'show_in_rest'       => true,

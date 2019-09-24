@@ -1,10 +1,10 @@
 {
-	"name": "wp-job-manager",
-	"title": "WP Job Manager",
-	"version": "1.33.5",
-	"homepage": "http://wordpress.org/plugins/wp-job-manager/",
+	"name": "wp-event-manager",
+	"title": "WP Event Manager",
+	"version": "1.0",
+	"homepage": "http://wordpress.org/plugins/wp-event-manager/",
 	"license": "GPL-2.0+",
-	"repository": "automattic/wp-job-manager",
+	"repository": "palfaiate/wp-event-manager",
 	"main": "Gruntfile.js",
 	"scripts": {
 		"build": "npm run lint && cross-env BABEL_ENV=default webpack --mode=production",

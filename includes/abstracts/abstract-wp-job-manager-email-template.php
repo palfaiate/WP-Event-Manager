@@ -2,7 +2,7 @@
 /**
  * File containing the class WP_Job_Manager_Email_Template.
  *
- * @package wp-job-manager
+ * @package wp-event-manager
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -24,7 +24,7 @@ abstract class WP_Job_Manager_Email_Template extends WP_Job_Manager_Email {
 	}
 
 	/**
-	 * Get the default template path that WP Job Manager should look for the templates.
+	 * Get the default template path that WP Event Manager should look for the templates.
 	 *
 	 * @type abstract
 	 * @return string

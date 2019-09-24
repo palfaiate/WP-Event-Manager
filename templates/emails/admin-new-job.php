@@ -6,7 +6,7 @@
  *
  * @see         https://wpjobmanager.com/document/template-overrides/
  * @author      Automattic
- * @package     wp-job-manager
+ * @package     wp-event-manager
  * @category    Template
  * @version     1.31.1
  */
@@ -23,19 +23,19 @@ $job = $args['job'];
 	<p><?php
 		echo wp_kses_post(
 			sprintf(
-				__( 'A new job listing has been submitted to <a href="%s">%s</a>.', 'wp-job-manager' ),
+				__( 'A new job listing has been submitted to <a href="%s">%s</a>.', 'wp-event-manager' ),
 				home_url(),
 				get_bloginfo( 'name' )
 			)
 		);
 		switch ( $job->post_status ) {
 			case 'publish':
-				printf( ' ' . esc_html__( 'It has been published and is now available to the public.', 'wp-job-manager' ) );
+				printf( ' ' . esc_html__( 'It has been published and is now available to the public.', 'wp-event-manager' ) );
 				break;
 			case 'pending':
 				echo wp_kses_post(
 					sprintf(
-						' ' . __( 'It is awaiting approval by an administrator in <a href="%s">WordPress admin</a>.','wp-job-manager' ),
+						' ' . __( 'It is awaiting approval by an administrator in <a href="%s">WordPress admin</a>.','wp-event-manager' ),
 						esc_url( admin_url( 'edit.php?post_type=job_listing' ) )
 					)
 				);
