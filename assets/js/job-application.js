@@ -1,10 +1,10 @@
 jQuery(document).ready(function($) {
 	// Slide toggle
-	if ( ! $( 'body' ).hasClass( 'job-application-details-keep-open' ) ) {
+	if ( ! $( 'body' ).hasClass( 'event-application-details-keep-open' ) ) {
 		$( '.application_details' ).hide();
 	}
 
-	$( document.body ).on( 'click', '.job_application .application_button', function() {
+	$( document.body ).on( 'click', '.event_application .application_button', function() {
 		var $details = $(this).siblings('.application_details').first();
 		var $button = $(this);
 		$details.slideToggle( 400, function() {

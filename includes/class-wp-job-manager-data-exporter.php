@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Data_Exporter.
+ * File containing the class WP_event_Manager_Data_Exporter.
  *
  * @package wp-event-manager
  */
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package
  * @since
  */
-class WP_Job_Manager_Data_Exporter {
+class WP_event_Manager_Data_Exporter {
 	/**
 	 * Register the user data exporter method
 	 *

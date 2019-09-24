@@ -12,7 +12,7 @@
  * @package
  * @since
  */
-class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
+class WP_event_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 	/**
 	 * Setup user metadata
 	 *
@@ -45,7 +45,7 @@ class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 	 */
 	public function test_data_exporter_for_invalid_email() {
 		// ACT.
-		$result = WP_Job_Manager_Data_Exporter::user_data_exporter( 'this-is-an-invalid-email' );
+		$result = WP_event_Manager_Data_Exporter::user_data_exporter( 'this-is-an-invalid-email' );
 
 		// ASSERT.
 		$this->assertTrue( is_array( $result ) );
@@ -85,7 +85,7 @@ class WP_Job_Manager_Data_Exporter_Test extends WPJM_BaseTest {
 		}
 
 		// ACT.
-		$result = WP_Job_Manager_Data_Exporter::user_data_exporter( 'johndoe@example.com' );
+		$result = WP_event_Manager_Data_Exporter::user_data_exporter( 'johndoe@example.com' );
 
 		// ASSERT.
 		$this->assertEquals( $expected, $result );

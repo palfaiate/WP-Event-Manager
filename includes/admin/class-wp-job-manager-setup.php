@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Setup.
+ * File containing the class WP_event_Manager_Setup.
  *
  * @package wp-event-manager
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.16.0
  */
-class WP_Job_Manager_Setup {
+class WP_event_Manager_Setup {
 
 	/**
 	 * The single instance of the class.
@@ -46,7 +46,7 @@ class WP_Job_Manager_Setup {
 		add_action( 'admin_head', [ $this, 'admin_head' ] );
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
-		if ( isset( $_GET['page'] ) && 'job-manager-setup' === $_GET['page'] ) {
+		if ( isset( $_GET['page'] ) && 'event-manager-setup' === $_GET['page'] ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ], 12 );
 		}
 	}
@@ -55,21 +55,21 @@ class WP_Job_Manager_Setup {
 	 * Adds setup link to admin dashboard menu briefly so the page callback is registered.
 	 */
 	public function admin_menu() {
-		add_dashboard_page( __( 'Setup', 'wp-event-manager' ), __( 'Setup', 'wp-event-manager' ), 'manage_options', 'job-manager-setup', [ $this, 'setup_page' ] );
+		add_dashboard_page( __( 'Setup', 'wp-event-manager' ), __( 'Setup', 'wp-event-manager' ), 'manage_options', 'event-manager-setup', [ $this, 'setup_page' ] );
 	}
 
 	/**
 	 * Removes the setup link from admin dashboard menu so just the handler callback is registered.
 	 */
 	public function admin_head() {
-		remove_submenu_page( 'index.php', 'job-manager-setup' );
+		remove_submenu_page( 'index.php', 'event-manager-setup' );
 	}
 
 	/**
 	 * Enqueues scripts for setup page.
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style( 'job_manager_setup_css', JOB_MANAGER_PLUGIN_URL . '/assets/css/setup.css', [ 'dashicons' ], JOB_MANAGER_VERSION );
+		wp_enqueue_style( 'event_manager_setup_css', event_MANAGER_PLUGIN_URL . '/assets/css/setup.css', [ 'dashicons' ], event_MANAGER_VERSION );
 	}
 
 	/**
@@ -101,13 +101,13 @@ class WP_Job_Manager_Setup {
 	 * Handle request to the setup page.
 	 */
 	public function setup_page() {
-		$usage_tracking = WP_Job_Manager_Usage_Tracking::get_instance();
+		$usage_tracking = WP_event_Manager_Usage_Tracking::get_instance();
 		$step           = ! empty( $_GET['step'] ) ? absint( $_GET['step'] ) : 1;
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			// Handle step 1 (usage tracking).
-			$enable = isset( $_POST['job_manager_usage_tracking_enabled'] )
-				&& '1' === $_POST['job_manager_usage_tracking_enabled'];
+			$enable = isset( $_POST['event_manager_usage_tracking_enabled'] )
+				&& '1' === $_POST['event_manager_usage_tracking_enabled'];
 
 			$nonce       = isset( $_POST['nonce'] ) ? wp_unslash( $_POST['nonce'] ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
 			$valid_nonce = wp_verify_nonce( $nonce, 'enable-usage-tracking' );
@@ -128,23 +128,23 @@ class WP_Job_Manager_Setup {
 				$create_pages    = isset( $_POST['wp-event-manager-create-page'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-event-manager-create-page'] ) ) : [];
 				$page_titles     = isset( $_POST['wp-event-manager-page-title'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wp-event-manager-page-title'] ) ) : [];
 				$pages_to_create = [
-					'submit_job_form' => '[submit_job_form]',
-					'job_dashboard'   => '[job_dashboard]',
-					'jobs'            => '[jobs]',
+					'submit_event_form' => '[submit_event_form]',
+					'event_dashboard'   => '[event_dashboard]',
+					'events'            => '[events]',
 				];
 
 				foreach ( $pages_to_create as $page => $content ) {
 					if ( ! isset( $create_pages[ $page ] ) || empty( $page_titles[ $page ] ) ) {
 						continue;
 					}
-					$this->create_page( sanitize_text_field( $page_titles[ $page ] ), $content, 'job_manager_' . $page . '_page_id' );
+					$this->create_page( sanitize_text_field( $page_titles[ $page ] ), $content, 'event_manager_' . $page . '_page_id' );
 				}
 			}
 		}
 
 		// Handle step 3 (from step 1 or 2).
 		if ( 3 === $step ) {
-			WP_Job_Manager_Admin_Notices::remove_notice( WP_Job_Manager_Admin_Notices::NOTICE_CORE_SETUP );
+			WP_event_Manager_Admin_Notices::remove_notice( WP_event_Manager_Admin_Notices::NOTICE_CORE_SETUP );
 		}
 
 		$this->output();
@@ -156,7 +156,7 @@ class WP_Job_Manager_Setup {
 	 * Used in `views/html-admin-setup-opt-in-usage-tracking.php`
 	 */
 	private function opt_in_text() {
-		return WP_Job_Manager_Usage_Tracking::get_instance()->opt_in_checkbox_text();
+		return WP_event_Manager_Usage_Tracking::get_instance()->opt_in_checkbox_text();
 	}
 
 	/**
@@ -166,7 +166,7 @@ class WP_Job_Manager_Setup {
 	 */
 	private function maybe_output_opt_in_checkbox() {
 		// Only show the checkbox if we aren't already opted in.
-		$usage_tracking = WP_Job_Manager_Usage_Tracking::get_instance();
+		$usage_tracking = WP_event_Manager_Usage_Tracking::get_instance();
 		if ( ! $usage_tracking->get_tracking_enabled() ) {
 			include dirname( __FILE__ ) . '/views/html-admin-setup-opt-in-usage-tracking.php';
 		}
@@ -191,4 +191,4 @@ class WP_Job_Manager_Setup {
 	}
 }
 
-WP_Job_Manager_Setup::instance();
+WP_event_Manager_Setup::instance();

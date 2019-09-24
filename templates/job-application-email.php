@@ -2,9 +2,9 @@
 /**
  * Apply by email content.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/job-application-email.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/event-application-email.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,4 +15,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<p><?php printf( wp_kses_post( __( 'To apply for this job <strong>email your details to</strong> <a class="job_application_email" href="mailto:%1$s%2$s">%1$s</a>', 'wp-event-manager' ) ), esc_html( $apply->email ), '?subject=' . rawurlencode( $apply->subject ) ); ?></p>
+<p><?php printf( wp_kses_post( __( 'To apply for this event <strong>email your details to</strong> <a class="event_application_email" href="mailto:%1$s%2$s">%1$s</a>', 'wp-event-manager' ) ), esc_html( $apply->email ), '?subject=' . rawurlencode( $apply->subject ) ); ?></p>

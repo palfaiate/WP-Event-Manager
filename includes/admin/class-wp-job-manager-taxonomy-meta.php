@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Taxonomy_Meta.
+ * File containing the class WP_event_Manager_Taxonomy_Meta.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles taxonomy meta custom fields. Just used for job type.
+ * Handles taxonomy meta custom fields. Just used for event type.
  *
  * @since 1.28.0
  */
-class WP_Job_Manager_Taxonomy_Meta {
+class WP_event_Manager_Taxonomy_Meta {
 	/**
 	 * The single instance of the class.
 	 *
@@ -38,28 +38,28 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * WP_Job_Manager_Taxonomy_Meta constructor.
+	 * WP_event_Manager_Taxonomy_Meta constructor.
 	 */
 	public function __construct() {
-		if ( wpjm_job_listing_employment_type_enabled() ) {
-			add_action( 'job_listing_type_edit_form_fields', [ $this, 'display_schema_org_employment_type_field' ], 10, 2 );
-			add_action( 'job_listing_type_add_form_fields', [ $this, 'add_form_display_schema_org_employment_type_field' ], 10 );
-			add_action( 'edited_job_listing_type', [ $this, 'set_schema_org_employment_type_field' ], 10, 2 );
-			add_action( 'created_job_listing_type', [ $this, 'set_schema_org_employment_type_field' ], 10, 2 );
-			add_filter( 'manage_edit-job_listing_type_columns', [ $this, 'add_employment_type_column' ] );
-			add_filter( 'manage_job_listing_type_custom_column', [ $this, 'add_employment_type_column_content' ], 10, 3 );
-			add_filter( 'manage_edit-job_listing_type_sortable_columns', [ $this, 'add_employment_type_column_sortable' ] );
+		if ( wpjm_event_listing_employment_type_enabled() ) {
+			add_action( 'event_listing_type_edit_form_fields', [ $this, 'display_schema_org_employment_type_field' ], 10, 2 );
+			add_action( 'event_listing_type_add_form_fields', [ $this, 'add_form_display_schema_org_employment_type_field' ], 10 );
+			add_action( 'edited_event_listing_type', [ $this, 'set_schema_org_employment_type_field' ], 10, 2 );
+			add_action( 'created_event_listing_type', [ $this, 'set_schema_org_employment_type_field' ], 10, 2 );
+			add_filter( 'manage_edit-event_listing_type_columns', [ $this, 'add_employment_type_column' ] );
+			add_filter( 'manage_event_listing_type_custom_column', [ $this, 'add_employment_type_column_content' ], 10, 3 );
+			add_filter( 'manage_edit-event_listing_type_sortable_columns', [ $this, 'add_employment_type_column_sortable' ] );
 		}
 	}
 
 	/**
-	 * Set the employment type field when creating/updating a job type item.
+	 * Set the employment type field when creating/updating a event type item.
 	 *
 	 * @param int $term_id Term ID.
 	 * @param int $tt_id   Taxonomy type ID.
 	 */
 	public function set_schema_org_employment_type_field( $term_id, $tt_id ) {
-		$employment_types = wpjm_job_listing_employment_type_options();
+		$employment_types = wpjm_event_listing_employment_type_options();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
 		$input_employment_type = isset( $_POST['employment_type'] ) ? sanitize_text_field( wp_unslash( $_POST['employment_type'] ) ) : null;
@@ -72,13 +72,13 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * Add the option to select schema.org employmentType for job type on the edit meta field form.
+	 * Add the option to select schema.org employmentType for event type on the edit meta field form.
 	 *
 	 * @param WP_Term $term     Term object.
 	 * @param string  $taxonomy Taxonomy slug.
 	 */
 	public function display_schema_org_employment_type_field( $term, $taxonomy ) {
-		$employment_types        = wpjm_job_listing_employment_type_options();
+		$employment_types        = wpjm_event_listing_employment_type_options();
 		$current_employment_type = get_term_meta( $term->term_id, 'employment_type', true );
 
 		if ( ! empty( $employment_types ) ) {
@@ -97,12 +97,12 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * Add the option to select schema.org employmentType for job type on the add meta field form.
+	 * Add the option to select schema.org employmentType for event type on the add meta field form.
 	 *
 	 * @param string $taxonomy Taxonomy slug.
 	 */
 	public function add_form_display_schema_org_employment_type_field( $taxonomy ) {
-		$employment_types = wpjm_job_listing_employment_type_options();
+		$employment_types = wpjm_event_listing_employment_type_options();
 
 		if ( ! empty( $employment_types ) ) {
 			?>
@@ -120,7 +120,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * Adds the Employment Type column when listing job type terms in WP Admin.
+	 * Adds the Employment Type column when listing event type terms in WP Admin.
 	 *
 	 * @param array $columns
 	 * @return array
@@ -131,7 +131,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * Adds the Employment Type column as a sortable column when listing job type terms in WP Admin.
+	 * Adds the Employment Type column as a sortable column when listing event type terms in WP Admin.
 	 *
 	 * @param array $sortable
 	 * @return array
@@ -142,7 +142,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 
 	/**
-	 * Adds the Employment Type column content when listing job type terms in WP Admin.
+	 * Adds the Employment Type column content when listing event type terms in WP Admin.
 	 *
 	 * @param string $content
 	 * @param string $column_name
@@ -153,7 +153,7 @@ class WP_Job_Manager_Taxonomy_Meta {
 		if ( 'employment_type' !== $column_name ) {
 			return $content;
 		}
-		$employment_types     = wpjm_job_listing_employment_type_options();
+		$employment_types     = wpjm_event_listing_employment_type_options();
 		$term_id              = absint( $term_id );
 		$term_employment_type = get_term_meta( $term_id, 'employment_type', true );
 
@@ -164,4 +164,4 @@ class WP_Job_Manager_Taxonomy_Meta {
 	}
 }
 
-WP_Job_Manager_Taxonomy_Meta::instance();
+WP_event_Manager_Taxonomy_Meta::instance();

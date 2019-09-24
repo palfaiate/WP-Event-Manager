@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager.
+ * File containing the class WP_event_Manager.
  *
  * @package wp-event-manager
  * @since   1.33.0
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class WP_Job_Manager {
+class WP_event_Manager {
 	/**
 	 * The single instance of the class.
 	 *
@@ -46,37 +46,37 @@ class WP_Job_Manager {
 	 */
 	public function __construct() {
 		// Includes.
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-install.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-post-types.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-ajax.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-shortcodes.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-api.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-forms.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-geocode.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-blocks.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-cache-helper.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email-template.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-email-notifications.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-data-exporter.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-install.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-post-types.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-ajax.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-shortcodes.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-api.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-forms.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-geocode.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-blocks.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-cache-helper.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/abstracts/abstract-wp-event-manager-email-template.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-email-notifications.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-data-exporter.php';
 
 		if ( is_admin() ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin.php';
+			include_once event_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin.php';
 		}
 
 		// Load 3rd party customizations.
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/3rd-party/3rd-party.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/3rd-party/3rd-party.php';
 
 		// Init classes.
-		$this->forms      = WP_Job_Manager_Forms::instance();
-		$this->post_types = WP_Job_Manager_Post_Types::instance();
+		$this->forms      = WP_event_Manager_Forms::instance();
+		$this->post_types = WP_event_Manager_Post_Types::instance();
 
-		// Schedule cron jobs.
-		self::maybe_schedule_cron_jobs();
+		// Schedule cron events.
+		self::maybe_schedule_cron_events();
 
 		// Switch theme.
-		add_action( 'after_switch_theme', [ 'WP_Job_Manager_Ajax', 'add_endpoint' ], 10 );
+		add_action( 'after_switch_theme', [ 'WP_event_Manager_Ajax', 'add_endpoint' ], 10 );
 		add_action( 'after_switch_theme', [ $this->post_types, 'register_post_types' ], 11 );
 		add_action( 'after_switch_theme', 'flush_rewrite_rules', 15 );
 
@@ -88,29 +88,29 @@ class WP_Job_Manager {
 		add_action( 'wp_enqueue_scripts', [ $this, 'frontend_scripts' ] );
 		add_action( 'admin_init', [ $this, 'updater' ] );
 		add_action( 'admin_init', [ $this, 'add_privacy_policy_content' ] );
-		add_action( 'wp_logout', [ $this, 'cleanup_job_posting_cookies' ] );
-		add_action( 'init', [ 'WP_Job_Manager_Email_Notifications', 'init' ] );
+		add_action( 'wp_logout', [ $this, 'cleanup_event_posting_cookies' ] );
+		add_action( 'init', [ 'WP_event_Manager_Email_Notifications', 'init' ] );
 		add_action( 'rest_api_init', [ $this, 'rest_init' ] );
 
 		// Filters.
-		add_filter( 'wp_privacy_personal_data_exporters', [ 'WP_Job_Manager_Data_Exporter', 'register_wpjm_user_data_exporter' ] );
+		add_filter( 'wp_privacy_personal_data_exporters', [ 'WP_event_Manager_Data_Exporter', 'register_wpjm_user_data_exporter' ] );
 
 		add_action( 'init', [ $this, 'usage_tracking_init' ] );
 
 		// Defaults for WPJM core actions.
-		add_action( 'wpjm_notify_new_user', 'wp_job_manager_notify_new_user', 10, 2 );
+		add_action( 'wpjm_notify_new_user', 'wp_event_manager_notify_new_user', 10, 2 );
 	}
 
 	/**
 	 * Performs plugin activation steps.
 	 */
 	public function activate() {
-		WP_Job_Manager_Ajax::add_endpoint();
-		unregister_post_type( 'job_listing' );
-		add_filter( 'pre_option_job_manager_enable_types', '__return_true' );
+		WP_event_Manager_Ajax::add_endpoint();
+		unregister_post_type( 'event_listing' );
+		add_filter( 'pre_option_event_manager_enable_types', '__return_true' );
 		$this->post_types->register_post_types();
-		remove_filter( 'pre_option_job_manager_enable_types', '__return_true' );
-		WP_Job_Manager_Install::install();
+		remove_filter( 'pre_option_event_manager_enable_types', '__return_true' );
+		WP_event_Manager_Install::install();
 		flush_rewrite_rules();
 	}
 
@@ -118,8 +118,8 @@ class WP_Job_Manager {
 	 * Handles tasks after plugin is updated.
 	 */
 	public function updater() {
-		if ( version_compare( JOB_MANAGER_VERSION, get_option( 'wp_job_manager_version' ), '>' ) ) {
-			WP_Job_Manager_Install::install();
+		if ( version_compare( event_MANAGER_VERSION, get_option( 'wp_event_manager_version' ), '>' ) ) {
+			WP_event_Manager_Install::install();
 
 			flush_rewrite_rules();
 		}
@@ -136,12 +136,12 @@ class WP_Job_Manager {
 		$content = sprintf(
 			// translators: Placeholders %1$s and %2$s are the names of the two cookies used in WP Event Manager.
 			__(
-				'This site adds the following cookies to help users resume job submissions that they
+				'This site adds the following cookies to help users resume event submissions that they
 				have started but have not completed: %1$s and %2$s',
 				'wp-event-manager'
 			),
-			'<code>wp-event-manager-submitting-job-id</code>',
-			'<code>wp-event-manager-submitting-job-key</code>'
+			'<code>wp-event-manager-submitting-event-id</code>',
+			'<code>wp-event-manager-submitting-event-key</code>'
 		);
 
 		wp_add_privacy_policy_content(
@@ -155,48 +155,48 @@ class WP_Job_Manager {
 	 */
 	public function load_plugin_textdomain() {
 		load_textdomain( 'wp-event-manager', WP_LANG_DIR . '/wp-event-manager/wp-event-manager-' . apply_filters( 'plugin_locale', get_locale(), 'wp-event-manager' ) . '.mo' );
-		load_plugin_textdomain( 'wp-event-manager', false, JOB_MANAGER_PLUGIN_DIR . '/languages/' );
+		load_plugin_textdomain( 'wp-event-manager', false, event_MANAGER_PLUGIN_DIR . '/languages/' );
 	}
 
 	/**
 	 * Loads plugin's core helper template functions.
 	 */
 	public function include_template_functions() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-deprecated.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-functions.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/wp-event-manager-template.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/wp-event-manager-deprecated.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/wp-event-manager-functions.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/wp-event-manager-template.php';
 	}
 
 	/**
 	 * Loads the REST API functionality.
 	 */
 	public function rest_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-rest-api.php';
-		WP_Job_Manager_REST_API::init();
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-rest-api.php';
+		WP_event_Manager_REST_API::init();
 	}
 
 	/**
 	 * Loads plugin's widgets.
 	 */
 	public function widgets_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-widget.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-recent-jobs.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-featured-jobs.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-widget.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-recent-events.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/widgets/class-wp-event-manager-widget-featured-events.php';
 	}
 
 	/**
 	 * Initialize the Usage Tracking system.
 	 */
 	public function usage_tracking_init() {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking.php';
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking-data.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-usage-tracking-data.php';
 
-		WP_Job_Manager_Usage_Tracking::get_instance()->set_callback(
-			[ 'WP_Job_Manager_Usage_Tracking_Data', 'get_usage_data' ]
+		WP_event_Manager_Usage_Tracking::get_instance()->set_callback(
+			[ 'WP_event_Manager_Usage_Tracking_Data', 'get_usage_data' ]
 		);
 
 		if ( is_admin() ) {
-			WP_Job_Manager_Usage_Tracking::get_instance()->schedule_tracking_task();
+			WP_event_Manager_Usage_Tracking::get_instance()->schedule_tracking_task();
 		}
 	}
 
@@ -204,42 +204,42 @@ class WP_Job_Manager {
 	 * Cleanup the Usage Tracking system for plugin deactivation.
 	 */
 	public function usage_tracking_cleanup() {
-		WP_Job_Manager_Usage_Tracking::get_instance()->unschedule_tracking_task();
+		WP_event_Manager_Usage_Tracking::get_instance()->unschedule_tracking_task();
 	}
 
 	/**
-	 * Schedule cron jobs for WPJM events.
+	 * Schedule cron events for WPJM events.
 	 */
-	public static function maybe_schedule_cron_jobs() {
-		if ( ! wp_next_scheduled( 'job_manager_check_for_expired_jobs' ) ) {
-			wp_schedule_event( time(), 'hourly', 'job_manager_check_for_expired_jobs' );
+	public static function maybe_schedule_cron_events() {
+		if ( ! wp_next_scheduled( 'event_manager_check_for_expired_events' ) ) {
+			wp_schedule_event( time(), 'hourly', 'event_manager_check_for_expired_events' );
 		}
-		if ( ! wp_next_scheduled( 'job_manager_delete_old_previews' ) ) {
-			wp_schedule_event( time(), 'daily', 'job_manager_delete_old_previews' );
+		if ( ! wp_next_scheduled( 'event_manager_delete_old_previews' ) ) {
+			wp_schedule_event( time(), 'daily', 'event_manager_delete_old_previews' );
 		}
-		if ( ! wp_next_scheduled( 'job_manager_email_daily_notices' ) ) {
-			wp_schedule_event( time(), 'daily', 'job_manager_email_daily_notices' );
+		if ( ! wp_next_scheduled( 'event_manager_email_daily_notices' ) ) {
+			wp_schedule_event( time(), 'daily', 'event_manager_email_daily_notices' );
 		}
 	}
 
 	/**
-	 * Unschedule cron jobs. This is run on plugin deactivation.
+	 * Unschedule cron events. This is run on plugin deactivation.
 	 */
-	public static function unschedule_cron_jobs() {
-		wp_clear_scheduled_hook( 'job_manager_check_for_expired_jobs' );
-		wp_clear_scheduled_hook( 'job_manager_delete_old_previews' );
-		wp_clear_scheduled_hook( 'job_manager_email_daily_notices' );
+	public static function unschedule_cron_events() {
+		wp_clear_scheduled_hook( 'event_manager_check_for_expired_events' );
+		wp_clear_scheduled_hook( 'event_manager_delete_old_previews' );
+		wp_clear_scheduled_hook( 'event_manager_email_daily_notices' );
 	}
 
 	/**
-	 * Cleanup job posting cookies.
+	 * Cleanup event posting cookies.
 	 */
-	public function cleanup_job_posting_cookies() {
-		if ( isset( $_COOKIE['wp-event-manager-submitting-job-id'] ) ) {
-			setcookie( 'wp-event-manager-submitting-job-id', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
+	public function cleanup_event_posting_cookies() {
+		if ( isset( $_COOKIE['wp-event-manager-submitting-event-id'] ) ) {
+			setcookie( 'wp-event-manager-submitting-event-id', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
-		if ( isset( $_COOKIE['wp-event-manager-submitting-job-key'] ) ) {
-			setcookie( 'wp-event-manager-submitting-job-key', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
+		if ( isset( $_COOKIE['wp-event-manager-submitting-event-key'] ) ) {
+			setcookie( 'wp-event-manager-submitting-event-key', '', 0, COOKIEPATH, COOKIE_DOMAIN, false );
 		}
 	}
 
@@ -257,8 +257,8 @@ class WP_Job_Manager {
 	 * Registers select2 assets when needed.
 	 */
 	public static function register_select2_assets() {
-		wp_register_script( 'select2', JOB_MANAGER_PLUGIN_URL . '/assets/js/select2/select2.full.min.js', [ 'jquery' ], '4.0.5', false );
-		wp_register_style( 'select2', JOB_MANAGER_PLUGIN_URL . '/assets/js/select2/select2.min.css', [], '4.0.5' );
+		wp_register_script( 'select2', event_MANAGER_PLUGIN_URL . '/assets/js/select2/select2.full.min.js', [ 'jquery' ], '4.0.5', false );
+		wp_register_style( 'select2', event_MANAGER_PLUGIN_URL . '/assets/js/select2/select2.min.css', [], '4.0.5' );
 	}
 
 	/**
@@ -268,7 +268,7 @@ class WP_Job_Manager {
 	 * upcoming release.
 	 */
 	public function frontend_scripts() {
-		$ajax_url         = WP_Job_Manager_Ajax::get_endpoint();
+		$ajax_url         = WP_event_Manager_Ajax::get_endpoint();
 		$ajax_filter_deps = [ 'jquery', 'jquery-deserialize' ];
 		$ajax_data        = [
 			'ajax_url'                => $ajax_url,
@@ -285,30 +285,30 @@ class WP_Job_Manager {
 		 */
 		$ajax_data['lang'] = apply_filters( 'wpjm_lang', null );
 
-		$enhanced_select_shortcodes   = [ 'submit_job_form', 'job_dashboard', 'jobs' ];
+		$enhanced_select_shortcodes   = [ 'submit_event_form', 'event_dashboard', 'events' ];
 		$enhanced_select_used_on_page = has_wpjm_shortcode( null, $enhanced_select_shortcodes );
 
 		/**
-		 * Set the constant `JOB_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT` to true to test for future behavior once
+		 * Set the constant `event_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT` to true to test for future behavior once
 		 * this legacy code is removed and `chosen` is no longer packaged with the plugin.
 		 */
-		if ( ! defined( 'JOB_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT' ) || ! JOB_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT ) {
-			if ( is_wpjm_taxonomy() || is_wpjm_job_listing() || is_wpjm_page() ) {
+		if ( ! defined( 'event_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT' ) || ! event_MANAGER_DISABLE_CHOSEN_LEGACY_COMPAT ) {
+			if ( is_wpjm_taxonomy() || is_wpjm_event_listing() || is_wpjm_page() ) {
 				$enhanced_select_used_on_page = true;
 			}
 
 			// Register the script for dependencies that still require it.
 			if ( ! wp_script_is( 'chosen', 'registered' ) ) {
-				wp_register_script( 'chosen', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-chosen/chosen.jquery.min.js', [ 'jquery' ], '1.1.0', true );
-				wp_register_style( 'chosen', JOB_MANAGER_PLUGIN_URL . '/assets/css/chosen.css', [], '1.1.0' );
+				wp_register_script( 'chosen', event_MANAGER_PLUGIN_URL . '/assets/js/jquery-chosen/chosen.jquery.min.js', [ 'jquery' ], '1.1.0', true );
+				wp_register_style( 'chosen', event_MANAGER_PLUGIN_URL . '/assets/css/chosen.css', [], '1.1.0' );
 			}
 
 			// Backwards compatibility for third-party themes/plugins while they transition to Select2.
 			wp_localize_script(
 				'chosen',
-				'job_manager_chosen_multiselect_args',
+				'event_manager_chosen_multiselect_args',
 				apply_filters(
-					'job_manager_chosen_multiselect_args',
+					'event_manager_chosen_multiselect_args',
 					[
 						'search_contains' => true,
 					]
@@ -320,12 +320,12 @@ class WP_Job_Manager {
 			 * removed in an upcoming major release.
 			 *
 			 * @since 1.19.0
-			 * @deprecated 1.32.0 Migrate to job_manager_select2_enabled and enable only on pages that need it.
+			 * @deprecated 1.32.0 Migrate to event_manager_select2_enabled and enable only on pages that need it.
 			 *
 			 * @param bool $chosen_used_on_page
 			 */
-			if ( apply_filters( 'job_manager_chosen_enabled', false ) ) {
-				_deprecated_hook( 'job_manager_chosen_enabled', '1.32.0', 'job_manager_select2_enabled' );
+			if ( apply_filters( 'event_manager_chosen_enabled', false ) ) {
+				_deprecated_hook( 'event_manager_chosen_enabled', '1.32.0', 'event_manager_select2_enabled' );
 
 				// Assume if this filter returns true that the current page should have the multi-select scripts.
 				$enhanced_select_used_on_page = true;
@@ -344,10 +344,10 @@ class WP_Job_Manager {
 		 *
 		 * @param bool $enhanced_select_used_on_page Defaults to only when there are known shortcodes on the page.
 		 */
-		if ( apply_filters( 'job_manager_enhanced_select_enabled', $enhanced_select_used_on_page ) ) {
+		if ( apply_filters( 'event_manager_enhanced_select_enabled', $enhanced_select_used_on_page ) ) {
 			self::register_select2_assets();
-			wp_register_script( 'wp-event-manager-term-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/term-multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
-			wp_register_script( 'wp-event-manager-multiselect', JOB_MANAGER_PLUGIN_URL . '/assets/js/multiselect.min.js', [ 'jquery', 'select2' ], JOB_MANAGER_VERSION, true );
+			wp_register_script( 'wp-event-manager-term-multiselect', event_MANAGER_PLUGIN_URL . '/assets/js/term-multiselect.min.js', [ 'jquery', 'select2' ], event_MANAGER_VERSION, true );
+			wp_register_script( 'wp-event-manager-multiselect', event_MANAGER_PLUGIN_URL . '/assets/js/multiselect.min.js', [ 'jquery', 'select2' ], event_MANAGER_VERSION, true );
 			wp_enqueue_style( 'select2' );
 
 			$ajax_filter_deps[] = 'select2';
@@ -361,18 +361,18 @@ class WP_Job_Manager {
 
 			wp_localize_script(
 				'select2',
-				'job_manager_select2_args',
-				apply_filters( 'job_manager_select2_args', $select2_args )
+				'event_manager_select2_args',
+				apply_filters( 'event_manager_select2_args', $select2_args )
 			);
 		}
 
-		if ( job_manager_user_can_upload_file_via_ajax() ) {
-			wp_register_script( 'jquery-iframe-transport', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.iframe-transport.js', array( 'jquery' ), '10.1.0', true );
-			wp_register_script( 'jquery-fileupload', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.fileupload.js', array( 'jquery', 'jquery-iframe-transport', 'jquery-ui-widget' ), '10.1.0', true );
-			wp_register_script( 'wp-event-manager-ajax-file-upload', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-file-upload.min.js', array( 'jquery', 'jquery-fileupload' ), JOB_MANAGER_VERSION, true );
+		if ( event_manager_user_can_upload_file_via_ajax() ) {
+			wp_register_script( 'jquery-iframe-transport', event_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.iframe-transport.js', array( 'jquery' ), '10.1.0', true );
+			wp_register_script( 'jquery-fileupload', event_MANAGER_PLUGIN_URL . '/assets/js/jquery-fileupload/jquery.fileupload.js', array( 'jquery', 'jquery-iframe-transport', 'jquery-ui-widget' ), '10.1.0', true );
+			wp_register_script( 'wp-event-manager-ajax-file-upload', event_MANAGER_PLUGIN_URL . '/assets/js/ajax-file-upload.min.js', array( 'jquery', 'jquery-fileupload' ), event_MANAGER_VERSION, true );
 
 			ob_start();
-			get_job_manager_template(
+			get_event_manager_template(
 				'form-fields/uploaded-file-html.php',
 				[
 					'name'      => '',
@@ -383,7 +383,7 @@ class WP_Job_Manager {
 			$js_field_html_img = ob_get_clean();
 
 			ob_start();
-			get_job_manager_template(
+			get_event_manager_template(
 				'form-fields/uploaded-file-html.php',
 				[
 					'name'      => '',
@@ -395,7 +395,7 @@ class WP_Job_Manager {
 
 			wp_localize_script(
 				'wp-event-manager-ajax-file-upload',
-				'job_manager_ajax_file_upload',
+				'event_manager_ajax_file_upload',
 				[
 					'ajax_url'               => $ajax_url,
 					'js_field_html_img'      => esc_js( str_replace( "\n", '', $js_field_html_img ) ),
@@ -405,16 +405,16 @@ class WP_Job_Manager {
 			);
 		}
 
-		wp_register_script( 'jquery-deserialize', JOB_MANAGER_PLUGIN_URL . '/assets/js/jquery-deserialize/jquery.deserialize.js', [ 'jquery' ], '1.2.1', true );
-		wp_register_script( 'wp-event-manager-ajax-filters', JOB_MANAGER_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-event-manager-job-dashboard', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-dashboard.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-event-manager-job-application', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-application.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_register_script( 'wp-event-manager-job-submission', JOB_MANAGER_PLUGIN_URL . '/assets/js/job-submission.min.js', [ 'jquery' ], JOB_MANAGER_VERSION, true );
-		wp_localize_script( 'wp-event-manager-ajax-filters', 'job_manager_ajax_filters', $ajax_data );
+		wp_register_script( 'jquery-deserialize', event_MANAGER_PLUGIN_URL . '/assets/js/jquery-deserialize/jquery.deserialize.js', [ 'jquery' ], '1.2.1', true );
+		wp_register_script( 'wp-event-manager-ajax-filters', event_MANAGER_PLUGIN_URL . '/assets/js/ajax-filters.min.js', $ajax_filter_deps, event_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-event-dashboard', event_MANAGER_PLUGIN_URL . '/assets/js/event-dashboard.min.js', [ 'jquery' ], event_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-event-application', event_MANAGER_PLUGIN_URL . '/assets/js/event-application.min.js', [ 'jquery' ], event_MANAGER_VERSION, true );
+		wp_register_script( 'wp-event-manager-event-submission', event_MANAGER_PLUGIN_URL . '/assets/js/event-submission.min.js', [ 'jquery' ], event_MANAGER_VERSION, true );
+		wp_localize_script( 'wp-event-manager-ajax-filters', 'event_manager_ajax_filters', $ajax_data );
 
 		wp_localize_script(
-			'wp-event-manager-job-submission',
-			'job_manager_job_submission',
+			'wp-event-manager-event-submission',
+			'event_manager_event_submission',
 			[
 				// translators: Placeholder %d is the number of files to that users are limited to.
 				'i18n_over_upload_limit' => esc_html__( 'You are only allowed to upload a maximum of %d files.', 'wp-event-manager' ),
@@ -422,16 +422,16 @@ class WP_Job_Manager {
 		);
 
 		wp_localize_script(
-			'wp-event-manager-job-dashboard',
-			'job_manager_job_dashboard',
+			'wp-event-manager-event-dashboard',
+			'event_manager_event_dashboard',
 			[
 				'i18n_confirm_delete' => esc_html__( 'Are you sure you want to delete this listing?', 'wp-event-manager' ),
 			]
 		);
 
 		wp_localize_script(
-			'wp-event-manager-job-submission',
-			'job_manager_job_submission',
+			'wp-event-manager-event-submission',
+			'event_manager_event_submission',
 			[
 				'i18n_required_field' => __( 'This field is required.', 'wp-event-manager' ),
 			]
@@ -442,11 +442,11 @@ class WP_Job_Manager {
 		 * pages.
 		 *
 		 * If your theme or plugin depend on `frontend.css` from WPJM core, you can use the
-		 * `job_manager_enqueue_frontend_style` filter.
+		 * `event_manager_enqueue_frontend_style` filter.
 		 *
 		 * Example code for a custom shortcode that depends on the frontend style:
 		 *
-		 * add_filter( 'job_manager_enqueue_frontend_style', function( $frontend_used_on_page ) {
+		 * add_filter( 'event_manager_enqueue_frontend_style', function( $frontend_used_on_page ) {
 		 *   global $post;
 		 *   if ( is_singular()
 		 *        && is_a( $post, 'WP_Post' )
@@ -461,10 +461,10 @@ class WP_Job_Manager {
 		 *
 		 * @param bool $is_frontend_style_enabled
 		 */
-		if ( apply_filters( 'job_manager_enqueue_frontend_style', is_wpjm() ) ) {
-			wp_enqueue_style( 'wp-event-manager-frontend', JOB_MANAGER_PLUGIN_URL . '/assets/css/frontend.css', [], JOB_MANAGER_VERSION );
+		if ( apply_filters( 'event_manager_enqueue_frontend_style', is_wpjm() ) ) {
+			wp_enqueue_style( 'wp-event-manager-frontend', event_MANAGER_PLUGIN_URL . '/assets/css/frontend.css', [], event_MANAGER_VERSION );
 		} else {
-			wp_register_style( 'wp-event-manager-job-listings', JOB_MANAGER_PLUGIN_URL . '/assets/css/job-listings.css', [], JOB_MANAGER_VERSION );
+			wp_register_style( 'wp-event-manager-event-listings', event_MANAGER_PLUGIN_URL . '/assets/css/event-listings.css', [], event_MANAGER_VERSION );
 		}
 	}
 }

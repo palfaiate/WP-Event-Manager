@@ -1,17 +1,17 @@
 <?php
 
-class WP_UnitTest_Factory_For_Job_Listing extends WP_UnitTest_Factory_For_Post {
-	protected $default_job_listing_meta = [];
+class WP_UnitTest_Factory_For_event_Listing extends WP_UnitTest_Factory_For_Post {
+	protected $default_event_listing_meta = [];
 
 	function __construct( $factory = null ) {
 		parent::__construct( $factory );
-		$this->default_job_listing_meta       = [
-			'_job_location'    => '',
-			'_job_type'        => 'full-time',
+		$this->default_event_listing_meta       = [
+			'_event_location'    => '',
+			'_event_type'        => 'full-time',
 			'_application'     => 'test@example.com',
-			'_company_name'    => new WP_UnitTest_Generator_Sequence( 'Job Listing company name %s' ),
-			'_company_website' => new WP_UnitTest_Generator_Sequence( 'Job Listing company website %s' ),
-			'_company_tagline' => new WP_UnitTest_Generator_Sequence( 'Job Listing company tagline %s' ),
+			'_company_name'    => new WP_UnitTest_Generator_Sequence( 'event Listing company name %s' ),
+			'_company_website' => new WP_UnitTest_Generator_Sequence( 'event Listing company website %s' ),
+			'_company_tagline' => new WP_UnitTest_Generator_Sequence( 'event Listing company tagline %s' ),
 			'_company_video'   => '',
 			'_company_twitter' => '',
 			'_company_logo'    => '',
@@ -20,10 +20,10 @@ class WP_UnitTest_Factory_For_Job_Listing extends WP_UnitTest_Factory_For_Post {
 		];
 		$this->default_generation_definitions = [
 			'post_status'  => 'publish',
-			'post_title'   => new WP_UnitTest_Generator_Sequence( 'Job Listing title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'Job Listing content %s' ),
-			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'Job Listing excerpt %s' ),
-			'post_type'    => 'job_listing',
+			'post_title'   => new WP_UnitTest_Generator_Sequence( 'event Listing title %s' ),
+			'post_content' => new WP_UnitTest_Generator_Sequence( 'event Listing content %s' ),
+			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'event Listing excerpt %s' ),
+			'post_type'    => 'event_listing',
 		];
 	}
 
@@ -36,7 +36,7 @@ class WP_UnitTest_Factory_For_Job_Listing extends WP_UnitTest_Factory_For_Post {
 		if ( ! isset( $args['meta_input'] ) ) {
 			$args['meta_input'] = [];
 		}
-		$args['meta_input'] = $this->generate_args( $args['meta_input'], $this->default_job_listing_meta );
+		$args['meta_input'] = $this->generate_args( $args['meta_input'], $this->default_event_listing_meta );
 		if ( ! empty( $args['meta_input']['_featured'] ) ) {
 			$args['menu_order'] = -1;
 		}

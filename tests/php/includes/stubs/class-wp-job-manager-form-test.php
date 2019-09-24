@@ -1,5 +1,5 @@
 <?php
-class WP_Job_Manager_Form_Test extends WP_Job_Manager_Form {
+class WP_event_Manager_Form_Test extends WP_event_Manager_Form {
 	protected static $instance = null;
 
 	public static function instance() {

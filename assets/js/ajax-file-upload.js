@@ -1,10 +1,10 @@
-/* global job_manager_ajax_file_upload */
+/* global event_manager_ajax_file_upload */
 jQuery(function($) {
 	$('.wp-event-manager-file-upload').each(function(){
 		$(this).fileupload({
 			dataType: 'json',
 			dropZone: $(this),
-			url: job_manager_ajax_file_upload.ajax_url.toString().replace( '%%endpoint%%', 'upload_file' ),
+			url: event_manager_ajax_file_upload.ajax_url.toString().replace( '%%endpoint%%', 'upload_file' ),
 			formData: {
 				script: true
 			},
@@ -14,7 +14,7 @@ jQuery(function($) {
 			add: function (e, data) {
 				var $file_field      = $( this );
 				var $form            = $file_field.closest( 'form' );
-				var $uploaded_files  = $file_field.parent().find('.job-manager-uploaded-files');
+				var $uploaded_files  = $file_field.parent().find('.event-manager-uploaded-files');
 				var uploadErrors     = [];
 				var fileLimitLeft    = false;
 				var fileLimit        = parseInt( $file_field.data( 'file_limit' ), 10 );
@@ -22,7 +22,7 @@ jQuery(function($) {
 				if ( typeof $file_field.data( 'file_limit_left' ) !== 'undefined' ) {
 					fileLimitLeft = parseInt( $file_field.data( 'file_limit_left' ), 10 );
 				} else if ( typeof fileLimit !== 'undefined' ) {
-					var currentFiles = parseInt( $uploaded_files.children( '.job-manager-uploaded-file' ).length, 10);
+					var currentFiles = parseInt( $uploaded_files.children( '.event-manager-uploaded-file' ).length, 10);
 					fileLimitLeft = fileLimit - currentFiles;
 					$file_field.data( 'file_limit_left', fileLimitLeft );
 				}
@@ -31,8 +31,8 @@ jQuery(function($) {
 					var message = 'Exceeded upload limit';
 					if( $file_field.data( 'file_limit_message' ) ) {
 						message = $file_field.data( 'file_limit_message' );
-					} else if ( typeof job_manager_job_submission !== 'undefined' ) {
-						message = job_manager_job_submission.i18n_over_upload_limit;
+					} else if ( typeof event_manager_event_submission !== 'undefined' ) {
+						message = event_manager_event_submission.i18n_over_upload_limit;
 					}
 					message = message.replace( '%d', fileLimit );
 
@@ -46,7 +46,7 @@ jQuery(function($) {
 					var acceptFileTypes = new RegExp( '(\.|\/)(' + allowed_types + ')$', 'i' );
 
 					if ( data.originalFiles[0].name.length && ! acceptFileTypes.test( data.originalFiles[0].name ) ) {
-						uploadErrors.push( job_manager_ajax_file_upload.i18n_invalid_file_type + ' ' + allowed_types );
+						uploadErrors.push( event_manager_ajax_file_upload.i18n_invalid_file_type + ' ' + allowed_types );
 					}
 				}
 
@@ -81,7 +81,7 @@ jQuery(function($) {
 			done: function (e, data) {
 				var $file_field     = $( this );
 				var $form           = $file_field.closest( 'form' );
-				var $uploaded_files = $file_field.parent().find('.job-manager-uploaded-files');
+				var $uploaded_files = $file_field.parent().find('.event-manager-uploaded-files');
 				var multiple        = $file_field.attr( 'multiple' ) ? 1 : 0;
 				var image_types     = [ 'jpg', 'gif', 'png', 'jpeg', 'jpe' ];
 
@@ -98,11 +98,11 @@ jQuery(function($) {
 					} else {
 						var html;
 						if ( $.inArray( file.extension, image_types ) >= 0 ) {
-							html = $.parseHTML( job_manager_ajax_file_upload.js_field_html_img );
-							$( html ).find('.job-manager-uploaded-file-preview img').attr( 'src', file.url );
+							html = $.parseHTML( event_manager_ajax_file_upload.js_field_html_img );
+							$( html ).find('.event-manager-uploaded-file-preview img').attr( 'src', file.url );
 						} else {
-							html = $.parseHTML( job_manager_ajax_file_upload.js_field_html );
-							$( html ).find('.job-manager-uploaded-file-name code').text( file.name );
+							html = $.parseHTML( event_manager_ajax_file_upload.js_field_html );
+							$( html ).find('.event-manager-uploaded-file-name code').text( file.name );
 						}
 
 						$( html ).find('.input-text').val( file.url );

@@ -1,10 +1,10 @@
 <?php
 /**
- * Email content when notifying admin of an updated job listing.
+ * Email content when notifying admin of an updated event listing.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/emails/admin-updated-job.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/emails/admin-updated-event.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -16,21 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * @var WP_Post $job
+ * @var WP_Post $event
  */
-$job = $args['job'];
+$event = $args['event'];
 ?>
 	<p><?php
 		echo wp_kses_post(
-			sprintf( __( 'A job listing has been updated on <a href="%s">%s</a>.', 'wp-event-manager' ), home_url(), esc_html( get_bloginfo( 'name' ) ) ) );
-		switch ( $job->post_status ) {
+			sprintf( __( 'A event listing has been updated on <a href="%s">%s</a>.', 'wp-event-manager' ), home_url(), esc_html( get_bloginfo( 'name' ) ) ) );
+		switch ( $event->post_status ) {
 			case 'publish':
 				printf( ' ' . esc_html__( 'The changes have been published and are now available to the public.', 'wp-event-manager' ) );
 				break;
 			case 'pending':
 				echo wp_kses_post( sprintf(
-					' ' . __( 'The job listing is not publicly available until the changes are approved by an administrator in the site\'s <a href="%s">WordPress admin</a>.', 'wp-event-manager' ),
-					esc_url( admin_url( 'edit.php?post_type=job_listing' ) )
+					' ' . __( 'The event listing is not publicly available until the changes are approved by an administrator in the site\'s <a href="%s">WordPress admin</a>.', 'wp-event-manager' ),
+					esc_url( admin_url( 'edit.php?post_type=event_listing' ) )
 				) );
 				break;
 		}
@@ -38,11 +38,11 @@ $job = $args['job'];
 <?php
 
 /**
- * Show details about the job listing.
+ * Show details about the event listing.
  *
- * @param WP_Post              $job            The job listing to show details for.
- * @param WP_Job_Manager_Email $email          Email object for the notification.
+ * @param WP_Post              $event            The event listing to show details for.
+ * @param WP_event_Manager_Email $email          Email object for the notification.
  * @param bool                 $sent_to_admin  True if this is being sent to an administrator.
  * @param bool                 $plain_text     True if the email is being sent as plain text.
  */
-do_action( 'job_manager_email_job_details', $job, $email, true, $plain_text );
+do_action( 'event_manager_email_event_details', $event, $email, true, $plain_text );

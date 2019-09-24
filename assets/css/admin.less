@@ -1,8 +1,8 @@
 @import "mixins";
 @import "icons.less";
 
-.job-manager-settings-wrap {
-	.job-manager-updated {
+.event-manager-settings-wrap {
+	.event-manager-updated {
 		display: block;
 		margin: 1em 0 0;
 	}
@@ -48,12 +48,12 @@ a.wpjm-activate-licence-link:active {
 	}
 }
 .widefat {
-	td.column-featured_job, td.column-filled, td.column-job_status {
+	td.column-featured_event, td.column-filled, td.column-event_status {
 		width: 46px;
 		text-align: left;
 		padding-left: 11px;
 	}
-	th.column-featured_job, th.column-filled, th.column-job_status {
+	th.column-featured_event, th.column-filled, th.column-event_status {
 		width: 1em;
 		span {
 			display: block;
@@ -75,20 +75,20 @@ a.wpjm-activate-licence-link:active {
 			}
 		}
 	}
-	th.column-job_status {
+	th.column-event_status {
 		span {
 			&:before {
 				content: '\e828';
 			}
 		}
 	}
-	.column-job_posted {
+	.column-event_posted {
 		strong {
 			display: block;
 			margin-bottom: .2em;
 		}
 	}
-	td.column-job_status {
+	td.column-event_status {
 		span {
 			position: relative;
 			font-size: 1em;
@@ -126,11 +126,11 @@ a.wpjm-activate-licence-link:active {
 			color: #a00;
 		}
 	}
-	.column-job_listing_type {
+	.column-event_listing_type {
 		text-align: left;
 		width: 6em;
 		word-wrap: normal !important;
-		.job-type {
+		.event-type {
 			color: #fff;
 			padding: 4px;
 			font-size: 11px;
@@ -155,17 +155,17 @@ a.wpjm-activate-licence-link:active {
 			background-color: @internship;
 		}
 	}
-	th.column-job_position {
+	th.column-event_position {
 		width: 20%;
 	}
-	td.column-job_position {
+	td.column-event_position {
 		width: 20%;
 		height: 34px;
-		.job_position {
+		.event_position {
 			position: relative;
 			padding-right: 50px !important;
 		}
-		a.job_title {
+		a.event_title {
 			font-weight: bold;
 		}
 		img {
@@ -185,10 +185,10 @@ a.wpjm-activate-licence-link:active {
 			color: #bbbbbb;
 		}
 	}
-	.column-job_location {
+	.column-event_location {
 		width: 10%;
 	}
-	.column-job_actions {
+	.column-event_actions {
 		text-align: right;
 		width: 128px;
 		strong {
@@ -231,7 +231,7 @@ a.wpjm-activate-licence-link:active {
 		}
 	}
 }
-.wp_job_manager_meta_data {
+.wp_event_manager_meta_data {
 	zoom: 1;
 	&:before,
 	&:after {
@@ -380,7 +380,7 @@ a.wpjm-activate-licence-link:active {
 }
 
 /* Addons */
-.wp_job_manager_add_ons_wrap {
+.wp_event_manager_add_ons_wrap {
 	.products {
 		overflow: hidden;
 		li {
@@ -429,7 +429,7 @@ a.wpjm-activate-licence-link:active {
 }
 .rtl {
 	.widefat {
-		.column-job_actions {
+		.column-event_actions {
 			a.button-icon {
 				&:before {
 					float: right;
@@ -437,7 +437,7 @@ a.wpjm-activate-licence-link:active {
 			}
 		}
 	}
-	.wp_job_manager_meta_data {
+	.wp_event_manager_meta_data {
 		p {
 			padding: 0 20% 0 0;
 		}
@@ -496,13 +496,13 @@ tr.email-setting-row {
 		}
 	}
 	.widefat {
-		.job_position.column-primary{
+		.event_position.column-primary{
 			display: table-cell !important;
 		}
 		.toggle-row:before{
 			top: 5px;
 		}
-		.column-job_actions {
+		.column-event_actions {
 			text-align: left;
 
 			a.button-icon {
@@ -514,7 +514,7 @@ tr.email-setting-row {
 	}
 	.rtl {
 		.widefat {
-			.column-job_actions {
+			.column-event_actions {
 				text-align: right;
 
 				a.button-icon {
@@ -525,7 +525,7 @@ tr.email-setting-row {
 			}
 		}
 	}
-	.wp_job_manager_meta_data {
+	.wp_event_manager_meta_data {
 		.form-field {
 			width: 100%;
 			padding: 0;

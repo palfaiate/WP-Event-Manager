@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Email_Admin_Expiring_Job.
+ * File containing the class WP_event_Manager_Email_Admin_Expiring_event.
  *
  * @package wp-event-manager
  */
@@ -10,19 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email notification to the site administrator when a job is expiring.
+ * Email notification to the site administrator when a event is expiring.
  *
  * @since 1.31.0
- * @extends WP_Job_Manager_Email
+ * @extends WP_event_Manager_Email
  */
-class WP_Job_Manager_Email_Admin_Expiring_Job extends WP_Job_Manager_Email_Employer_Expiring_Job {
+class WP_event_Manager_Email_Admin_Expiring_event extends WP_event_Manager_Email_Employer_Expiring_event {
 	/**
 	 * Get the unique email notification key.
 	 *
 	 * @return string
 	 */
 	public static function get_key() {
-		return 'admin_expiring_job';
+		return 'admin_expiring_event';
 	}
 
 	/**
@@ -31,7 +31,7 @@ class WP_Job_Manager_Email_Admin_Expiring_Job extends WP_Job_Manager_Email_Emplo
 	 * @return string
 	 */
 	public static function get_name() {
-		return __( 'Admin Notice of Expiring Job Listings', 'wp-event-manager' );
+		return __( 'Admin Notice of Expiring event Listings', 'wp-event-manager' );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class WP_Job_Manager_Email_Admin_Expiring_Job extends WP_Job_Manager_Email_Emplo
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send notices to the site administrator before a job listing expires.', 'wp-event-manager' );
+		return __( 'Send notices to the site administrator before a event listing expires.', 'wp-event-manager' );
 	}
 
 	/**

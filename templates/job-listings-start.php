@@ -1,10 +1,10 @@
 <?php
 /**
- * Content shown before job listings in `[jobs]` shortcode.
+ * Content shown before event listings in `[events]` shortcode.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/job-listings-start.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/event-listings-start.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,4 +15,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<ul class="job_listings">
+<ul class="event_listings">

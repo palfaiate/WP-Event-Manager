@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Usage Tracking class. Please update the prefix to something unique to your
  * plugin.
  */
-abstract class WP_Job_Manager_Usage_Tracking_Base {
+abstract class WP_event_Manager_Usage_Tracking_Base {
 	const PLUGIN_PREFIX = 'plugin_';
 
 	/*
@@ -27,14 +27,14 @@ abstract class WP_Job_Manager_Usage_Tracking_Base {
 	protected $hide_tracking_opt_in_option_name;
 
 	/**
-	 * The name of the cron job action for regularly logging usage data.
+	 * The name of the cron event action for regularly logging usage data.
 	 *
 	 * @var string
 	 **/
-	private $job_name;
+	private $event_name;
 
 	/**
-	 * Callback function for the usage tracking job.
+	 * Callback function for the usage tracking event.
 	 *
 	 * @var array
 	 **/
@@ -157,7 +157,7 @@ abstract class WP_Job_Manager_Usage_Tracking_Base {
 	protected function __construct() {
 		// Init instance vars.
 		$this->hide_tracking_opt_in_option_name = $this->get_prefix() . '_usage_tracking_opt_in_hide';
-		$this->job_name                         = $this->get_prefix() . '_usage_tracking_send_usage_data';
+		$this->event_name                         = $this->get_prefix() . '_usage_tracking_send_usage_data';
 
 		// Set up the opt-in dialog.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script_deps' ) );
@@ -165,9 +165,9 @@ abstract class WP_Job_Manager_Usage_Tracking_Base {
 		add_action( 'admin_notices', array( $this, 'maybe_display_tracking_opt_in' ) );
 		add_action( 'wp_ajax_' . $this->get_prefix() . '_handle_tracking_opt_in', array( $this, 'handle_tracking_opt_in' ) );
 
-		// Set up schedule and action needed for cron job.
+		// Set up schedule and action needed for cron event.
 		add_filter( 'cron_schedules', array( $this, 'add_usage_tracking_two_week_schedule' ) );
-		add_action( $this->job_name, array( $this, 'send_usage_data' ) );
+		add_action( $this->event_name, array( $this, 'send_usage_data' ) );
 	}
 
 	/**
@@ -267,23 +267,23 @@ abstract class WP_Job_Manager_Usage_Tracking_Base {
 	}
 
 	/**
-	 * Set up a regular cron job to send usage data. The job will only send
+	 * Set up a regular cron event to send usage data. The event will only send
 	 * the data if tracking is enabled, so it is safe to call this function,
-	 * and schedule the job, before the user opts into tracking.
+	 * and schedule the event, before the user opts into tracking.
 	 **/
 	public function schedule_tracking_task() {
-		if ( ! wp_next_scheduled( $this->job_name ) ) {
-			wp_schedule_event( time(), $this->get_prefix() . '_usage_tracking_two_weeks', $this->job_name );
+		if ( ! wp_next_scheduled( $this->event_name ) ) {
+			wp_schedule_event( time(), $this->get_prefix() . '_usage_tracking_two_weeks', $this->event_name );
 		}
 	}
 
 	/**
-	 * Unschedule the job scheduled by schedule_tracking_task if any is
+	 * Unschedule the event scheduled by schedule_tracking_task if any is
 	 * scheduled. This should be called on plugin deactivation.
 	 **/
 	public function unschedule_tracking_task() {
-		if ( wp_next_scheduled( $this->job_name ) ) {
-			wp_clear_scheduled_hook( $this->job_name );
+		if ( wp_next_scheduled( $this->event_name ) ) {
+			wp_clear_scheduled_hook( $this->event_name );
 		}
 	}
 
@@ -331,7 +331,7 @@ abstract class WP_Job_Manager_Usage_Tracking_Base {
 	}
 
 	/**
-	 * Add two week schedule to use for cron job. Should not be called
+	 * Add two week schedule to use for cron event. Should not be called
 	 * externally.
 	 *
 	 * @param array $schedules the existing cron schedules.

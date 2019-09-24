@@ -30,7 +30,7 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 
 	public function tearDown() {
 		parent::tearDown();
-		$this->disable_manage_job_listings_cap();
+		$this->disable_manage_event_listings_cap();
 		$this->logout();
 	}
 
@@ -46,8 +46,8 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 	 * When needed, this allows you to re-register post type.
 	 */
 	protected function reregister_post_type() {
-		unregister_post_type( 'job_listing' );
-		WP_Job_Manager_Post_Types::instance()->register_post_types();
+		unregister_post_type( 'event_listing' );
+		WP_event_Manager_Post_Types::instance()->register_post_types();
 	}
 
 	/**
@@ -72,14 +72,14 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Helper to disable manage job listings capability.
+	 * Helper to disable manage event listings capability.
 	 */
 	protected function disable_update_plugins_cap() {
 		remove_filter( 'user_has_cap', [ $this, 'add_manage_update_plugins_cap' ] );
 	}
 
 	/**
-	 * Helper to enable manage job listings capability.
+	 * Helper to enable manage event listings capability.
 	 */
 	protected function enable_update_plugins_cap() {
 		add_filter( 'user_has_cap', [ $this, 'add_manage_update_plugins_cap' ] );
@@ -88,15 +88,15 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 	/**
 	 * Helper to disable update plugins capability.
 	 */
-	protected function disable_manage_job_listings_cap() {
-		remove_filter( 'user_has_cap', [ $this, 'add_manage_job_listing_cap' ] );
+	protected function disable_manage_event_listings_cap() {
+		remove_filter( 'user_has_cap', [ $this, 'add_manage_event_listing_cap' ] );
 	}
 
 	/**
 	 * Helper to enable update plugins capability.
 	 */
-	protected function enable_manage_job_listings_cap() {
-		add_filter( 'user_has_cap', [ $this, 'add_manage_job_listing_cap' ] );
+	protected function enable_manage_event_listings_cap() {
+		add_filter( 'user_has_cap', [ $this, 'add_manage_event_listing_cap' ] );
 	}
 
 	/**
@@ -110,21 +110,21 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 	/**
 	 * Helper to add capability for `user_has_cap` filter.
 	 */
-	public function add_manage_job_listing_cap( $caps ) {
-		$caps['manage_job_listings'] = 1;
+	public function add_manage_event_listing_cap( $caps ) {
+		$caps['manage_event_listings'] = 1;
 		return $caps;
 	}
 
 	protected function disable_transport_faker() {
 		remove_action( 'requests-requests.before_request', [ $this, 'overload_request_transport' ], 10 );
-		remove_filter( 'job_manager_geolocation_api_key', '__return_empty_string', 10 );
-		add_filter( 'job_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
+		remove_filter( 'event_manager_geolocation_api_key', '__return_empty_string', 10 );
+		add_filter( 'event_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
 	}
 
 	protected function enable_transport_faker() {
 		add_action( 'requests-requests.before_request', [ $this, 'overload_request_transport' ], 10, 5 );
-		remove_filter( 'job_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
-		add_filter( 'job_manager_geolocation_api_key', '__return_empty_string', 10 );
+		remove_filter( 'event_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
+		add_filter( 'event_manager_geolocation_api_key', '__return_empty_string', 10 );
 	}
 
 	public function overload_request_transport( &$url, &$headers, &$data, &$type, &$options ) {
@@ -169,7 +169,7 @@ class WPJM_BaseTest extends WP_UnitTestCase {
 	protected function get_user_by_role( $role, $variant = '' ) {
 		if ( ! wp_roles()->is_role( 'employer' ) ) {
 			// Ensure the role gets created.
-			WP_Job_Manager_Install::install();
+			WP_event_Manager_Install::install();
 			wp_roles()->init_roles();
 			wp_cache_flush();
 		}

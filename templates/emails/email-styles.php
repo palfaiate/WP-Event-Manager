@@ -2,9 +2,9 @@
 /**
  * Email stylesheet.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/emails/email-styles.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/emails/email-styles.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -29,7 +29,7 @@ $style_vars['font_family']    = '"Helvetica Neue", Helvetica, Roboto, Arial, san
  *
  * @param array $style_vars  Variables used in style generation.
  */
-$style_vars = apply_filters( 'job_manager_email_style_vars', $style_vars );
+$style_vars = apply_filters( 'event_manager_email_style_vars', $style_vars );
 
 /**
  * Inject styles before the core styles.
@@ -38,7 +38,7 @@ $style_vars = apply_filters( 'job_manager_email_style_vars', $style_vars );
  *
  * @param array $style_vars Variables used in style generation.
  */
-do_action( 'job_manager_email_style_before', $style_vars );
+do_action( 'event_manager_email_style_before', $style_vars );
 ?>
 
 #wrapper {
@@ -80,4 +80,4 @@ td.detail-label {
  *
  * @param array $style_vars Variables used in style generation.
  */
-do_action( 'job_manager_email_style_after', $style_vars );
+do_action( 'event_manager_email_style_after', $style_vars );

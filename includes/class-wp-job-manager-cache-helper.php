@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Cache_Helper.
+ * File containing the class WP_event_Manager_Cache_Helper.
  *
  * @package wp-event-manager
  */
@@ -10,21 +10,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Assists in cache management for WP Job Management posts and terms.
+ * Assists in cache management for WP event Management posts and terms.
  *
  * @package wp-event-manager
  * @since 1.0.0
  */
-class WP_Job_Manager_Cache_Helper {
+class WP_event_Manager_Cache_Helper {
 
 	/**
 	 * Initializes cache hooks.
 	 */
 	public static function init() {
-		add_action( 'save_post', [ __CLASS__, 'flush_get_job_listings_cache' ] );
-		add_action( 'delete_post', [ __CLASS__, 'flush_get_job_listings_cache' ] );
-		add_action( 'trash_post', [ __CLASS__, 'flush_get_job_listings_cache' ] );
-		add_action( 'job_manager_my_job_do_action', [ __CLASS__, 'job_manager_my_job_do_action' ] );
+		add_action( 'save_post', [ __CLASS__, 'flush_get_event_listings_cache' ] );
+		add_action( 'delete_post', [ __CLASS__, 'flush_get_event_listings_cache' ] );
+		add_action( 'trash_post', [ __CLASS__, 'flush_get_event_listings_cache' ] );
+		add_action( 'event_manager_my_event_do_action', [ __CLASS__, 'event_manager_my_event_do_action' ] );
 		add_action( 'set_object_terms', [ __CLASS__, 'set_term' ], 10, 4 );
 		add_action( 'edited_term', [ __CLASS__, 'edited_term' ], 10, 3 );
 		add_action( 'create_term', [ __CLASS__, 'edited_term' ], 10, 3 );
@@ -37,25 +37,25 @@ class WP_Job_Manager_Cache_Helper {
 	 *
 	 * @param int|WP_Post $post_id
 	 */
-	public static function flush_get_job_listings_cache( $post_id ) {
-		if ( 'job_listing' === get_post_type( $post_id ) ) {
-			self::get_transient_version( 'get_job_listings', true );
+	public static function flush_get_event_listings_cache( $post_id ) {
+		if ( 'event_listing' === get_post_type( $post_id ) ) {
+			self::get_transient_version( 'get_event_listings', true );
 		}
 	}
 
 	/**
-	 * Refreshes the Job Listing cache when performing actions on it.
+	 * Refreshes the event Listing cache when performing actions on it.
 	 *
 	 * @param string $action
 	 */
-	public static function job_manager_my_job_do_action( $action ) {
+	public static function event_manager_my_event_do_action( $action ) {
 		if ( 'mark_filled' === $action || 'mark_not_filled' === $action ) {
-			self::get_transient_version( 'get_job_listings', true );
+			self::get_transient_version( 'get_event_listings', true );
 		}
 	}
 
 	/**
-	 * Refreshes the Job Listing cache when terms are updated.
+	 * Refreshes the event Listing cache when terms are updated.
 	 *
 	 * @param string|int $object_id
 	 * @param string     $terms
@@ -67,7 +67,7 @@ class WP_Job_Manager_Cache_Helper {
 	}
 
 	/**
-	 * Refreshes the Job Listing cache when terms are updated.
+	 * Refreshes the event Listing cache when terms are updated.
 	 *
 	 * @param string|int $term_id
 	 * @param string|int $tt_id
@@ -155,7 +155,7 @@ class WP_Job_Manager_Cache_Helper {
 		 * @param string  $old_status Old post status.
 		 * @param WP_Post $post       Post object.
 		 */
-		$post_types = apply_filters( 'wpjm_count_cache_supported_post_types', [ 'job_listing' ], $new_status, $old_status, $post );
+		$post_types = apply_filters( 'wpjm_count_cache_supported_post_types', [ 'event_listing' ], $new_status, $old_status, $post );
 
 		// Only proceed when statuses do not match, and post type is supported post type.
 		if ( $new_status === $old_status || ! in_array( $post->post_type, $post_types, true ) ) {
@@ -219,7 +219,7 @@ class WP_Job_Manager_Cache_Helper {
 	 *
 	 * @return int
 	 */
-	public static function get_listings_count( $post_type = 'job_listing', $status = 'pending', $force = false ) {
+	public static function get_listings_count( $post_type = 'event_listing', $status = 'pending', $force = false ) {
 
 		// Get user based cache transient.
 		$user_id   = get_current_user_id();
@@ -241,4 +241,4 @@ class WP_Job_Manager_Cache_Helper {
 	}
 }
 
-WP_Job_Manager_Cache_Helper::init();
+WP_event_Manager_Cache_Helper::init();

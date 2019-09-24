@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Helper_API.
+ * File containing the class WP_event_Manager_Helper_API.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WP_Job_Manager_Helper_API
+ * WP_event_Manager_Helper_API
  */
-class WP_Job_Manager_Helper_API {
+class WP_event_Manager_Helper_API {
 
-	const API_BASE_URL = 'https://wpjobmanager.com/';
+	const API_BASE_URL = 'https://wpeventmanager.com/';
 
 	/**
 	 * The single instance of the class.
@@ -171,11 +171,11 @@ class WP_Job_Manager_Helper_API {
 	 */
 	private function get_api_base_url() {
 		if (
-			defined( 'JOB_MANAGER_VERSION' )
-			&& defined( 'JOB_MANAGER_DEV_API_BASE_URL' )
-			&& '-dev' === substr( JOB_MANAGER_VERSION, -4 )
+			defined( 'event_MANAGER_VERSION' )
+			&& defined( 'event_MANAGER_DEV_API_BASE_URL' )
+			&& '-dev' === substr( event_MANAGER_VERSION, -4 )
 		) {
-			return JOB_MANAGER_DEV_API_BASE_URL;
+			return event_MANAGER_DEV_API_BASE_URL;
 		}
 		return self::API_BASE_URL;
 	}

@@ -1,10 +1,10 @@
 <?php
 /**
- * Single job listing.
+ * Single event listing.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/content-single-job_listing.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/content-single-event_listing.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -18,33 +18,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post;
 ?>
-<div class="single_job_listing">
-	<?php if ( get_option( 'job_manager_hide_expired_content', 1 ) && 'expired' === $post->post_status ) : ?>
-		<div class="job-manager-info"><?php _e( 'This listing has expired.', 'wp-event-manager' ); ?></div>
+<div class="single_event_listing">
+	<?php if ( get_option( 'event_manager_hide_expired_content', 1 ) && 'expired' === $post->post_status ) : ?>
+		<div class="event-manager-info"><?php _e( 'This listing has expired.', 'wp-event-manager' ); ?></div>
 	<?php else : ?>
 		<?php
 			/**
-			 * single_job_listing_start hook
+			 * single_event_listing_start hook
 			 *
-			 * @hooked job_listing_meta_display - 20
-			 * @hooked job_listing_company_display - 30
+			 * @hooked event_listing_meta_display - 20
+			 * @hooked event_listing_company_display - 30
 			 */
-			do_action( 'single_job_listing_start' );
+			do_action( 'single_event_listing_start' );
 		?>
 
-		<div class="job_description">
-			<?php wpjm_the_job_description(); ?>
+		<div class="event_description">
+			<?php wpjm_the_event_description(); ?>
 		</div>
 
 		<?php if ( candidates_can_apply() ) : ?>
-			<?php get_job_manager_template( 'job-application.php' ); ?>
+			<?php get_event_manager_template( 'event-application.php' ); ?>
 		<?php endif; ?>
 
 		<?php
 			/**
-			 * single_job_listing_end hook
+			 * single_event_listing_end hook
 			 */
-			do_action( 'single_job_listing_end' );
+			do_action( 'single_event_listing_end' );
 		?>
 	<?php endif; ?>
 </div>

@@ -1,10 +1,10 @@
 <?php
 /**
- * Show job application when viewing a single job listing.
+ * Show event application when viewing a single event listing.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/job-application.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/event-application.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,22 +15,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<?php if ( $apply = get_the_job_application_method() ) :
-	wp_enqueue_script( 'wp-event-manager-job-application' );
+<?php if ( $apply = get_the_event_application_method() ) :
+	wp_enqueue_script( 'wp-event-manager-event-application' );
 	?>
-	<div class="job_application application">
-		<?php do_action( 'job_application_start', $apply ); ?>
+	<div class="event_application application">
+		<?php do_action( 'event_application_start', $apply ); ?>
 
-		<input type="button" class="application_button button" value="<?php esc_attr_e( 'Apply for job', 'wp-event-manager' ); ?>" />
+		<input type="button" class="application_button button" value="<?php esc_attr_e( 'Apply for event', 'wp-event-manager' ); ?>" />
 
 		<div class="application_details">
 			<?php
 				/**
-				 * job_manager_application_details_email or job_manager_application_details_url hook
+				 * event_manager_application_details_email or event_manager_application_details_url hook
 				 */
-				do_action( 'job_manager_application_details_' . $apply->type, $apply );
+				do_action( 'event_manager_application_details_' . $apply->type, $apply );
 			?>
 		</div>
-		<?php do_action( 'job_application_end', $apply ); ?>
+		<?php do_action( 'event_application_end', $apply ); ?>
 	</div>
 <?php endif; ?>

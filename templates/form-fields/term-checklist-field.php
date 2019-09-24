@@ -1,10 +1,10 @@
 <?php
 /**
- * Shows `checkbox` form fields in a list from a list on job listing forms.
+ * Shows `checkbox` form fields in a list from a list on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/term-checklist-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/term-checklist-field.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<ul class="job-manager-term-checklist job-manager-term-checklist-<?php echo esc_attr( $key ); ?>">
+<ul class="event-manager-term-checklist event-manager-term-checklist-<?php echo esc_attr( $key ); ?>">
 <?php
 	require_once( ABSPATH . '/wp-admin/includes/template.php' );
 

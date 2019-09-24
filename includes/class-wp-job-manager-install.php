@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Install.
+ * File containing the class WP_event_Manager_Install.
  *
  * @package wp-event-manager
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Install {
+class WP_event_Manager_Install {
 
 	/**
 	 * Installs WP Event Manager.
@@ -28,48 +28,48 @@ class WP_Job_Manager_Install {
 		$is_new_install = false;
 
 		// Fresh installs should be prompted to set up their instance.
-		if ( ! get_option( 'wp_job_manager_version' ) ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin-notices.php';
-			WP_Job_Manager_Admin_Notices::add_notice( WP_Job_Manager_Admin_Notices::NOTICE_CORE_SETUP );
+		if ( ! get_option( 'wp_event_manager_version' ) ) {
+			include_once event_MANAGER_PLUGIN_DIR . '/includes/admin/class-wp-event-manager-admin-notices.php';
+			WP_event_Manager_Admin_Notices::add_notice( WP_event_Manager_Admin_Notices::NOTICE_CORE_SETUP );
 			$is_new_install = true;
 		}
 
 		// Update featured posts ordering.
-		if ( version_compare( get_option( 'wp_job_manager_version', JOB_MANAGER_VERSION ), '1.22.0', '<' ) ) {
+		if ( version_compare( get_option( 'wp_event_manager_version', event_MANAGER_VERSION ), '1.22.0', '<' ) ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One time data update.
-			$wpdb->query( "UPDATE {$wpdb->posts} p SET p.menu_order = 0 WHERE p.post_type='job_listing';" );
+			$wpdb->query( "UPDATE {$wpdb->posts} p SET p.menu_order = 0 WHERE p.post_type='event_listing';" );
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One time data update.
-			$wpdb->query( "UPDATE {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id SET p.menu_order = -1 WHERE pm.meta_key = '_featured' AND pm.meta_value='1' AND p.post_type='job_listing';" );
+			$wpdb->query( "UPDATE {$wpdb->posts} p LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id SET p.menu_order = -1 WHERE pm.meta_key = '_featured' AND pm.meta_value='1' AND p.post_type='event_listing';" );
 		}
 
 		// Update default term meta with employment types.
-		if ( version_compare( get_option( 'wp_job_manager_version', JOB_MANAGER_VERSION ), '1.28.0', '<' ) ) {
+		if ( version_compare( get_option( 'wp_event_manager_version', event_MANAGER_VERSION ), '1.28.0', '<' ) ) {
 			self::add_employment_types();
 		}
 
 		// Update legacy options.
-		if ( false === get_option( 'job_manager_submit_job_form_page_id', false ) && get_option( 'job_manager_submit_page_slug' ) ) {
-			$page_id = get_page_by_path( get_option( 'job_manager_submit_page_slug' ) )->ID;
-			update_option( 'job_manager_submit_job_form_page_id', $page_id );
+		if ( false === get_option( 'event_manager_submit_event_form_page_id', false ) && get_option( 'event_manager_submit_page_slug' ) ) {
+			$page_id = get_page_by_path( get_option( 'event_manager_submit_page_slug' ) )->ID;
+			update_option( 'event_manager_submit_event_form_page_id', $page_id );
 		}
-		if ( false === get_option( 'job_manager_job_dashboard_page_id', false ) && get_option( 'job_manager_job_dashboard_page_slug' ) ) {
-			$page_id = get_page_by_path( get_option( 'job_manager_job_dashboard_page_slug' ) )->ID;
-			update_option( 'job_manager_job_dashboard_page_id', $page_id );
+		if ( false === get_option( 'event_manager_event_dashboard_page_id', false ) && get_option( 'event_manager_event_dashboard_page_slug' ) ) {
+			$page_id = get_page_by_path( get_option( 'event_manager_event_dashboard_page_slug' ) )->ID;
+			update_option( 'event_manager_event_dashboard_page_id', $page_id );
 		}
 
 		// Scheduled hook was removed in 1.33.4.
-		if ( wp_next_scheduled( 'job_manager_clear_expired_transients' ) ) {
-			wp_clear_scheduled_hook( 'job_manager_clear_expired_transients' );
+		if ( wp_next_scheduled( 'event_manager_clear_expired_transients' ) ) {
+			wp_clear_scheduled_hook( 'event_manager_clear_expired_transients' );
 		}
 
 		if ( $is_new_install ) {
-			$permalink_options                 = (array) json_decode( get_option( 'job_manager_permalinks', '[]' ), true );
-			$permalink_options['jobs_archive'] = '';
-			update_option( 'job_manager_permalinks', wp_json_encode( $permalink_options ) );
+			$permalink_options                 = (array) json_decode( get_option( 'event_manager_permalinks', '[]' ), true );
+			$permalink_options['events_archive'] = '';
+			update_option( 'event_manager_permalinks', wp_json_encode( $permalink_options ) );
 		}
 
-		delete_transient( 'wp_job_manager_addons_html' );
-		update_option( 'wp_job_manager_version', JOB_MANAGER_VERSION );
+		delete_transient( 'wp_event_manager_addons_html' );
+		update_option( 'wp_event_manager_version', event_MANAGER_VERSION );
 	}
 
 	/**
@@ -107,26 +107,26 @@ class WP_Job_Manager_Install {
 	private static function get_core_capabilities() {
 		return [
 			'core'        => [
-				'manage_job_listings',
+				'manage_event_listings',
 			],
-			'job_listing' => [
-				'edit_job_listing',
-				'read_job_listing',
-				'delete_job_listing',
-				'edit_job_listings',
-				'edit_others_job_listings',
-				'publish_job_listings',
-				'read_private_job_listings',
-				'delete_job_listings',
-				'delete_private_job_listings',
-				'delete_published_job_listings',
-				'delete_others_job_listings',
-				'edit_private_job_listings',
-				'edit_published_job_listings',
-				'manage_job_listing_terms',
-				'edit_job_listing_terms',
-				'delete_job_listing_terms',
-				'assign_job_listing_terms',
+			'event_listing' => [
+				'edit_event_listing',
+				'read_event_listing',
+				'delete_event_listing',
+				'edit_event_listings',
+				'edit_others_event_listings',
+				'publish_event_listings',
+				'read_private_event_listings',
+				'delete_event_listings',
+				'delete_private_event_listings',
+				'delete_published_event_listings',
+				'delete_others_event_listings',
+				'edit_private_event_listings',
+				'edit_published_event_listings',
+				'manage_event_listing_terms',
+				'edit_event_listing_terms',
+				'delete_event_listing_terms',
+				'assign_event_listing_terms',
 			],
 		];
 	}
@@ -135,7 +135,7 @@ class WP_Job_Manager_Install {
 	 * Sets up the default WP Event Manager terms.
 	 */
 	private static function default_terms() {
-		if ( 1 === intval( get_option( 'job_manager_installed_terms' ) ) ) {
+		if ( 1 === intval( get_option( 'event_manager_installed_terms' ) ) ) {
 			return;
 		}
 
@@ -153,7 +153,7 @@ class WP_Job_Manager_Install {
 			}
 		}
 
-		update_option( 'job_manager_installed_terms', 1 );
+		update_option( 'event_manager_installed_terms', 1 );
 	}
 
 	/**
@@ -163,7 +163,7 @@ class WP_Job_Manager_Install {
 	 */
 	private static function get_default_taxonomy_terms() {
 		return [
-			'job_listing_type' => [
+			'event_listing_type' => [
 				'Full Time'  => [
 					'employment_type' => 'FULL_TIME',
 				],
@@ -184,14 +184,14 @@ class WP_Job_Manager_Install {
 	}
 
 	/**
-	 * Adds the employment type to default job types when updating from a previous WP Event Manager version.
+	 * Adds the employment type to default event types when updating from a previous WP Event Manager version.
 	 */
 	private static function add_employment_types() {
 		$taxonomies = self::get_default_taxonomy_terms();
-		$terms      = $taxonomies['job_listing_type'];
+		$terms      = $taxonomies['event_listing_type'];
 
 		foreach ( $terms as $term => $meta ) {
-			$term = get_term_by( 'slug', sanitize_title( $term ), 'job_listing_type' );
+			$term = get_term_by( 'slug', sanitize_title( $term ), 'event_listing_type' );
 			if ( $term ) {
 				foreach ( $meta as $meta_key => $meta_value ) {
 					if ( ! get_term_meta( (int) $term->term_id, $meta_key, true ) ) {

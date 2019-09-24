@@ -1,10 +1,10 @@
 <?php
 /**
- * Email content for showing job details.
+ * Email content for showing event details.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/emails/plain/email-job-details.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/emails/plain/email-event-details.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template

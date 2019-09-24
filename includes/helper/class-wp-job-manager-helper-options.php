@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Helper_Options.
+ * File containing the class WP_event_Manager_Helper_Options.
  *
  * @package wp-event-manager
  */
@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WP_Job_Manager_Helper_Options
+ * WP_event_Manager_Helper_Options
  */
-class WP_Job_Manager_Helper_Options {
-	const OPTION_NAME = 'job_manager_helper';
+class WP_event_Manager_Helper_Options {
+	const OPTION_NAME = 'event_manager_helper';
 
 	/**
 	 * Update a WPJM plugin's licence data.

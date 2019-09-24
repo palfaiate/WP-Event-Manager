@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Usage_Tracking_Data.
+ * File containing the class WP_event_Manager_Usage_Tracking_Data.
  *
  * @package wp-event-manager
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.30.0
  */
-class WP_Job_Manager_Usage_Tracking_Data {
+class WP_event_Manager_Usage_Tracking_Data {
 	/**
 	 * Get the usage tracking data to send.
 	 *
@@ -24,42 +24,42 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	 **/
 	public static function get_usage_data() {
 		$categories  = 0;
-		$count_posts = wp_count_posts( 'job_listing' );
+		$count_posts = wp_count_posts( 'event_listing' );
 
-		if ( taxonomy_exists( 'job_listing_category' ) ) {
-			$categories = wp_count_terms( 'job_listing_category', [ 'hide_empty' => false ] );
+		if ( taxonomy_exists( 'event_listing_category' ) ) {
+			$categories = wp_count_terms( 'event_listing_category', [ 'hide_empty' => false ] );
 		}
 
 		return [
 			'employers'                   => self::get_employer_count(),
-			'job_categories'              => $categories,
-			'job_categories_desc'         => self::get_job_category_has_description_count(),
-			'job_types'                   => wp_count_terms( 'job_listing_type', [ 'hide_empty' => false ] ),
-			'job_types_desc'              => self::get_job_type_has_description_count(),
-			'job_types_emp_type'          => self::get_job_type_has_employment_type_count(),
-			'jobs_type'                   => self::get_job_type_count(),
-			'jobs_logo'                   => self::get_company_logo_count(),
-			'jobs_status_expired'         => isset( $count_posts->expired ) ? $count_posts->expired : 0,
-			'jobs_status_pending'         => $count_posts->pending,
-			'jobs_status_pending_payment' => isset( $count_posts->pending_payment ) ? $count_posts->pending_payment : 0,
-			'jobs_status_preview'         => isset( $count_posts->preview ) ? $count_posts->preview : 0,
-			'jobs_status_publish'         => $count_posts->publish,
-			'jobs_location'               => self::get_jobs_count_with_meta( '_job_location' ),
-			'jobs_app_contact'            => self::get_jobs_count_with_meta( '_application' ),
-			'jobs_company_name'           => self::get_jobs_count_with_meta( '_company_name' ),
-			'jobs_company_site'           => self::get_jobs_count_with_meta( '_company_website' ),
-			'jobs_company_tagline'        => self::get_jobs_count_with_meta( '_company_tagline' ),
-			'jobs_company_twitter'        => self::get_jobs_count_with_meta( '_company_twitter' ),
-			'jobs_company_video'          => self::get_jobs_count_with_meta( '_company_video' ),
-			'jobs_expiry'                 => self::get_jobs_count_with_meta( '_job_expires' ),
-			'jobs_featured'               => self::get_jobs_count_with_checked_meta( '_featured' ),
-			'jobs_filled'                 => self::get_jobs_count_with_checked_meta( '_filled' ),
-			'jobs_freelance'              => self::get_jobs_by_type_count( 'freelance' ),
-			'jobs_full_time'              => self::get_jobs_by_type_count( 'full-time' ),
-			'jobs_intern'                 => self::get_jobs_by_type_count( 'internship' ),
-			'jobs_part_time'              => self::get_jobs_by_type_count( 'part-time' ),
-			'jobs_temp'                   => self::get_jobs_by_type_count( 'temporary' ),
-			'jobs_by_guests'              => self::get_jobs_by_guests(),
+			'event_categories'              => $categories,
+			'event_categories_desc'         => self::get_event_category_has_description_count(),
+			'event_types'                   => wp_count_terms( 'event_listing_type', [ 'hide_empty' => false ] ),
+			'event_types_desc'              => self::get_event_type_has_description_count(),
+			'event_types_emp_type'          => self::get_event_type_has_employment_type_count(),
+			'events_type'                   => self::get_event_type_count(),
+			'events_logo'                   => self::get_company_logo_count(),
+			'events_status_expired'         => isset( $count_posts->expired ) ? $count_posts->expired : 0,
+			'events_status_pending'         => $count_posts->pending,
+			'events_status_pending_payment' => isset( $count_posts->pending_payment ) ? $count_posts->pending_payment : 0,
+			'events_status_preview'         => isset( $count_posts->preview ) ? $count_posts->preview : 0,
+			'events_status_publish'         => $count_posts->publish,
+			'events_location'               => self::get_events_count_with_meta( '_event_location' ),
+			'events_app_contact'            => self::get_events_count_with_meta( '_application' ),
+			'events_company_name'           => self::get_events_count_with_meta( '_company_name' ),
+			'events_company_site'           => self::get_events_count_with_meta( '_company_website' ),
+			'events_company_tagline'        => self::get_events_count_with_meta( '_company_tagline' ),
+			'events_company_twitter'        => self::get_events_count_with_meta( '_company_twitter' ),
+			'events_company_video'          => self::get_events_count_with_meta( '_company_video' ),
+			'events_expiry'                 => self::get_events_count_with_meta( '_event_expires' ),
+			'events_featured'               => self::get_events_count_with_checked_meta( '_featured' ),
+			'events_filled'                 => self::get_events_count_with_checked_meta( '_filled' ),
+			'events_freelance'              => self::get_events_by_type_count( 'freelance' ),
+			'events_full_time'              => self::get_events_by_type_count( 'full-time' ),
+			'events_intern'                 => self::get_events_by_type_count( 'internship' ),
+			'events_part_time'              => self::get_events_by_type_count( 'part-time' ),
+			'events_temp'                   => self::get_events_by_type_count( 'temporary' ),
+			'events_by_guests'              => self::get_events_by_guests(),
 			'official_extensions'         => self::get_official_extensions_count(),
 			'licensed_extensions'         => self::get_licensed_extensions_count(),
 		];
@@ -82,21 +82,21 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job categories that have a description.
+	 * Get the number of event categories that have a description.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @return int Number of job categories with a description.
+	 * @return int Number of event categories with a description.
 	 **/
-	private static function get_job_category_has_description_count() {
-		if ( ! taxonomy_exists( 'job_listing_category' ) ) {
+	private static function get_event_category_has_description_count() {
+		if ( ! taxonomy_exists( 'event_listing_category' ) ) {
 			return 0;
 		}
 
 		$count = 0;
 		$terms = get_terms(
 			[
-				'taxonomy'   => 'job_listing_category',
+				'taxonomy'   => 'event_listing_category',
 				'hide_empty' => false,
 			]
 		);
@@ -113,17 +113,17 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job types that have a description.
+	 * Get the number of event types that have a description.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @return int Number of job types with a description.
+	 * @return int Number of event types with a description.
 	 **/
-	private static function get_job_type_has_description_count() {
+	private static function get_event_type_has_description_count() {
 		$count = 0;
 		$terms = get_terms(
 			[
-				'taxonomy'   => 'job_listing_type',
+				'taxonomy'   => 'event_listing_type',
 				'hide_empty' => false,
 			]
 		);
@@ -140,17 +140,17 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job types that have Employment Type set.
+	 * Get the number of event types that have Employment Type set.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @return int Number of job types with an employment type.
+	 * @return int Number of event types with an employment type.
 	 **/
-	private static function get_job_type_has_employment_type_count() {
+	private static function get_event_type_has_employment_type_count() {
 		$count = 0;
 		$terms = get_terms(
 			[
-				'taxonomy'   => 'job_listing_type',
+				'taxonomy'   => 'event_listing_type',
 				'hide_empty' => false,
 			]
 		);
@@ -167,25 +167,25 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the total number of published or expired jobs for a particular job type.
+	 * Get the total number of published or expired events for a particular event type.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @param string $job_type Job type to search for.
+	 * @param string $event_type event type to search for.
 	 *
-	 * @return int Number of published or expired jobs for a particular job type.
+	 * @return int Number of published or expired events for a particular event type.
 	 **/
-	private static function get_jobs_by_type_count( $job_type ) {
+	private static function get_events_by_type_count( $event_type ) {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'expired', 'publish' ],
 				'fields'      => 'ids',
 				'tax_query'   => [
 					[
 						'field'    => 'slug',
-						'taxonomy' => 'job_listing_type',
-						'terms'    => $job_type,
+						'taxonomy' => 'event_listing_type',
+						'terms'    => $event_type,
 					],
 				],
 			]
@@ -195,16 +195,16 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job listings that have a company logo.
+	 * Get the number of event listings that have a company logo.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @return int Number of job listings with a company logo.
+	 * @return int Number of event listings with a company logo.
 	 */
 	private static function get_company_logo_count() {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'expired', 'publish' ],
 				'fields'      => 'ids',
 				'meta_query'  => [
@@ -220,21 +220,21 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the total number of job listings that have one or more job types selected.
+	 * Get the total number of event listings that have one or more event types selected.
 	 *
 	 * @since 1.30.0
 	 *
-	 * @return int Number of job listings associated with at least one job type.
+	 * @return int Number of event listings associated with at least one event type.
 	 **/
-	private static function get_job_type_count() {
+	private static function get_event_type_count() {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'expired', 'publish' ],
 				'fields'      => 'ids',
 				'tax_query'   => [
 					[
-						'taxonomy' => 'job_listing_type',
+						'taxonomy' => 'event_listing_type',
 						'operator' => 'EXISTS',
 					],
 				],
@@ -245,16 +245,16 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job listings where the given meta value is non-empty.
+	 * Get the number of event listings where the given meta value is non-empty.
 	 *
 	 * @param string $meta_key the key for the meta value to check.
 	 *
-	 * @return int the number of job listings.
+	 * @return int the number of event listings.
 	 */
-	private static function get_jobs_count_with_meta( $meta_key ) {
+	private static function get_events_count_with_meta( $meta_key ) {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'publish', 'expired' ],
 				'fields'      => 'ids',
 				'meta_query'  => [
@@ -271,17 +271,17 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job listings where the given checkbox meta value is
+	 * Get the number of event listings where the given checkbox meta value is
 	 * checked.
 	 *
 	 * @param string $meta_key the key for the meta value to check.
 	 *
-	 * @return int the number of job listings.
+	 * @return int the number of event listings.
 	 */
-	private static function get_jobs_count_with_checked_meta( $meta_key ) {
+	private static function get_events_count_with_checked_meta( $meta_key ) {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'publish', 'expired' ],
 				'fields'      => 'ids',
 				'meta_query'  => [
@@ -297,14 +297,14 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	}
 
 	/**
-	 * Get the number of job listings posted by guests.
+	 * Get the number of event listings posted by guests.
 	 *
-	 * @return int the number of job listings.
+	 * @return int the number of event listings.
 	 */
-	private static function get_jobs_by_guests() {
+	private static function get_events_by_guests() {
 		$query = new WP_Query(
 			[
-				'post_type'   => 'job_listing',
+				'post_type'   => 'event_listing',
 				'post_status' => [ 'publish', 'expired' ],
 				'fields'      => 'ids',
 				'author__in'  => [ 0 ],
@@ -322,11 +322,11 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	 * @return array
 	 */
 	private static function get_official_extensions( $licensed_only ) {
-		if ( ! class_exists( 'WP_Job_Manager_Helper' ) ) {
-			include_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
+		if ( ! class_exists( 'WP_event_Manager_Helper' ) ) {
+			include_once event_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper.php';
 		}
 
-		$helper         = WP_Job_Manager_Helper::instance();
+		$helper         = WP_event_Manager_Helper::instance();
 		$active_plugins = $helper->get_installed_plugins( true );
 
 		if ( $licensed_only ) {
@@ -372,7 +372,7 @@ class WP_Job_Manager_Usage_Tracking_Data {
 	 */
 	public static function get_event_logging_base_fields() {
 		$base_fields = [
-			'job_listings' => wp_count_posts( 'job_listing' )->publish,
+			'event_listings' => wp_count_posts( 'event_listing' )->publish,
 			'paid'         => self::has_paid_extensions() ? 1 : 0,
 		];
 
@@ -381,6 +381,6 @@ class WP_Job_Manager_Usage_Tracking_Data {
 		 *
 		 * @param array $base_fields The default base fields.
 		 */
-		return apply_filters( 'job_manager_event_logging_base_fields', $base_fields );
+		return apply_filters( 'event_manager_event_logging_base_fields', $base_fields );
 	}
 }

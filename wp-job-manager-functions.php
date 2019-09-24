@@ -7,16 +7,16 @@
  * @package wp-event-manager
  */
 
-if ( ! function_exists( 'get_job_listings' ) ) :
+if ( ! function_exists( 'get_event_listings' ) ) :
 	/**
-	 * Queries job listings with certain criteria and returns them.
+	 * Queries event listings with certain criteria and returns them.
 	 *
 	 * @since 1.0.5
-	 * @param string|array|object $args Arguments used to retrieve job listings.
+	 * @param string|array|object $args Arguments used to retrieve event listings.
 	 * @return WP_Query
 	 */
-	function get_job_listings( $args = [] ) {
-		global $job_manager_keyword;
+	function get_event_listings( $args = [] ) {
+		global $event_manager_keyword;
 
 		$args = wp_parse_args(
 			$args,
@@ -24,7 +24,7 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 				'search_location'   => '',
 				'search_keywords'   => '',
 				'search_categories' => [],
-				'job_types'         => [],
+				'event_types'         => [],
 				'post_status'       => [],
 				'offset'            => 0,
 				'posts_per_page'    => 20,
@@ -37,24 +37,24 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 		);
 
 		/**
-		 * Perform actions that need to be done prior to the start of the job listings query.
+		 * Perform actions that need to be done prior to the start of the event listings query.
 		 *
 		 * @since 1.26.0
 		 *
-		 * @param array $args Arguments used to retrieve job listings.
+		 * @param array $args Arguments used to retrieve event listings.
 		 */
-		do_action( 'get_job_listings_init', $args );
+		do_action( 'get_event_listings_init', $args );
 
 		if ( ! empty( $args['post_status'] ) ) {
 			$post_status = $args['post_status'];
-		} elseif ( 0 === intval( get_option( 'job_manager_hide_expired', get_option( 'job_manager_hide_expired_content', 1 ) ) ) ) {
+		} elseif ( 0 === intval( get_option( 'event_manager_hide_expired', get_option( 'event_manager_hide_expired_content', 1 ) ) ) ) {
 			$post_status = [ 'publish', 'expired' ];
 		} else {
 			$post_status = 'publish';
 		}
 
 		$query_args = [
-			'post_type'              => 'job_listing',
+			'post_type'              => 'event_listing',
 			'post_status'            => $post_status,
 			'ignore_sticky_posts'    => 1,
 			'offset'                 => absint( $args['offset'] ),
@@ -74,7 +74,7 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 		}
 
 		if ( ! empty( $args['search_location'] ) ) {
-			$location_meta_keys = [ 'geolocation_formatted_address', '_job_location', 'geolocation_state_long' ];
+			$location_meta_keys = [ 'geolocation_formatted_address', '_event_location', 'geolocation_state_long' ];
 			$location_search    = [ 'relation' => 'OR' ];
 			foreach ( $location_meta_keys as $meta_key ) {
 				$location_search[] = [
@@ -94,7 +94,7 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 			];
 		}
 
-		if ( ! is_null( $args['filled'] ) || 1 === absint( get_option( 'job_manager_hide_filled_positions' ) ) ) {
+		if ( ! is_null( $args['filled'] ) || 1 === absint( get_option( 'event_manager_hide_filled_positions' ) ) ) {
 			$query_args['meta_query'][] = [
 				'key'     => '_filled',
 				'value'   => '1',
@@ -102,19 +102,19 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 			];
 		}
 
-		if ( ! empty( $args['job_types'] ) ) {
+		if ( ! empty( $args['event_types'] ) ) {
 			$query_args['tax_query'][] = [
-				'taxonomy' => 'job_listing_type',
+				'taxonomy' => 'event_listing_type',
 				'field'    => 'slug',
-				'terms'    => $args['job_types'],
+				'terms'    => $args['event_types'],
 			];
 		}
 
 		if ( ! empty( $args['search_categories'] ) ) {
 			$field                     = is_numeric( $args['search_categories'][0] ) ? 'term_id' : 'slug';
-			$operator                  = 'all' === get_option( 'job_manager_category_filter_type', 'all' ) && count( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
+			$operator                  = 'all' === get_option( 'event_manager_category_filter_type', 'all' ) && count( $args['search_categories'] ) > 1 ? 'AND' : 'IN';
 			$query_args['tax_query'][] = [
-				'taxonomy'         => 'job_listing_category',
+				'taxonomy'         => 'event_listing_category',
 				'field'            => $field,
 				'terms'            => array_values( $args['search_categories'] ),
 				'include_children' => 'AND' !== $operator,
@@ -137,14 +137,14 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 			];
 		}
 
-		$job_manager_keyword = sanitize_text_field( $args['search_keywords'] );
+		$event_manager_keyword = sanitize_text_field( $args['search_keywords'] );
 
-		if ( ! empty( $job_manager_keyword ) && strlen( $job_manager_keyword ) >= apply_filters( 'job_manager_get_listings_keyword_length_threshold', 2 ) ) {
-			$query_args['s'] = $job_manager_keyword;
-			add_filter( 'posts_search', 'get_job_listings_keyword_search' );
+		if ( ! empty( $event_manager_keyword ) && strlen( $event_manager_keyword ) >= apply_filters( 'event_manager_get_listings_keyword_length_threshold', 2 ) ) {
+			$query_args['s'] = $event_manager_keyword;
+			add_filter( 'posts_search', 'get_event_listings_keyword_search' );
 		}
 
-		$query_args = apply_filters( 'job_manager_get_listings', $query_args, $args );
+		$query_args = apply_filters( 'event_manager_get_listings', $query_args, $args );
 
 		if ( empty( $query_args['meta_query'] ) ) {
 			unset( $query_args['meta_query'] );
@@ -158,14 +158,14 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 		$query_args['lang'] = apply_filters( 'wpjm_lang', null );
 
 		// Filter args.
-		$query_args = apply_filters( 'get_job_listings_query_args', $query_args, $args );
+		$query_args = apply_filters( 'get_event_listings_query_args', $query_args, $args );
 
-		do_action( 'before_get_job_listings', $query_args, $args );
+		do_action( 'before_get_event_listings', $query_args, $args );
 
 		// Cache results.
-		if ( apply_filters( 'get_job_listings_cache_results', true ) ) {
+		if ( apply_filters( 'get_event_listings_cache_results', true ) ) {
 			$to_hash              = wp_json_encode( $query_args );
-			$query_args_hash      = 'jm_' . md5( $to_hash . JOB_MANAGER_VERSION ) . WP_Job_Manager_Cache_Helper::get_transient_version( 'get_job_listings' );
+			$query_args_hash      = 'jm_' . md5( $to_hash . event_MANAGER_VERSION ) . WP_event_Manager_Cache_Helper::get_transient_version( 'get_event_listings' );
 			$result               = false;
 			$cached_query_results = true;
 			$cached_query_posts   = get_transient( $query_args_hash );
@@ -218,9 +218,9 @@ if ( ! function_exists( 'get_job_listings' ) ) :
 			$result = new WP_Query( $query_args );
 		}
 
-		do_action( 'after_get_job_listings', $query_args, $args );
+		do_action( 'after_get_event_listings', $query_args, $args );
 
-		remove_filter( 'posts_search', 'get_job_listings_keyword_search' );
+		remove_filter( 'posts_search', 'get_event_listings_keyword_search' );
 
 		return $result;
 	}
@@ -250,7 +250,7 @@ if ( ! function_exists( '_wpjm_shuffle_featured_post_results_helper' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'get_job_listings_keyword_search' ) ) :
+if ( ! function_exists( 'get_event_listings_keyword_search' ) ) :
 	/**
 	 * Adds join and where query for keywords.
 	 *
@@ -260,12 +260,12 @@ if ( ! function_exists( 'get_job_listings_keyword_search' ) ) :
 	 * @param string $search
 	 * @return string
 	 */
-	function get_job_listings_keyword_search( $search ) {
-		global $wpdb, $job_manager_keyword;
+	function get_event_listings_keyword_search( $search ) {
+		global $wpdb, $event_manager_keyword;
 
 		// Searchable Meta Keys: set to empty to search all meta keys.
 		$searchable_meta_keys = [
-			'_job_location',
+			'_event_location',
 			'_company_name',
 			'_application',
 			'_company_name',
@@ -274,35 +274,35 @@ if ( ! function_exists( 'get_job_listings_keyword_search' ) ) :
 			'_company_twitter',
 		];
 
-		$searchable_meta_keys = apply_filters( 'job_listing_searchable_meta_keys', $searchable_meta_keys );
+		$searchable_meta_keys = apply_filters( 'event_listing_searchable_meta_keys', $searchable_meta_keys );
 
 		// Set Search DB Conditions.
 		$conditions = [];
 
 		// Search Post Meta.
-		if ( apply_filters( 'job_listing_search_post_meta', true ) ) {
+		if ( apply_filters( 'event_listing_search_post_meta', true ) ) {
 
 			// Only selected meta keys.
 			if ( $searchable_meta_keys ) {
-				$conditions[] = "{$wpdb->posts}.ID IN ( SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key IN ( '" . implode( "','", array_map( 'esc_sql', $searchable_meta_keys ) ) . "' ) AND meta_value LIKE '%" . esc_sql( $job_manager_keyword ) . "%' )";
+				$conditions[] = "{$wpdb->posts}.ID IN ( SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key IN ( '" . implode( "','", array_map( 'esc_sql', $searchable_meta_keys ) ) . "' ) AND meta_value LIKE '%" . esc_sql( $event_manager_keyword ) . "%' )";
 			} else {
 				// No meta keys defined, search all post meta value.
-				$conditions[] = "{$wpdb->posts}.ID IN ( SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%" . esc_sql( $job_manager_keyword ) . "%' )";
+				$conditions[] = "{$wpdb->posts}.ID IN ( SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%" . esc_sql( $event_manager_keyword ) . "%' )";
 			}
 		}
 
 		// Search taxonomy.
-		$conditions[] = "{$wpdb->posts}.ID IN ( SELECT object_id FROM {$wpdb->term_relationships} AS tr LEFT JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id LEFT JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id WHERE t.name LIKE '%" . esc_sql( $job_manager_keyword ) . "%' )";
+		$conditions[] = "{$wpdb->posts}.ID IN ( SELECT object_id FROM {$wpdb->term_relationships} AS tr LEFT JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id LEFT JOIN {$wpdb->terms} AS t ON tt.term_id = t.term_id WHERE t.name LIKE '%" . esc_sql( $event_manager_keyword ) . "%' )";
 
 		/**
-		 * Filters the conditions to use when querying job listings. Resulting array is joined with OR statements.
+		 * Filters the conditions to use when querying event listings. Resulting array is joined with OR statements.
 		 *
 		 * @since 1.26.0
 		 *
-		 * @param array  $conditions          Conditions to join by OR when querying job listings.
-		 * @param string $job_manager_keyword Search query.
+		 * @param array  $conditions          Conditions to join by OR when querying event listings.
+		 * @param string $event_manager_keyword Search query.
 		 */
-		$conditions = apply_filters( 'job_listing_search_conditions', $conditions, $job_manager_keyword );
+		$conditions = apply_filters( 'event_listing_search_conditions', $conditions, $event_manager_keyword );
 		if ( empty( $conditions ) ) {
 			return $search;
 		}
@@ -320,16 +320,16 @@ if ( ! function_exists( 'get_job_listings_keyword_search' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'get_job_listing_post_statuses' ) ) :
+if ( ! function_exists( 'get_event_listing_post_statuses' ) ) :
 	/**
-	 * Gets post statuses used for jobs.
+	 * Gets post statuses used for events.
 	 *
 	 * @since 1.12.0
 	 * @return array
 	 */
-	function get_job_listing_post_statuses() {
+	function get_event_listing_post_statuses() {
 		return apply_filters(
-			'job_listing_post_statuses',
+			'event_listing_post_statuses',
 			[
 				'draft'           => _x( 'Draft', 'post status', 'wp-event-manager' ),
 				'expired'         => _x( 'Expired', 'post status', 'wp-event-manager' ),
@@ -342,19 +342,19 @@ if ( ! function_exists( 'get_job_listing_post_statuses' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'get_featured_job_ids' ) ) :
+if ( ! function_exists( 'get_featured_event_ids' ) ) :
 	/**
-	 * Gets the ids of featured jobs.
+	 * Gets the ids of featured events.
 	 *
 	 * @since 1.0.4
 	 * @return array
 	 */
-	function get_featured_job_ids() {
+	function get_featured_event_ids() {
 		return get_posts(
 			[
 				'posts_per_page'   => -1,
 				'suppress_filters' => false,
-				'post_type'        => 'job_listing',
+				'post_type'        => 'event_listing',
 				'post_status'      => 'publish',
 				'meta_key'         => '_featured',
 				'meta_value'       => '1',
@@ -364,16 +364,16 @@ if ( ! function_exists( 'get_featured_job_ids' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'get_job_listing_types' ) ) :
+if ( ! function_exists( 'get_event_listing_types' ) ) :
 	/**
-	 * Gets job listing types.
+	 * Gets event listing types.
 	 *
 	 * @since 1.0.0
 	 * @param string|array $fields
 	 * @return WP_Term[]
 	 */
-	function get_job_listing_types( $fields = 'all' ) {
-		if ( ! get_option( 'job_manager_enable_types' ) ) {
+	function get_event_listing_types( $fields = 'all' ) {
+		if ( ! get_option( 'event_manager_enable_types' ) ) {
 			return [];
 		} else {
 			$args = [
@@ -383,25 +383,25 @@ if ( ! function_exists( 'get_job_listing_types' ) ) :
 				'orderby'    => 'name',
 			];
 
-			$args = apply_filters( 'get_job_listing_types_args', $args );
+			$args = apply_filters( 'get_event_listing_types_args', $args );
 
 			// Prevent users from filtering the taxonomy.
-			$args['taxonomy'] = 'job_listing_type';
+			$args['taxonomy'] = 'event_listing_type';
 
 			return get_terms( $args );
 		}
 	}
 endif;
 
-if ( ! function_exists( 'get_job_listing_categories' ) ) :
+if ( ! function_exists( 'get_event_listing_categories' ) ) :
 	/**
-	 * Gets job categories.
+	 * Gets event categories.
 	 *
 	 * @since 1.0.0
 	 * @return array
 	 */
-	function get_job_listing_categories() {
-		if ( ! get_option( 'job_manager_enable_categories' ) ) {
+	function get_event_listing_categories() {
+		if ( ! get_option( 'event_manager_enable_categories' ) ) {
 			return [];
 		}
 
@@ -418,43 +418,43 @@ if ( ! function_exists( 'get_job_listing_categories' ) ) :
 		 *
 		 * @param array $args
 		 */
-		$args = apply_filters( 'get_job_listing_category_args', $args );
+		$args = apply_filters( 'get_event_listing_category_args', $args );
 
 		// Prevent users from filtering the taxonomy.
-		$args['taxonomy'] = 'job_listing_category';
+		$args['taxonomy'] = 'event_listing_category';
 
 		return get_terms( $args );
 	}
 endif;
 
-if ( ! function_exists( 'job_manager_get_filtered_links' ) ) :
+if ( ! function_exists( 'event_manager_get_filtered_links' ) ) :
 	/**
-	 * Shows links after filtering jobs
+	 * Shows links after filtering events
 	 *
 	 * @since 1.0.6
 	 * @param array $args
 	 * @return string
 	 */
-	function job_manager_get_filtered_links( $args = [] ) {
-		$job_categories = [];
-		$types          = get_job_listing_types();
+	function event_manager_get_filtered_links( $args = [] ) {
+		$event_categories = [];
+		$types          = get_event_listing_types();
 
 		// Convert to slugs.
 		if ( $args['search_categories'] ) {
 			foreach ( $args['search_categories'] as $category ) {
 				if ( is_numeric( $category ) ) {
-					$category_object = get_term_by( 'id', $category, 'job_listing_category' );
+					$category_object = get_term_by( 'id', $category, 'event_listing_category' );
 					if ( ! is_wp_error( $category_object ) ) {
-						$job_categories[] = $category_object->slug;
+						$event_categories[] = $category_object->slug;
 					}
 				} else {
-					$job_categories[] = $category;
+					$event_categories[] = $category;
 				}
 			}
 		}
 
 		$links = apply_filters(
-			'job_manager_job_filters_showing_jobs_links',
+			'event_manager_event_filters_showing_events_links',
 			[
 				'reset'    => [
 					'name' => __( 'Reset', 'wp-event-manager' ),
@@ -462,13 +462,13 @@ if ( ! function_exists( 'job_manager_get_filtered_links' ) ) :
 				],
 				'rss_link' => [
 					'name' => __( 'RSS', 'wp-event-manager' ),
-					'url'  => get_job_listing_rss_link(
+					'url'  => get_event_listing_rss_link(
 						apply_filters(
-							'job_manager_get_listings_custom_filter_rss_args',
+							'event_manager_get_listings_custom_filter_rss_args',
 							[
-								'job_types'       => isset( $args['filter_job_types'] ) ? implode( ',', $args['filter_job_types'] ) : '',
+								'event_types'       => isset( $args['filter_event_types'] ) ? implode( ',', $args['filter_event_types'] ) : '',
 								'search_location' => $args['search_location'],
-								'job_categories'  => implode( ',', $job_categories ),
+								'event_categories'  => implode( ',', $event_categories ),
 								'search_keywords' => $args['search_keywords'],
 							]
 						)
@@ -479,11 +479,11 @@ if ( ! function_exists( 'job_manager_get_filtered_links' ) ) :
 		);
 
 		if (
-			count( (array) $args['filter_job_types'] ) === count( $types )
+			count( (array) $args['filter_event_types'] ) === count( $types )
 			&& empty( $args['search_keywords'] )
 			&& empty( $args['search_location'] )
 			&& empty( $args['search_categories'] )
-			&& ! apply_filters( 'job_manager_get_listings_custom_filter', false )
+			&& ! apply_filters( 'event_manager_get_listings_custom_filter', false )
 		) {
 			unset( $links['reset'] );
 		}
@@ -498,21 +498,21 @@ if ( ! function_exists( 'job_manager_get_filtered_links' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'get_job_listing_rss_link' ) ) :
+if ( ! function_exists( 'get_event_listing_rss_link' ) ) :
 	/**
-	 * Get the Job Listing RSS link
+	 * Get the event Listing RSS link
 	 *
 	 * @since 1.0.0
 	 * @param array $args
 	 * @return string
 	 */
-	function get_job_listing_rss_link( $args = [] ) {
-		$rss_link = add_query_arg( urlencode_deep( array_merge( [ 'feed' => WP_Job_Manager_Post_Types::get_job_feed_name() ], $args ) ), home_url() );
+	function get_event_listing_rss_link( $args = [] ) {
+		$rss_link = add_query_arg( urlencode_deep( array_merge( [ 'feed' => WP_event_Manager_Post_Types::get_event_feed_name() ], $args ) ), home_url() );
 		return $rss_link;
 	}
 endif;
 
-if ( ! function_exists( 'wp_job_manager_notify_new_user' ) ) :
+if ( ! function_exists( 'wp_event_manager_notify_new_user' ) ) :
 	/**
 	 * Handles notification of new users.
 	 *
@@ -520,7 +520,7 @@ if ( ! function_exists( 'wp_job_manager_notify_new_user' ) ) :
 	 * @param  int         $user_id
 	 * @param  string|bool $password
 	 */
-	function wp_job_manager_notify_new_user( $user_id, $password ) {
+	function wp_event_manager_notify_new_user( $user_id, $password ) {
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '4.3.1', '<' ) ) {
@@ -536,7 +536,7 @@ if ( ! function_exists( 'wp_job_manager_notify_new_user' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
+if ( ! function_exists( 'wp_event_manager_create_account' ) ) :
 	/**
 	 * Handles account creation.
 	 *
@@ -545,7 +545,7 @@ if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
 	 * @param  string              $deprecated role string.
 	 * @return WP_Error|bool True if account was created.
 	 */
-	function wp_job_manager_create_account( $args, $deprecated = '' ) {
+	function wp_event_manager_create_account( $args, $deprecated = '' ) {
 		// Soft Deprecated in 1.20.0.
 		if ( ! is_array( $args ) ) {
 			$args = [
@@ -595,9 +595,9 @@ if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
 
 		// Final error checking.
 		$reg_errors = new WP_Error();
-		$reg_errors = apply_filters( 'job_manager_registration_errors', $reg_errors, $username, $email );
+		$reg_errors = apply_filters( 'event_manager_registration_errors', $reg_errors, $username, $email );
 
-		do_action( 'job_manager_register_post', $username, $email, $reg_errors );
+		do_action( 'event_manager_register_post', $username, $email, $reg_errors );
 
 		if ( $reg_errors->get_error_code() ) {
 			return $reg_errors;
@@ -616,7 +616,7 @@ if ( ! function_exists( 'wp_job_manager_create_account' ) ) :
 			$new_user['user_pass'] = wp_generate_password();
 		}
 
-		$user_id = wp_insert_user( apply_filters( 'job_manager_create_account_data', $new_user ) );
+		$user_id = wp_insert_user( apply_filters( 'event_manager_create_account_data', $new_user ) );
 
 		if ( is_wp_error( $user_id ) ) {
 			return $user_id;
@@ -668,12 +668,12 @@ function _wpjm_update_global_login_cookie( $logged_in_cookie ) {
  * @since 1.26.2
  * @return bool
  */
-function job_manager_user_can_upload_file_via_ajax() {
-	$can_upload = is_user_logged_in() && job_manager_user_can_post_job();
+function event_manager_user_can_upload_file_via_ajax() {
+	$can_upload = is_user_logged_in() && event_manager_user_can_post_event();
 
-	if ( has_filter( 'job_manager_ajax_file_upload_enabled' ) ) {
-		_deprecated_hook( 'job_manager_ajax_file_upload_enabled', '1.30.0', 'job_manager_user_can_upload_file_via_ajax' );
-		$can_upload = apply_filters( 'job_manager_ajax_file_upload_enabled', $can_upload );
+	if ( has_filter( 'event_manager_ajax_file_upload_enabled' ) ) {
+		_deprecated_hook( 'event_manager_ajax_file_upload_enabled', '1.30.0', 'event_manager_user_can_upload_file_via_ajax' );
+		$can_upload = apply_filters( 'event_manager_ajax_file_upload_enabled', $can_upload );
 	}
 
 	/**
@@ -682,52 +682,52 @@ function job_manager_user_can_upload_file_via_ajax() {
 	 * @since 1.26.2
 	 * @param bool $can_upload True if they can upload files from Ajax endpoint.
 	 */
-	return apply_filters( 'job_manager_user_can_upload_file_via_ajax', $can_upload );
+	return apply_filters( 'event_manager_user_can_upload_file_via_ajax', $can_upload );
 }
 
 /**
- * Checks if an the user can post a job. If accounts are required, and reg is enabled, users can post (they signup at the same time).
+ * Checks if an the user can post a event. If accounts are required, and reg is enabled, users can post (they signup at the same time).
  *
  * @since 1.5.1
  * @return bool
  */
-function job_manager_user_can_post_job() {
+function event_manager_user_can_post_event() {
 	$can_post = true;
 
 	if ( ! is_user_logged_in() ) {
-		if ( job_manager_user_requires_account() && ! job_manager_enable_registration() ) {
+		if ( event_manager_user_requires_account() && ! event_manager_enable_registration() ) {
 			$can_post = false;
 		}
 	}
 
-	return apply_filters( 'job_manager_user_can_post_job', $can_post );
+	return apply_filters( 'event_manager_user_can_post_event', $can_post );
 }
 
 /**
- * Checks if the user can edit a job.
+ * Checks if the user can edit a event.
  *
  * @since 1.5.1
- * @param int|WP_Post $job_id
+ * @param int|WP_Post $event_id
  * @return bool
  */
-function job_manager_user_can_edit_job( $job_id ) {
+function event_manager_user_can_edit_event( $event_id ) {
 	$can_edit = true;
 
-	if ( ! is_user_logged_in() || ! $job_id ) {
+	if ( ! is_user_logged_in() || ! $event_id ) {
 		$can_edit = false;
 	} else {
-		$job = get_post( $job_id );
+		$event = get_post( $event_id );
 
-		if ( ! $job || ( absint( $job->post_author ) !== get_current_user_id() && ! current_user_can( 'edit_post', $job_id ) ) ) {
+		if ( ! $event || ( absint( $event->post_author ) !== get_current_user_id() && ! current_user_can( 'edit_post', $event_id ) ) ) {
 			$can_edit = false;
 		}
 	}
 
-	return apply_filters( 'job_manager_user_can_edit_job', $can_edit, $job_id );
+	return apply_filters( 'event_manager_user_can_edit_event', $can_edit, $event_id );
 }
 
 /**
- * Checks if the visitor is currently on a WPJM page, job listing, or taxonomy.
+ * Checks if the visitor is currently on a WPJM page, event listing, or taxonomy.
  *
  * @since 1.30.0
  *
@@ -741,7 +741,7 @@ function is_wpjm() {
 	 *
 	 * @param bool $is_wpjm
 	 */
-	return apply_filters( 'is_wpjm', ( is_wpjm_page() || has_wpjm_shortcode() || is_wpjm_job_listing() || is_wpjm_taxonomy() ) );
+	return apply_filters( 'is_wpjm', ( is_wpjm_page() || has_wpjm_shortcode() || is_wpjm_event_listing() || is_wpjm_taxonomy() ) );
 }
 
 /**
@@ -752,14 +752,14 @@ function is_wpjm() {
  * @return bool
  */
 function is_wpjm_page() {
-	$is_wpjm_page = is_post_type_archive( 'job_listing' );
+	$is_wpjm_page = is_post_type_archive( 'event_listing' );
 
 	if ( ! $is_wpjm_page ) {
 		$wpjm_page_ids = array_filter(
 			[
-				get_option( 'job_manager_submit_job_form_page_id', false ),
-				get_option( 'job_manager_job_dashboard_page_id', false ),
-				get_option( 'job_manager_jobs_page_id', false ),
+				get_option( 'event_manager_submit_event_form_page_id', false ),
+				get_option( 'event_manager_event_dashboard_page_id', false ),
+				get_option( 'event_manager_events_page_id', false ),
 			]
 		);
 
@@ -770,7 +770,7 @@ function is_wpjm_page() {
 		 *
 		 * @param int[] $wpjm_page_ids
 		 */
-		$wpjm_page_ids = array_unique( apply_filters( 'job_manager_page_ids', $wpjm_page_ids ) );
+		$wpjm_page_ids = array_unique( apply_filters( 'event_manager_page_ids', $wpjm_page_ids ) );
 
 		$is_wpjm_page = is_page( $wpjm_page_ids );
 	}
@@ -803,7 +803,7 @@ function has_wpjm_shortcode( $content = null, $tag = null ) {
 	}
 
 	if ( ! empty( $content ) ) {
-		$wpjm_shortcodes = [ 'submit_job_form', 'job_dashboard', 'jobs', 'job', 'job_summary', 'job_apply' ];
+		$wpjm_shortcodes = [ 'submit_event_form', 'event_dashboard', 'events', 'event', 'event_summary', 'event_apply' ];
 		/**
 		 * Filters a list of all shortcodes associated with WPJM.
 		 *
@@ -811,7 +811,7 @@ function has_wpjm_shortcode( $content = null, $tag = null ) {
 		 *
 		 * @param string[] $wpjm_shortcodes
 		 */
-		$wpjm_shortcodes = array_unique( apply_filters( 'job_manager_shortcodes', $wpjm_shortcodes ) );
+		$wpjm_shortcodes = array_unique( apply_filters( 'event_manager_shortcodes', $wpjm_shortcodes ) );
 
 		if ( null !== $tag ) {
 			if ( ! is_array( $tag ) ) {
@@ -839,14 +839,14 @@ function has_wpjm_shortcode( $content = null, $tag = null ) {
 }
 
 /**
- * Checks if the current page is a job listing.
+ * Checks if the current page is a event listing.
  *
  * @since 1.30.0
  *
  * @return bool
  */
-function is_wpjm_job_listing() {
-	return is_singular( [ 'job_listing' ] );
+function is_wpjm_event_listing() {
+	return is_singular( [ 'event_listing' ] );
 }
 
 /**
@@ -857,7 +857,7 @@ function is_wpjm_job_listing() {
  * @return bool
  */
 function is_wpjm_taxonomy() {
-	return is_tax( get_object_taxonomies( 'job_listing' ) );
+	return is_tax( get_object_taxonomies( 'event_listing' ) );
 }
 
 /**
@@ -865,10 +865,10 @@ function is_wpjm_taxonomy() {
  *
  * @since 1.27.0
  *
- * @return bool True if they are to use standard email, false to allow user to set password at first job creation.
+ * @return bool True if they are to use standard email, false to allow user to set password at first event creation.
  */
 function wpjm_use_standard_password_setup_email() {
-	$use_standard_password_setup_email = 1 === intval( get_option( 'job_manager_use_standard_password_setup_email' ) );
+	$use_standard_password_setup_email = 1 === intval( get_option( 'event_manager_use_standard_password_setup_email' ) );
 
 	/**
 	 * Allows an override of the setting for if a password should be auto-generated for new users.
@@ -884,11 +884,11 @@ function wpjm_use_standard_password_setup_email() {
  * Returns the list of employment types from Google's modification of schema.org's employmentType.
  *
  * @since 1.28.0
- * @see https://developers.google.com/search/docs/data-types/job-postings#definitions
+ * @see https://developers.google.com/search/docs/data-types/event-postings#definitions
  *
  * @return array
  */
-function wpjm_job_listing_employment_type_options() {
+function wpjm_event_listing_employment_type_options() {
 	$employment_types               = [];
 	$employment_types['FULL_TIME']  = __( 'Full Time', 'wp-event-manager' );
 	$employment_types['PART_TIME']  = __( 'Part Time', 'wp-event-manager' );
@@ -906,26 +906,26 @@ function wpjm_job_listing_employment_type_options() {
 	 *
 	 * @param array List of employment types { string $key => string $label }.
 	 */
-	return apply_filters( 'wpjm_job_listing_employment_type_options', $employment_types );
+	return apply_filters( 'wpjm_event_listing_employment_type_options', $employment_types );
 }
 
 
 /**
- * Check if employment type meta fields are enabled on job type terms.
+ * Check if employment type meta fields are enabled on event type terms.
  *
  * @since 1.28.0
  *
  * @return bool
  */
-function wpjm_job_listing_employment_type_enabled() {
+function wpjm_event_listing_employment_type_enabled() {
 	/**
-	 * Filter whether employment types are enabled for job type terms.
+	 * Filter whether employment types are enabled for event type terms.
 	 *
 	 * @since 1.28.0
 	 *
-	 * @param bool True if employment type meta field is enabled on job type terms.
+	 * @param bool True if employment type meta field is enabled on event type terms.
 	 */
-	return apply_filters( 'wpjm_job_listing_employment_type_enabled', (bool) get_option( 'job_manager_enable_types' ) );
+	return apply_filters( 'wpjm_event_listing_employment_type_enabled', (bool) get_option( 'event_manager_enable_types' ) );
 }
 
 /**
@@ -968,13 +968,13 @@ function wpjm_get_password_rules_hint() {
 }
 
 /**
- * Checks if only one type allowed per job.
+ * Checks if only one type allowed per event.
  *
  * @since 1.25.2
  * @return bool
  */
-function job_manager_multi_job_type() {
-	return apply_filters( 'job_manager_multi_job_type', 1 === intval( get_option( 'job_manager_multi_job_type' ) ) );
+function event_manager_multi_event_type() {
+	return apply_filters( 'event_manager_multi_event_type', 1 === intval( get_option( 'event_manager_multi_event_type' ) ) );
 }
 
 /**
@@ -983,8 +983,8 @@ function job_manager_multi_job_type() {
  * @since 1.5.1
  * @return bool
  */
-function job_manager_enable_registration() {
-	return apply_filters( 'job_manager_enable_registration', 1 === intval( get_option( 'job_manager_enable_registration' ) ) );
+function event_manager_enable_registration() {
+	return apply_filters( 'event_manager_enable_registration', 1 === intval( get_option( 'event_manager_enable_registration' ) ) );
 }
 
 /**
@@ -993,18 +993,18 @@ function job_manager_enable_registration() {
  * @since 1.20.0
  * @return bool
  */
-function job_manager_generate_username_from_email() {
-	return apply_filters( 'job_manager_generate_username_from_email', 1 === intval( get_option( 'job_manager_generate_username_from_email' ) ) );
+function event_manager_generate_username_from_email() {
+	return apply_filters( 'event_manager_generate_username_from_email', 1 === intval( get_option( 'event_manager_generate_username_from_email' ) ) );
 }
 
 /**
- * Checks if an account is required to post a job.
+ * Checks if an account is required to post a event.
  *
  * @since 1.5.1
  * @return bool
  */
-function job_manager_user_requires_account() {
-	return apply_filters( 'job_manager_user_requires_account', 1 === intval( get_option( 'job_manager_user_requires_account' ) ) );
+function event_manager_user_requires_account() {
+	return apply_filters( 'event_manager_user_requires_account', 1 === intval( get_option( 'event_manager_user_requires_account' ) ) );
 }
 
 /**
@@ -1013,8 +1013,8 @@ function job_manager_user_requires_account() {
  * @since 1.16.1
  * @return bool
  */
-function job_manager_user_can_edit_pending_submissions() {
-	return apply_filters( 'job_manager_user_can_edit_pending_submissions', 1 === intval( get_option( 'job_manager_user_can_edit_pending_submissions' ) ) );
+function event_manager_user_can_edit_pending_submissions() {
+	return apply_filters( 'event_manager_user_can_edit_pending_submissions', 1 === intval( get_option( 'event_manager_user_can_edit_pending_submissions' ) ) );
 }
 
 /**
@@ -1025,13 +1025,13 @@ function job_manager_user_can_edit_pending_submissions() {
  */
 function wpjm_user_can_edit_published_submissions() {
 	/**
-	 * Override the setting for allowing a user to edit published job listings.
+	 * Override the setting for allowing a user to edit published event listings.
 	 *
 	 * @since 1.29.0
 	 *
 	 * @param bool $can_edit_published_submissions
 	 */
-	return apply_filters( 'job_manager_user_can_edit_published_submissions', in_array( get_option( 'job_manager_user_edit_published_submissions' ), [ 'yes', 'yes_moderated' ], true ) );
+	return apply_filters( 'event_manager_user_can_edit_published_submissions', in_array( get_option( 'event_manager_user_edit_published_submissions' ), [ 'yes', 'yes_moderated' ], true ) );
 }
 
 /**
@@ -1041,16 +1041,16 @@ function wpjm_user_can_edit_published_submissions() {
  * @return bool
  */
 function wpjm_published_submission_edits_require_moderation() {
-	$require_moderation = 'yes_moderated' === get_option( 'job_manager_user_edit_published_submissions' );
+	$require_moderation = 'yes_moderated' === get_option( 'event_manager_user_edit_published_submissions' );
 
 	/**
-	 * Override the setting for user edits to job listings requiring moderation.
+	 * Override the setting for user edits to event listings requiring moderation.
 	 *
 	 * @since 1.29.0
 	 *
 	 * @param bool $require_moderation
 	 */
-	return apply_filters( 'job_manager_published_submission_edits_require_moderation', $require_moderation );
+	return apply_filters( 'event_manager_published_submission_edits_require_moderation', $require_moderation );
 }
 
 /**
@@ -1063,7 +1063,7 @@ function wpjm_published_submission_edits_require_moderation() {
  * @param string|array|object $args
  * @return string
  */
-function job_manager_dropdown_categories( $args = '' ) {
+function event_manager_dropdown_categories( $args = '' ) {
 	$defaults = [
 		'orderby'         => 'id',
 		'order'           => 'ASC',
@@ -1077,9 +1077,9 @@ function job_manager_dropdown_categories( $args = '' ) {
 		'hierarchical'    => 0,
 		'name'            => 'cat',
 		'id'              => '',
-		'class'           => 'job-manager-category-dropdown ' . ( is_rtl() ? 'chosen-rtl' : '' ),
+		'class'           => 'event-manager-category-dropdown ' . ( is_rtl() ? 'chosen-rtl' : '' ),
 		'depth'           => 0,
-		'taxonomy'        => 'job_listing_category',
+		'taxonomy'        => 'event_listing_category',
 		'value'           => 'id',
 		'multiple'        => true,
 		'show_option_all' => false,
@@ -1098,7 +1098,7 @@ function job_manager_dropdown_categories( $args = '' ) {
 	$r['lang'] = apply_filters( 'wpjm_lang', null );
 
 	// Store in a transient to help sites with many cats.
-	$categories_hash = 'jm_cats_' . md5( wp_json_encode( $r ) . WP_Job_Manager_Cache_Helper::get_transient_version( 'jm_get_' . $r['taxonomy'] ) );
+	$categories_hash = 'jm_cats_' . md5( wp_json_encode( $r ) . WP_event_Manager_Cache_Helper::get_transient_version( 'jm_get_' . $r['taxonomy'] ) );
 	$categories      = get_transient( $categories_hash );
 
 	if ( empty( $categories ) ) {
@@ -1126,9 +1126,9 @@ function job_manager_dropdown_categories( $args = '' ) {
 	}
 
 	if ( ! empty( $categories ) ) {
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
 
-		$walker = new WP_Job_Manager_Category_Walker();
+		$walker = new WP_event_Manager_Category_Walker();
 
 		if ( $r['hierarchical'] ) {
 			$depth = $r['depth'];  // Walk the full depth.
@@ -1153,11 +1153,11 @@ function job_manager_dropdown_categories( $args = '' ) {
  * Gets the page ID of a page if set.
  *
  * @since 1.23.12
- * @param  string $page e.g. job_dashboard, submit_job_form, jobs.
+ * @param  string $page e.g. event_dashboard, submit_event_form, events.
  * @return int
  */
-function job_manager_get_page_id( $page ) {
-	$page_id = get_option( 'job_manager_' . $page . '_page_id', false );
+function event_manager_get_page_id( $page ) {
+	$page_id = get_option( 'event_manager_' . $page . '_page_id', false );
 	if ( $page_id ) {
 		/**
 		 * Filters the page ID for a WPJM page.
@@ -1176,11 +1176,11 @@ function job_manager_get_page_id( $page ) {
  * Gets the permalink of a page if set.
  *
  * @since 1.16.0
- * @param  string $page e.g. job_dashboard, submit_job_form, jobs.
+ * @param  string $page e.g. event_dashboard, submit_event_form, events.
  * @return string|bool
  */
-function job_manager_get_permalink( $page ) {
-	$page_id = job_manager_get_page_id( $page );
+function event_manager_get_permalink( $page ) {
+	$page_id = event_manager_get_page_id( $page );
 	if ( $page_id ) {
 		return get_permalink( $page_id );
 	} else {
@@ -1189,17 +1189,17 @@ function job_manager_get_permalink( $page ) {
 }
 
 /**
- * Filters the upload dir when $job_manager_upload is true.
+ * Filters the upload dir when $event_manager_upload is true.
  *
  * @since 1.21.0
  * @param  array $pathdata
  * @return array
  */
-function job_manager_upload_dir( $pathdata ) {
-	global $job_manager_upload, $job_manager_uploading_file;
+function event_manager_upload_dir( $pathdata ) {
+	global $event_manager_upload, $event_manager_uploading_file;
 
-	if ( ! empty( $job_manager_upload ) ) {
-		$dir = untrailingslashit( apply_filters( 'job_manager_upload_dir', 'job-manager-uploads/' . sanitize_key( $job_manager_uploading_file ), sanitize_key( $job_manager_uploading_file ) ) );
+	if ( ! empty( $event_manager_upload ) ) {
+		$dir = untrailingslashit( apply_filters( 'event_manager_upload_dir', 'event-manager-uploads/' . sanitize_key( $event_manager_uploading_file ), sanitize_key( $event_manager_uploading_file ) ) );
 
 		if ( empty( $pathdata['subdir'] ) ) {
 			$pathdata['path']   = $pathdata['path'] . '/' . $dir;
@@ -1215,7 +1215,7 @@ function job_manager_upload_dir( $pathdata ) {
 
 	return $pathdata;
 }
-add_filter( 'upload_dir', 'job_manager_upload_dir' );
+add_filter( 'upload_dir', 'event_manager_upload_dir' );
 
 /**
  * Prepares files for upload by standardizing them into an array. This adds support for multiple file upload fields.
@@ -1224,7 +1224,7 @@ add_filter( 'upload_dir', 'job_manager_upload_dir' );
  * @param  array $file_data
  * @return array
  */
-function job_manager_prepare_uploaded_files( $file_data ) {
+function event_manager_prepare_uploaded_files( $file_data ) {
 	$files_to_upload = [];
 
 	if ( is_array( $file_data['name'] ) ) {
@@ -1246,7 +1246,7 @@ function job_manager_prepare_uploaded_files( $file_data ) {
 		$files_to_upload[] = $file_data;
 	}
 
-	return apply_filters( 'job_manager_prepare_uploaded_files', $files_to_upload );
+	return apply_filters( 'event_manager_prepare_uploaded_files', $files_to_upload );
 }
 
 /**
@@ -1257,8 +1257,8 @@ function job_manager_prepare_uploaded_files( $file_data ) {
  * @param  string|array|object $args Optional arguments.
  * @return stdClass|WP_Error Object containing file information, or error.
  */
-function job_manager_upload_file( $file, $args = [] ) {
-	global $job_manager_upload, $job_manager_uploading_file;
+function event_manager_upload_file( $file, $args = [] ) {
+	global $event_manager_upload, $event_manager_uploading_file;
 
 	include_once ABSPATH . 'wp-admin/includes/file.php';
 	include_once ABSPATH . 'wp-admin/includes/media.php';
@@ -1272,11 +1272,11 @@ function job_manager_upload_file( $file, $args = [] ) {
 		]
 	);
 
-	$job_manager_upload         = true;
-	$job_manager_uploading_file = $args['file_key'];
+	$event_manager_upload         = true;
+	$event_manager_uploading_file = $args['file_key'];
 	$uploaded_file              = new stdClass();
 	if ( '' === $args['allowed_mime_types'] ) {
-		$allowed_mime_types = job_manager_get_allowed_mime_types( $job_manager_uploading_file );
+		$allowed_mime_types = event_manager_get_allowed_mime_types( $event_manager_uploading_file );
 	} else {
 		$allowed_mime_types = $args['allowed_mime_types'];
 	}
@@ -1293,7 +1293,7 @@ function job_manager_upload_file( $file, $args = [] ) {
 	 * @param array $args               Optional file arguments.
 	 * @param array $allowed_mime_types Array of allowed mime types from field config or defaults.
 	 */
-	$file = apply_filters( 'job_manager_upload_file_pre_upload', $file, $args, $allowed_mime_types );
+	$file = apply_filters( 'event_manager_upload_file_pre_upload', $file, $args, $allowed_mime_types );
 
 	if ( is_wp_error( $file ) ) {
 		return $file;
@@ -1311,7 +1311,7 @@ function job_manager_upload_file( $file, $args = [] ) {
 			return new WP_Error( 'upload', sprintf( __( 'Uploaded files need to be one of the following file types: %s', 'wp-event-manager' ), $allowed_file_extensions ) );
 		}
 	} else {
-		$upload = wp_handle_upload( $file, apply_filters( 'submit_job_wp_handle_upload_overrides', [ 'test_form' => false ] ) );
+		$upload = wp_handle_upload( $file, apply_filters( 'submit_event_wp_handle_upload_overrides', [ 'test_form' => false ] ) );
 		if ( ! empty( $upload['error'] ) ) {
 			return new WP_Error( 'upload', $upload['error'] );
 		} else {
@@ -1324,8 +1324,8 @@ function job_manager_upload_file( $file, $args = [] ) {
 		}
 	}
 
-	$job_manager_upload         = false;
-	$job_manager_uploading_file = '';
+	$event_manager_upload         = false;
+	$event_manager_uploading_file = '';
 
 	return $uploaded_file;
 }
@@ -1337,7 +1337,7 @@ function job_manager_upload_file( $file, $args = [] ) {
  * @param   string $field Field used.
  * @return  array  Array of allowed mime types
  */
-function job_manager_get_allowed_mime_types( $field = '' ) {
+function event_manager_get_allowed_mime_types( $field = '' ) {
 	if ( 'company_logo' === $field ) {
 		$allowed_mime_types = [
 			'jpg|jpeg|jpe' => 'image/jpeg',
@@ -1368,23 +1368,23 @@ function job_manager_get_allowed_mime_types( $field = '' ) {
 	 * }
 	 * @param string $field The field key for the upload.
 	 */
-	return apply_filters( 'job_manager_mime_types', $allowed_mime_types, $field );
+	return apply_filters( 'event_manager_mime_types', $allowed_mime_types, $field );
 }
 
 /**
- * Calculates and returns the job expiry date.
+ * Calculates and returns the event expiry date.
  *
  * @since 1.22.0
- * @param  int $job_id
+ * @param  int $event_id
  * @return string
  */
-function calculate_job_expiry( $job_id ) {
+function calculate_event_expiry( $event_id ) {
 	// Get duration from the product if set...
-	$duration = get_post_meta( $job_id, '_job_duration', true );
+	$duration = get_post_meta( $event_id, '_event_duration', true );
 
 	// ...otherwise use the global option.
 	if ( ! $duration ) {
-		$duration = absint( get_option( 'job_manager_submission_duration' ) );
+		$duration = absint( get_option( 'event_manager_submission_duration' ) );
 	}
 
 	if ( $duration ) {
@@ -1401,7 +1401,7 @@ function calculate_job_expiry( $job_id ) {
  * @param  int $post_id
  * @return int 0 on fail or the post ID.
  */
-function job_manager_duplicate_listing( $post_id ) {
+function event_manager_duplicate_listing( $post_id ) {
 	global $wpdb;
 
 	if ( empty( $post_id ) ) {
@@ -1454,8 +1454,8 @@ function job_manager_duplicate_listing( $post_id ) {
 	if ( ! empty( $post_meta ) ) {
 		$post_meta = wp_list_pluck( $post_meta, 'meta_value', 'meta_key' );
 
-		$default_duplicate_ignore_keys = [ '_filled', '_featured', '_job_expires', '_job_duration', '_package_id', '_user_package_id' ];
-		$duplicate_ignore_keys         = apply_filters( 'job_manager_duplicate_listing_ignore_keys', $default_duplicate_ignore_keys, true );
+		$default_duplicate_ignore_keys = [ '_filled', '_featured', '_event_expires', '_event_duration', '_package_id', '_user_package_id' ];
+		$duplicate_ignore_keys         = apply_filters( 'event_manager_duplicate_listing_ignore_keys', $default_duplicate_ignore_keys, true );
 
 		foreach ( $post_meta as $meta_key => $meta_value ) {
 			if ( in_array( $meta_key, $duplicate_ignore_keys, true ) ) {

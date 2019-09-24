@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Form.
+ * File containing the class WP_event_Manager_Form.
  *
  * @package wp-event-manager
  */
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @abstract
  * @since 1.0.0
  */
-abstract class WP_Job_Manager_Form {
+abstract class WP_event_Manager_Form {
 
 	/**
 	 * Form fields.
@@ -95,13 +95,13 @@ abstract class WP_Job_Manager_Form {
 		// reset cookie.
 		if (
 			isset( $_GET['new'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
-			isset( $_COOKIE['wp-event-manager-submitting-job-id'] ) &&
-			isset( $_COOKIE['wp-event-manager-submitting-job-key'] ) &&
-			get_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-job-id'] ) ), '_submitting_key', true ) === $_COOKIE['wp-event-manager-submitting-job-key']
+			isset( $_COOKIE['wp-event-manager-submitting-event-id'] ) &&
+			isset( $_COOKIE['wp-event-manager-submitting-event-key'] ) &&
+			get_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-event-id'] ) ), '_submitting_key', true ) === $_COOKIE['wp-event-manager-submitting-event-key']
 		) {
-			delete_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-job-id'] ) ), '_submitting_key' );
-			setcookie( 'wp-event-manager-submitting-job-id', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
-			setcookie( 'wp-event-manager-submitting-job-key', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
+			delete_post_meta( sanitize_text_field( wp_unslash( $_COOKIE['wp-event-manager-submitting-event-id'] ) ), '_submitting_key' );
+			setcookie( 'wp-event-manager-submitting-event-id', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
+			setcookie( 'wp-event-manager-submitting-event-key', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
 			wp_safe_redirect( remove_query_arg( [ 'new', 'key' ] ) );
 			exit;
 		}
@@ -160,7 +160,7 @@ abstract class WP_Job_Manager_Form {
 	 */
 	public function show_errors() {
 		foreach ( $this->errors as $error ) {
-			echo '<div class="job-manager-error">' . wp_kses_post( $error ) . '</div>';
+			echo '<div class="event-manager-error">' . wp_kses_post( $error ) . '</div>';
 		}
 	}
 
@@ -178,7 +178,7 @@ abstract class WP_Job_Manager_Form {
 	 */
 	public function show_messages() {
 		foreach ( $this->messages as $message ) {
-			echo '<div class="job-manager-info">' . wp_kses_post( $message ) . '</div>';
+			echo '<div class="event-manager-info">' . wp_kses_post( $message ) . '</div>';
 		}
 	}
 
@@ -314,8 +314,8 @@ abstract class WP_Job_Manager_Form {
 	 * @return bool
 	 */
 	public function is_recaptcha_available() {
-		$site_key               = get_option( 'job_manager_recaptcha_site_key' );
-		$secret_key             = get_option( 'job_manager_recaptcha_secret_key' );
+		$site_key               = get_option( 'event_manager_recaptcha_site_key' );
+		$secret_key             = get_option( 'event_manager_recaptcha_secret_key' );
 		$is_recaptcha_available = ! empty( $site_key ) && ! empty( $secret_key );
 
 		/**
@@ -325,7 +325,7 @@ abstract class WP_Job_Manager_Form {
 		 *
 		 * @param bool $is_recaptcha_available
 		 */
-		return apply_filters( 'job_manager_is_recaptcha_available', $is_recaptcha_available );
+		return apply_filters( 'event_manager_is_recaptcha_available', $is_recaptcha_available );
 	}
 
 	/**
@@ -342,10 +342,10 @@ abstract class WP_Job_Manager_Form {
 	 */
 	public function display_recaptcha_field() {
 		$field             = [];
-		$field['label']    = get_option( 'job_manager_recaptcha_label' );
+		$field['label']    = get_option( 'event_manager_recaptcha_label' );
 		$field['required'] = true;
-		$field['site_key'] = get_option( 'job_manager_recaptcha_site_key' );
-		get_job_manager_template(
+		$field['site_key'] = get_option( 'event_manager_recaptcha_site_key' );
+		get_event_manager_template(
 			'form-fields/recaptcha-field.php',
 			[
 				'key'   => 'recaptcha',
@@ -365,7 +365,7 @@ abstract class WP_Job_Manager_Form {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check happens earlier (when possible).
 		$input_recaptcha_response = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : '';
 
-		$recaptcha_field_label = get_option( 'job_manager_recaptcha_label' );
+		$recaptcha_field_label = get_option( 'event_manager_recaptcha_label' );
 		if ( empty( $input_recaptcha_response ) ) {
 			// translators: Placeholder is for the label of the reCAPTCHA field.
 			return new WP_Error( 'validation-error', sprintf( esc_html__( '"%s" check failed. Please try again.', 'wp-event-manager' ), $recaptcha_field_label ) );
@@ -375,7 +375,7 @@ abstract class WP_Job_Manager_Form {
 		$response            = wp_remote_get(
 			add_query_arg(
 				[
-					'secret'   => get_option( 'job_manager_recaptcha_secret_key' ),
+					'secret'   => get_option( 'event_manager_recaptcha_secret_key' ),
 					'response' => $input_recaptcha_response,
 					'remoteip' => isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) : $default_remote_addr,
 				],
@@ -412,7 +412,7 @@ abstract class WP_Job_Manager_Form {
 			foreach ( $group_fields as $key => $field ) {
 				// Get the value.
 				$field_type = str_replace( '-', '_', $field['type'] );
-				$handler    = apply_filters( "job_manager_get_posted_{$field_type}_field", false );
+				$handler    = apply_filters( "event_manager_get_posted_{$field_type}_field", false );
 
 				if ( $handler ) {
 					$values[ $group_key ][ $key ] = call_user_func( $handler, $key, $field );
@@ -430,14 +430,14 @@ abstract class WP_Job_Manager_Form {
 		/**
 		 * Alter values for posted fields.
 		 *
-		 * Before submitting or editing a job, alter the posted values before they get stored into the database.
+		 * Before submitting or editing a event, alter the posted values before they get stored into the database.
 		 *
 		 * @since 1.32.0
 		 *
 		 * @param array  $values  The values that have been submitted.
 		 * @param array  $fields  The form fields.
 		 */
-		return apply_filters( 'job_manager_get_posted_fields', $values, $this->fields );
+		return apply_filters( 'event_manager_get_posted_fields', $values, $this->fields );
 	}
 
 	/**
@@ -496,7 +496,7 @@ abstract class WP_Job_Manager_Form {
 			$field['sanitizer'] = null;
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification -- WP_Job_Manager_Form::sanitize_posted_field handles the sanitization based on the type of data passed; nonce check happens elsewhere.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification -- WP_event_Manager_Form::sanitize_posted_field handles the sanitization based on the type of data passed; nonce check happens elsewhere.
 		return isset( $_POST[ $key ] ) ? $this->sanitize_posted_field( wp_unslash( $_POST[ $key ] ), $field['sanitizer'] ) : '';
 	}
 
@@ -610,14 +610,14 @@ abstract class WP_Job_Manager_Form {
 			if ( ! empty( $field['allowed_mime_types'] ) ) {
 				$allowed_mime_types = $field['allowed_mime_types'];
 			} else {
-				$allowed_mime_types = job_manager_get_allowed_mime_types();
+				$allowed_mime_types = event_manager_get_allowed_mime_types();
 			}
 
 			$file_urls       = [];
-			$files_to_upload = job_manager_prepare_uploaded_files( $_FILES[ $field_key ] ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- see https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1720.
+			$files_to_upload = event_manager_prepare_uploaded_files( $_FILES[ $field_key ] ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- see https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/1720.
 
 			foreach ( $files_to_upload as $file_to_upload ) {
-				$uploaded_file = job_manager_upload_file(
+				$uploaded_file = event_manager_upload_file(
 					$file_to_upload,
 					[
 						'file_key'           => $field_key,

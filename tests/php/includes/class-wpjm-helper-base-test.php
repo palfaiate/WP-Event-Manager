@@ -1,6 +1,6 @@
 <?php
-require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-options.php';
-require_once JOB_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-api.php';
+require_once event_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-options.php';
+require_once event_MANAGER_PLUGIN_DIR . '/includes/helper/class-wp-event-manager-helper-api.php';
 
 class WPJM_Helper_Base_Test extends WPJM_BaseTest {
 	protected function plugin_data_with_update() {
@@ -45,10 +45,10 @@ class WPJM_Helper_Base_Test extends WPJM_BaseTest {
 			$plugins = $this->plugin_data_with_update();
 		}
 
-		WP_Job_Manager_Helper_Options::update( 'test', 'licence_key', '1234' );
-		WP_Job_Manager_Helper_Options::update( 'test', 'email', 'test@local.dev' );
+		WP_event_Manager_Helper_Options::update( 'test', 'licence_key', '1234' );
+		WP_event_Manager_Helper_Options::update( 'test', 'email', 'test@local.dev' );
 
-		$mock = $this->getMockBuilder( 'WP_Job_Manager_Helper' )
+		$mock = $this->getMockBuilder( 'WP_event_Manager_Helper' )
 					 ->setMethods( [ 'get_installed_plugins', '_get_api' ] )
 					 ->getMock();
 		$api  = $this->getMockHelperApi();
@@ -59,7 +59,7 @@ class WPJM_Helper_Base_Test extends WPJM_BaseTest {
 	}
 
 	protected function getMockHelperApi() {
-		$mock = $this->getMockBuilder( 'WP_Job_Manager_Helper_API' )
+		$mock = $this->getMockBuilder( 'WP_event_Manager_Helper_API' )
 					 ->setMethods( [ 'plugin_update_check', 'plugin_information', 'activate', 'deactivate' ] )
 					 ->getMock();
 

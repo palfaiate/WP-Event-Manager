@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Writepanels.
+ * File containing the class WP_event_Manager_Writepanels.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles the management of Job Listing meta fields.
+ * Handles the management of event Listing meta fields.
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Writepanels {
+class WP_event_Manager_Writepanels {
 
 	/**
 	 * The single instance of the class.
@@ -44,23 +44,23 @@ class WP_Job_Manager_Writepanels {
 	public function __construct() {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 		add_action( 'save_post', [ $this, 'save_post' ], 1, 2 );
-		add_action( 'job_manager_save_job_listing', [ $this, 'save_job_listing_data' ], 20, 2 );
+		add_action( 'event_manager_save_event_listing', [ $this, 'save_event_listing_data' ], 20, 2 );
 	}
 
 	/**
-	 * Returns configuration for custom fields on Job Listing posts.
+	 * Returns configuration for custom fields on event Listing posts.
 	 *
 	 * @return array
 	 */
-	public function job_listing_fields() {
+	public function event_listing_fields() {
 		global $post_id;
 
 		$current_user = wp_get_current_user();
-		$fields_raw   = WP_Job_Manager_Post_Types::get_job_listing_fields();
+		$fields_raw   = WP_event_Manager_Post_Types::get_event_listing_fields();
 		$fields       = [];
 
-		if ( $current_user->has_cap( 'edit_others_job_listings' ) ) {
-			$fields['_job_author'] = [
+		if ( $current_user->has_cap( 'edit_others_event_listings' ) ) {
+			$fields['_event_author'] = [
 				'label'    => __( 'Posted by', 'wp-event-manager' ),
 				'type'     => 'author',
 				'priority' => 0,
@@ -80,7 +80,7 @@ class WP_Job_Manager_Writepanels {
 			/**
 			 * Check auth callback. Mirrors first 4 params of WordPress core's `auth_{$object_type}_meta_{$meta_key}` filter.
 			 *
-			 * @param bool   $allowed   Whether the user can edit the job listing meta. Default false.
+			 * @param bool   $allowed   Whether the user can edit the event listing meta. Default false.
 			 * @param string $meta_key  The meta key.
 			 * @param int    $object_id Object ID.
 			 * @param int    $user_id   User ID.
@@ -92,33 +92,33 @@ class WP_Job_Manager_Writepanels {
 			$fields[ $meta_key ] = $field;
 		}
 
-		if ( isset( $fields['_job_expires'] ) && ! isset( $fields['_job_expires']['value'] ) ) {
-			$job_expires = get_post_meta( $post_id, '_job_expires', true );
+		if ( isset( $fields['_event_expires'] ) && ! isset( $fields['_event_expires']['value'] ) ) {
+			$event_expires = get_post_meta( $post_id, '_event_expires', true );
 
-			if ( ! empty( $job_expires ) ) {
-				$fields['_job_expires']['placeholder'] = null;
-				$fields['_job_expires']['value']       = date( 'Y-m-d', strtotime( $job_expires ) );
+			if ( ! empty( $event_expires ) ) {
+				$fields['_event_expires']['placeholder'] = null;
+				$fields['_event_expires']['value']       = date( 'Y-m-d', strtotime( $event_expires ) );
 			} else {
-				$fields['_job_expires']['placeholder'] = date_i18n( get_option( 'date_format' ), strtotime( calculate_job_expiry( $post_id ) ) );
-				$fields['_job_expires']['value']       = '';
+				$fields['_event_expires']['placeholder'] = date_i18n( get_option( 'date_format' ), strtotime( calculate_event_expiry( $post_id ) ) );
+				$fields['_event_expires']['value']       = '';
 			}
 		}
 
-		if ( isset( $fields['_application'] ) && ! isset( $fields['_application']['default'] ) && 'url' !== get_option( 'job_manager_allowed_application_method' ) ) {
+		if ( isset( $fields['_application'] ) && ! isset( $fields['_application']['default'] ) && 'url' !== get_option( 'event_manager_allowed_application_method' ) ) {
 			$fields['_application']['default'] = $current_user->user_email;
 		}
 
 		/**
-		 * Filters job listing data fields shown in WP admin.
+		 * Filters event listing data fields shown in WP admin.
 		 *
-		 * To add job listing data fields, use the `job_manager_job_listing_data_fields` found in `includes/class-wp-event-manager-post-types.php`.
+		 * To add event listing data fields, use the `event_manager_event_listing_data_fields` found in `includes/class-wp-event-manager-post-types.php`.
 		 *
 		 * @since 1.33.0
 		 *
-		 * @param array    $fields  Job listing fields for WP admin. See `job_manager_job_listing_data_fields` filter for more information.
+		 * @param array    $fields  event listing fields for WP admin. See `event_manager_event_listing_data_fields` filter for more information.
 		 * @param int|null $post_id Post ID to get fields for. May be null.
 		 */
-		$fields = apply_filters( 'job_manager_job_listing_wp_admin_fields', $fields, $post_id );
+		$fields = apply_filters( 'event_manager_event_listing_wp_admin_fields', $fields, $post_id );
 
 		uasort( $fields, [ __CLASS__, 'sort_by_priority' ] );
 
@@ -146,25 +146,25 @@ class WP_Job_Manager_Writepanels {
 	public function add_meta_boxes() {
 		global $wp_post_types;
 
-		// translators: Placeholder %s is the singular name for a job listing post type.
-		add_meta_box( 'job_listing_data', sprintf( __( '%s Data', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->singular_name ), [ $this, 'job_listing_data' ], 'job_listing', 'normal', 'high' );
-		if ( ! get_option( 'job_manager_enable_types' ) || 0 === intval( wp_count_terms( 'job_listing_type' ) ) ) {
-			remove_meta_box( 'job_listing_typediv', 'job_listing', 'side' );
-		} elseif ( false === job_manager_multi_job_type() ) {
-			remove_meta_box( 'job_listing_typediv', 'job_listing', 'side' );
-			$job_listing_type = get_taxonomy( 'job_listing_type' );
-			add_meta_box( 'job_listing_type', $job_listing_type->labels->menu_name, [ $this, 'job_type_single_meta_box' ], 'job_listing', 'side', 'core' );
+		// translators: Placeholder %s is the singular name for a event listing post type.
+		add_meta_box( 'event_listing_data', sprintf( __( '%s Data', 'wp-event-manager' ), $wp_post_types['event_listing']->labels->singular_name ), [ $this, 'event_listing_data' ], 'event_listing', 'normal', 'high' );
+		if ( ! get_option( 'event_manager_enable_types' ) || 0 === intval( wp_count_terms( 'event_listing_type' ) ) ) {
+			remove_meta_box( 'event_listing_typediv', 'event_listing', 'side' );
+		} elseif ( false === event_manager_multi_event_type() ) {
+			remove_meta_box( 'event_listing_typediv', 'event_listing', 'side' );
+			$event_listing_type = get_taxonomy( 'event_listing_type' );
+			add_meta_box( 'event_listing_type', $event_listing_type->labels->menu_name, [ $this, 'event_type_single_meta_box' ], 'event_listing', 'side', 'core' );
 		}
 	}
 
 	/**
-	 * Displays job listing metabox.
+	 * Displays event listing metabox.
 	 *
 	 * @param int|WP_Post $post
 	 */
-	public function job_type_single_meta_box( $post ) {
+	public function event_type_single_meta_box( $post ) {
 		// Set up the taxonomy object and get terms.
-		$taxonomy_name = 'job_listing_type';
+		$taxonomy_name = 'event_listing_type';
 
 		// Get all the terms for this taxonomy.
 		$terms     = get_terms(
@@ -224,17 +224,17 @@ class WP_Job_Manager_Writepanels {
 			if ( ! empty( $field['multiple'] ) ) {
 				foreach ( (array) $field['value'] as $value ) {
 					?>
-					<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>[]" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
+					<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>[]" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $value ); ?>" /><button class="button button-small wp_event_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_event_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
 					<?php
 				}
 			} else {
 				?>
-				<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_job_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
+				<span class="file_url"><input type="text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" /><button class="button button-small wp_event_manager_upload_file_button" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Upload', 'wp-event-manager' ); ?></button><button class="button button-small wp_event_manager_view_file_button"><?php esc_html_e( 'View', 'wp-event-manager' ); ?></button></span>
 				<?php
 			}
 			if ( ! empty( $field['multiple'] ) ) {
 				?>
-				<button class="button button-small wp_job_manager_add_another_file_button" data-field_name="<?php echo esc_attr( $key ); ?>" data-field_placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>" data-uploader_button="<?php esc_attr_e( 'Upload', 'wp-event-manager' ); ?>" data-view_button="<?php esc_attr_e( 'View', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Add file', 'wp-event-manager' ); ?></button>
+				<button class="button button-small wp_event_manager_add_another_file_button" data-field_name="<?php echo esc_attr( $key ); ?>" data-field_placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" data-uploader_button_text="<?php esc_attr_e( 'Use file', 'wp-event-manager' ); ?>" data-uploader_button="<?php esc_attr_e( 'Upload', 'wp-event-manager' ); ?>" data-view_button="<?php esc_attr_e( 'View', 'wp-event-manager' ); ?>"><?php esc_html_e( 'Add file', 'wp-event-manager' ); ?></button>
 				<?php
 			}
 			?>
@@ -482,7 +482,7 @@ class WP_Job_Manager_Writepanels {
 				<a href="#" class="change-author button button-small"><?php esc_html_e( 'Change', 'wp-event-manager' ); ?></a>
 			</span>
 			<span class="hidden change-author">
-				<select class="wpjm-user-search" id="job_manager_user_search" name="<?php echo esc_attr( $name ); ?>" data-placeholder="<?php esc_attr_e( 'Guest', 'wp-event-manager' ); ?>" data-allow_clear="true">
+				<select class="wpjm-user-search" id="event_manager_user_search" name="<?php echo esc_attr( $name ); ?>" data-placeholder="<?php esc_attr_e( 'Guest', 'wp-event-manager' ); ?>" data-allow_clear="true">
 					<option value="<?php echo esc_attr( $author_id ); ?>" selected="selected"><?php echo esc_html( htmlspecialchars( $user_string ) ); ?></option>
 				</select>
 			</span>
@@ -516,22 +516,22 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * Displays metadata fields for Job Listings.
+	 * Displays metadata fields for event Listings.
 	 *
 	 * @param int|WP_Post $post
 	 */
-	public function job_listing_data( $post ) {
+	public function event_listing_data( $post ) {
 		global $post, $thepostid, $wp_post_types;
 
 		$thepostid = $post->ID;
 
-		echo '<div class="wp_job_manager_meta_data">';
+		echo '<div class="wp_event_manager_meta_data">';
 
-		wp_nonce_field( 'save_meta_data', 'job_manager_nonce' );
+		wp_nonce_field( 'save_meta_data', 'event_manager_nonce' );
 
-		do_action( 'job_manager_job_listing_data_start', $thepostid );
+		do_action( 'event_manager_event_listing_data_start', $thepostid );
 
-		foreach ( $this->job_listing_fields() as $key => $field ) {
+		foreach ( $this->event_listing_fields() as $key => $field ) {
 			$type = ! empty( $field['type'] ) ? $field['type'] : 'text';
 
 			if ( ! isset( $field['value'] ) && metadata_exists( 'post', $thepostid, $key ) ) {
@@ -542,22 +542,22 @@ class WP_Job_Manager_Writepanels {
 				$field['value'] = $field['default'];
 			}
 
-			if ( has_action( 'job_manager_input_' . $type ) ) {
-				do_action( 'job_manager_input_' . $type, $key, $field );
+			if ( has_action( 'event_manager_input_' . $type ) ) {
+				do_action( 'event_manager_input_' . $type, $key, $field );
 			} elseif ( method_exists( $this, 'input_' . $type ) ) {
 				call_user_func( [ $this, 'input_' . $type ], $key, $field );
 			}
 		}
 
-		$user_edited_date = get_post_meta( $post->ID, '_job_edited', true );
+		$user_edited_date = get_post_meta( $post->ID, '_event_edited', true );
 		if ( $user_edited_date ) {
 			echo '<p class="form-field">';
-			// translators: %1$s is placeholder for singular name of the job listing post type; %2$s is the intl formatted date the listing was last modified.
-			echo '<em>' . sprintf( esc_html__( '%1$s was last modified by the user on %2$s.', 'wp-event-manager' ), esc_html( $wp_post_types['job_listing']->labels->singular_name ), esc_html( date_i18n( get_option( 'date_format' ), $user_edited_date ) ) ) . '</em>';
+			// translators: %1$s is placeholder for singular name of the event listing post type; %2$s is the intl formatted date the listing was last modified.
+			echo '<em>' . sprintf( esc_html__( '%1$s was last modified by the user on %2$s.', 'wp-event-manager' ), esc_html( $wp_post_types['event_listing']->labels->singular_name ), esc_html( date_i18n( get_option( 'date_format' ), $user_edited_date ) ) ) . '</em>';
 			echo '</p>';
 		}
 
-		do_action( 'job_manager_job_listing_data_end', $thepostid );
+		do_action( 'event_manager_event_listing_data_end', $thepostid );
 
 		echo '</div>';
 	}
@@ -582,28 +582,28 @@ class WP_Job_Manager_Writepanels {
 			return;
 		}
 		if (
-			empty( $_POST['job_manager_nonce'] )
-			|| ! wp_verify_nonce( wp_unslash( $_POST['job_manager_nonce'] ), 'save_meta_data' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
+			empty( $_POST['event_manager_nonce'] )
+			|| ! wp_verify_nonce( wp_unslash( $_POST['event_manager_nonce'] ), 'save_meta_data' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
 		) {
 			return;
 		}
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
-		if ( 'job_listing' !== $post->post_type ) {
+		if ( 'event_listing' !== $post->post_type ) {
 			return;
 		}
 
-		do_action( 'job_manager_save_job_listing', $post_id, $post );
+		do_action( 'event_manager_save_event_listing', $post_id, $post );
 	}
 
 	/**
-	 * Handles the actual saving of job listing data fields.
+	 * Handles the actual saving of event listing data fields.
 	 *
 	 * @param int     $post_id
 	 * @param WP_Post $post (Unused).
 	 */
-	public function save_job_listing_data( $post_id, $post ) {
+	public function save_event_listing_data( $post_id, $post ) {
 		global $wpdb;
 
 		// These need to exist.
@@ -611,7 +611,7 @@ class WP_Job_Manager_Writepanels {
 		add_post_meta( $post_id, '_featured', 0, true );
 
 		// Save fields.
-		foreach ( $this->job_listing_fields() as $key => $field ) {
+		foreach ( $this->event_listing_fields() as $key => $field ) {
 			if ( isset( $field['type'] ) && 'info' === $field['type'] ) {
 				continue;
 			}
@@ -627,11 +627,11 @@ class WP_Job_Manager_Writepanels {
 			}
 
 			// Expirey date.
-			if ( '_job_expires' === $key ) {
+			if ( '_event_expires' === $key ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
 				if ( empty( $_POST[ $key ] ) ) {
-					if ( get_option( 'job_manager_submission_duration' ) ) {
-						update_post_meta( $post_id, $key, calculate_job_expiry( $post_id ) );
+					if ( get_option( 'event_manager_submission_duration' ) ) {
+						update_post_meta( $post_id, $key, calculate_event_expiry( $post_id ) );
 					} else {
 						delete_post_meta( $post_id, $key );
 					}
@@ -639,7 +639,7 @@ class WP_Job_Manager_Writepanels {
 					// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
 					update_post_meta( $post_id, $key, date( 'Y-m-d', strtotime( sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) ) ) );
 				}
-			} elseif ( '_job_author' === $key ) {
+			} elseif ( '_event_author' === $key ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
 				if ( empty( $_POST[ $key ] ) ) {
 					$_POST[ $key ] = 0;
@@ -651,39 +651,39 @@ class WP_Job_Manager_Writepanels {
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Avoid update post within `save_post` action.
 				$wpdb->update( $wpdb->posts, [ 'post_author' => $input_post_author ], [ 'ID' => $post_id ] );
 			} elseif ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
-				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- Input sanitized in registered post meta config; see WP_Job_Manager_Post_Types::register_meta_fields() and WP_Job_Manager_Post_Types::get_job_listing_fields() methods.
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing -- Input sanitized in registered post meta config; see WP_event_Manager_Post_Types::register_meta_fields() and WP_event_Manager_Post_Types::get_event_listing_fields() methods.
 				update_post_meta( $post_id, $key, wp_unslash( $_POST[ $key ] ) );
 			}
 		}
 
 		/* Set Post Status To Expired If Already Expired */
-		$expiry_date            = get_post_meta( $post_id, '_job_expires', true );
+		$expiry_date            = get_post_meta( $post_id, '_event_expires', true );
 		$today_date             = date( 'Y-m-d', current_time( 'timestamp' ) );
-		$is_job_listing_expired = $expiry_date && $today_date > $expiry_date;
-		if ( $is_job_listing_expired && ! $this->is_job_listing_status_changing( null, 'draft' ) ) {
-			remove_action( 'job_manager_save_job_listing', [ $this, 'save_job_listing_data' ], 20 );
-			if ( $this->is_job_listing_status_changing( 'expired', 'publish' ) ) {
-				update_post_meta( $post_id, '_job_expires', calculate_job_expiry( $post_id ) );
+		$is_event_listing_expired = $expiry_date && $today_date > $expiry_date;
+		if ( $is_event_listing_expired && ! $this->is_event_listing_status_changing( null, 'draft' ) ) {
+			remove_action( 'event_manager_save_event_listing', [ $this, 'save_event_listing_data' ], 20 );
+			if ( $this->is_event_listing_status_changing( 'expired', 'publish' ) ) {
+				update_post_meta( $post_id, '_event_expires', calculate_event_expiry( $post_id ) );
 			} else {
-				$job_data = [
+				$event_data = [
 					'ID'          => $post_id,
 					'post_status' => 'expired',
 				];
-				wp_update_post( $job_data );
+				wp_update_post( $event_data );
 			}
-			add_action( 'job_manager_save_job_listing', [ $this, 'save_job_listing_data' ], 20, 2 );
+			add_action( 'event_manager_save_event_listing', [ $this, 'save_event_listing_data' ], 20, 2 );
 		}
 	}
 
 	/**
-	 * Checks if the job listing status is being changed from $from_status to $to_status.
+	 * Checks if the event listing status is being changed from $from_status to $to_status.
 	 *
 	 * @param string|null $from_status Status to test if it is changing from. NULL if anything.
 	 * @param string      $to_status   Status to test if it is changing to.
 	 *
 	 * @return bool True if status is changing from $from_status to $to_status.
 	 */
-	private function is_job_listing_status_changing( $from_status, $to_status ) {
+	private function is_event_listing_status_changing( $from_status, $to_status ) {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
 		return isset( $_POST['post_status'] )
 				&& isset( $_POST['original_post_status'] )
@@ -697,4 +697,4 @@ class WP_Job_Manager_Writepanels {
 	}
 }
 
-WP_Job_Manager_Writepanels::instance();
+WP_event_Manager_Writepanels::instance();

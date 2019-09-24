@@ -33,24 +33,24 @@ jQuery(document).ready(function($) {
 			allowClear:  !! $( this ).data( 'allow_clear' ),
 			placeholder: $( this ).data( 'placeholder' ),
 			minimumInputLength: $( this ).data( 'minimum_input_length' ) ? $( this ).data( 'minimum_input_length' ) : '1',
-			errorLoading: job_manager_admin_params.user_selection_strings.searching,
+			errorLoading: event_manager_admin_params.user_selection_strings.searching,
 			inputTooShort: function( args ) {
 				var remainingChars = args.minimum - args.input.length;
 
 				if ( 1 === remainingChars ) {
-					return job_manager_admin_params.user_selection_strings.input_too_short_1;
+					return event_manager_admin_params.user_selection_strings.input_too_short_1;
 				}
 
-				return job_manager_admin_params.user_selection_strings.input_too_short_n.replace( '%qty%', remainingChars );
+				return event_manager_admin_params.user_selection_strings.input_too_short_n.replace( '%qty%', remainingChars );
 			},
 			loadingMore: function() {
-				return job_manager_admin_params.user_selection_strings.load_more;
+				return event_manager_admin_params.user_selection_strings.load_more;
 			},
 			noResults: function() {
-				return job_manager_admin_params.user_selection_strings.no_matches;
+				return event_manager_admin_params.user_selection_strings.no_matches;
 			},
 			searching: function() {
-				return job_manager_admin_params.user_selection_strings.searching;
+				return event_manager_admin_params.user_selection_strings.searching;
 			},
 			templateResult: function (result) {
 				return result.text;
@@ -60,14 +60,14 @@ jQuery(document).ready(function($) {
 			},
 			width: '100%',
 			ajax: {
-				url:         job_manager_admin_params.ajax_url,
+				url:         event_manager_admin_params.ajax_url,
 				dataType:    'json',
 				delay:       1000,
 				data:        function( params ) {
 					return {
 						term:     params.term,
-						action:   'job_manager_search_users',
-						security: job_manager_admin_params.search_users_nonce,
+						action:   'event_manager_search_users',
+						security: event_manager_admin_params.search_users_nonce,
 						page:     params.page
 					};
 				},
@@ -101,7 +101,7 @@ jQuery(document).ready(function($) {
 	var file_target_input;
 	var file_target_wrapper;
 
-	$( document.body ).on('click', '.wp_job_manager_add_another_file_button', function( event ){
+	$( document.body ).on('click', '.wp_event_manager_add_another_file_button', function( event ){
 		event.preventDefault();
 
 		var field_name        = $( this ).data( 'field_name' );
@@ -110,10 +110,10 @@ jQuery(document).ready(function($) {
 		var button            = $( this ).data( 'uploader_button' );
 		var view_button       = $( this ).data( 'view_button' );
 
-		$( this ).before( '<span class="file_url"><input type="text" name="' + field_name + '[]" placeholder="' + field_placeholder + '" /><button class="button button-small wp_job_manager_upload_file_button" data-uploader_button_text="' + button_text + '">' + button + '</button><button class="button button-small wp_job_manager_view_file_button">' + view_button + '</button></span>' );
+		$( this ).before( '<span class="file_url"><input type="text" name="' + field_name + '[]" placeholder="' + field_placeholder + '" /><button class="button button-small wp_event_manager_upload_file_button" data-uploader_button_text="' + button_text + '">' + button + '</button><button class="button button-small wp_event_manager_view_file_button">' + view_button + '</button></span>' );
 	} );
 
-	$( document.body ).on('click', '.wp_job_manager_view_file_button', function ( event ) {
+	$( document.body ).on('click', '.wp_event_manager_view_file_button', function ( event ) {
 		event.preventDefault();
 
 		file_target_wrapper = $( this ).closest( '.file_url' );
@@ -132,7 +132,7 @@ jQuery(document).ready(function($) {
 
 	});
 
-	$( document.body ).on('click', '.wp_job_manager_upload_file_button', function( event ){
+	$( document.body ).on('click', '.wp_event_manager_upload_file_button', function( event ){
 		event.preventDefault();
 
 		file_target_wrapper = $( this ).closest('.file_url');
@@ -167,7 +167,7 @@ jQuery(document).ready(function($) {
 });
 
 jQuery(document).ready(function($) {
-	var taxonomy = 'job_listing_type';
+	var taxonomy = 'event_listing_type';
 	$('#' + taxonomy + 'checklist li :radio, #' + taxonomy + 'checklist-pop :radio').live( 'click', function(){
 		var t = $(this), c = t.is(':checked'), id = t.val();
 		$('#' + taxonomy + 'checklist li :radio, #' + taxonomy + 'checklist-pop :radio').prop('checked',false);

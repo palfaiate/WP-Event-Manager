@@ -1,10 +1,10 @@
 <?php
 /**
- * Shows term `select` (multiple) form field on job listing forms.
+ * Shows term `select` (multiple) form field on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/term-multiselect-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/term-multiselect-field.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -39,6 +39,6 @@ $args = [
 
 if ( isset( $field['placeholder'] ) && ! empty( $field['placeholder'] ) ) $args['placeholder'] = $field['placeholder'];
 
-job_manager_dropdown_categories( apply_filters( 'job_manager_term_multiselect_field_args', $args ) );
+event_manager_dropdown_categories( apply_filters( 'event_manager_term_multiselect_field_args', $args ) );
 
 if ( ! empty( $field['description'] ) ) : ?><small class="description"><?php echo wp_kses_post( $field['description'] ); ?></small><?php endif; ?>

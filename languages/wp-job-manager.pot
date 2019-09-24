@@ -58,49 +58,49 @@ msgid "Add-ons"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:81
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "Approve %s"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:83
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "%s approved"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:88
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "Expire %s"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:90
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "%s expired"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:95
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "Mark %s Filled"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:97
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "%s marked as filled"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:102
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "Mark %s Not Filled"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:104
-#. translators: Placeholder (%s) is the plural name of the job listings post
+#. translators: Placeholder (%s) is the plural name of the event listings post
 #. type.
 msgid "%s marked as not filled"
 msgstr ""
@@ -139,7 +139,7 @@ msgid "Position"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:436
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the URL to view the listing.
 msgid "%1$s updated. <a href=\"%2$s\">View</a>"
 msgstr ""
@@ -153,30 +153,30 @@ msgid "Custom field deleted."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:440
-#. translators: %s is the singular name of the job listing post type.
+#. translators: %s is the singular name of the event listing post type.
 msgid "%s updated."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:442
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the revision number.
 msgid "%1$s restored to revision from %2$s"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:444
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the URL to view the listing.
 msgid "%1$s published. <a href=\"%2$s\">View</a>"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:446
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the URL to view the listing.
 msgid "%s saved."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:448
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the URL to preview the listing.
 msgid "%1$s submitted. <a target=\"_blank\" href=\"%2$s\">Preview</a>"
 msgstr ""
@@ -190,7 +190,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:457
-#. translators: %1$s is the singular name of the job listing post type; %2$s is
+#. translators: %1$s is the singular name of the event listing post type; %2$s is
 #. the URL to view the listing.
 msgid "%1$s draft updated. <a target=\"_blank\" href=\"%2$s\">Preview</a>"
 msgstr ""
@@ -202,9 +202,9 @@ msgstr ""
 #: includes/admin/class-wp-event-manager-cpt.php:478
 #: includes/class-wp-event-manager-email-notifications.php:238
 #: includes/class-wp-event-manager-post-types.php:1175
-#: includes/forms/class-wp-event-manager-form-submit-job.php:197
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:46
-#: templates/job-filters.php:35 templates/job-filters.php:36
+#: includes/forms/class-wp-event-manager-form-submit-event.php:197
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:46
+#: templates/event-filters.php:35 templates/event-filters.php:36
 msgid "Location"
 msgstr ""
 
@@ -239,7 +239,7 @@ msgid "Actions"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:550
-#. translators: %d is the post ID for the job listing.
+#. translators: %d is the post ID for the event listing.
 msgid "ID: %d"
 msgstr ""
 
@@ -265,29 +265,29 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:628
 #: includes/class-wp-event-manager-post-types.php:334
-#: templates/job-dashboard.php:52 templates/job-dashboard.php:70
+#: templates/event-dashboard.php:52 templates/event-dashboard.php:70
 msgid "Edit"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-cpt.php:635
-#: templates/job-dashboard.php:79
+#: templates/event-dashboard.php:79
 msgid "Delete"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:64
-msgid "Job base"
+msgid "event base"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:71
-msgid "Job category base"
+msgid "event category base"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:78
-msgid "Job type base"
+msgid "event type base"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:86
-msgid "Job listing archive page"
+msgid "event listing archive page"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:89
@@ -300,7 +300,7 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:95
 msgid ""
-"Choose how you want the published date for jobs to be displayed on the "
+"Choose how you want the published date for events to be displayed on the "
 "front-end."
 msgstr ""
 
@@ -319,7 +319,7 @@ msgstr ""
 #: includes/admin/class-wp-event-manager-settings.php:107
 #. translators: Placeholder %s is URL to set up a Google Maps API key.
 msgid ""
-"Google requires an API key to retrieve location information for job "
+"Google requires an API key to retrieve location information for event "
 "listings. Acquire an API key from the <a href=\"%s\">Google Maps API "
 "developer site</a>."
 msgstr ""
@@ -337,7 +337,7 @@ msgstr ""
 #: includes/admin/class-wp-event-manager-settings.php:122
 #: includes/class-wp-event-manager-post-types.php:328
 #: includes/class-wp-event-manager-post-types.php:430
-msgid "Job Listings"
+msgid "event Listings"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:128
@@ -345,7 +345,7 @@ msgid "Listings Per Page"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:129
-msgid "Number of job listings to display per page."
+msgid "Number of event listings to display per page."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:135
@@ -365,11 +365,11 @@ msgid "Hide Expired Listings"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:145
-msgid "Hide expired listings in job archives/search"
+msgid "Hide expired listings in event archives/search"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:146
-msgid "Expired job listings will not be searchable."
+msgid "Expired event listings will not be searchable."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:153
@@ -377,7 +377,7 @@ msgid "Hide Expired Listings Content"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:154
-msgid "Hide content in expired single job listings"
+msgid "Hide content in expired single event listings"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:155
@@ -393,7 +393,7 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:164
 msgid ""
-"This lets users select from a list of categories when submitting a job. "
+"This lets users select from a list of categories when submitting a event. "
 "Note: an admin has to create categories before site users can select them."
 msgstr ""
 
@@ -408,8 +408,8 @@ msgstr ""
 #: includes/admin/class-wp-event-manager-settings.php:173
 msgid ""
 "The category selection box will default to allowing multiple selections on "
-"the [jobs] shortcode. Without this, visitors will only be able to select a "
-"single category when filtering jobs."
+"the [events] shortcode. Without this, visitors will only be able to select a "
+"single category when filtering events."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:180
@@ -418,16 +418,16 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:181
 msgid ""
-"Determines the logic used to display jobs when selecting multiple "
+"Determines the logic used to display events when selecting multiple "
 "categories."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:184
-msgid "Jobs will be shown if within ANY selected category"
+msgid "events will be shown if within ANY selected category"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:185
-msgid "Jobs will be shown if within ALL selected categories"
+msgid "events will be shown if within ALL selected categories"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:191
@@ -440,7 +440,7 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:193
 msgid ""
-"This lets users select from a list of types when submitting a job. Note: an "
+"This lets users select from a list of types when submitting a event. Note: an "
 "admin has to create types before site users can select them."
 msgstr ""
 
@@ -454,13 +454,13 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:202
 msgid ""
-"This allows users to select more than one type when submitting a job. The "
-"metabox on the post editor and the selection box on the front-end job "
+"This allows users to select more than one type when submitting a event. The "
+"metabox on the post editor and the selection box on the front-end event "
 "submission form will both reflect this."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:209
-msgid "Job Submission"
+msgid "event Submission"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:214
@@ -472,7 +472,7 @@ msgid "Require an account to submit listings"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:216
-msgid "Limits job listing submissions to registered, logged-in users."
+msgid "Limits event listing submissions to registered, logged-in users."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:223
@@ -486,7 +486,7 @@ msgstr ""
 #: includes/admin/class-wp-event-manager-settings.php:225
 msgid ""
 "Includes account creation on the listing submission form, to allow "
-"non-registered users to create an account and submit a job listing "
+"non-registered users to create an account and submit a event listing "
 "simultaneously."
 msgstr ""
 
@@ -569,8 +569,8 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:278
 msgid ""
-"Choose whether published job listings can be edited and if edits require "
-"admin approval. When moderation is required, the original job listings will "
+"Choose whether published event listings can be edited and if edits require "
+"admin approval. When moderation is required, the original event listings will "
 "be unpublished while edits await admin approval."
 msgstr ""
 
@@ -602,7 +602,7 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:298
 msgid ""
-"Choose the application method job listers will need to provide. Specify URL "
+"Choose the application method event listers will need to provide. Specify URL "
 "or email address only, or allow listers to choose which they prefer."
 msgstr ""
 
@@ -657,16 +657,16 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:340
-msgid "Job Submission Form"
+msgid "event Submission Form"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:341
-msgid "Display a reCAPTCHA field on job submission form."
+msgid "Display a reCAPTCHA field on event submission form."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:342
 msgid ""
-"This will help prevent bots from submitting job listings. You must have "
+"This will help prevent bots from submitting event listings. You must have "
 "entered a valid site key and secret key above."
 msgstr ""
 
@@ -675,33 +675,33 @@ msgid "Pages"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:354
-msgid "Submit Job Form Page"
+msgid "Submit event Form Page"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:355
 msgid ""
-"Select the page where you've used the [submit_job_form] shortcode. This "
+"Select the page where you've used the [submit_event_form] shortcode. This "
 "lets the plugin know the location of the form."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:361
-msgid "Job Dashboard Page"
+msgid "event Dashboard Page"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:362
 msgid ""
-"Select the page where you've used the [job_dashboard] shortcode. This lets "
+"Select the page where you've used the [event_dashboard] shortcode. This lets "
 "the plugin know the location of the dashboard."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:368
-msgid "Job Listings Page"
+msgid "event Listings Page"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:369
 msgid ""
-"Select the page where you've used the [jobs] shortcode. This lets the "
-"plugin know the location of the job listings page."
+"Select the page where you've used the [events] shortcode. This lets the "
+"plugin know the location of the event listings page."
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-settings.php:416
@@ -737,7 +737,7 @@ msgid "Posted by"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-writepanels.php:150
-#. translators: Placeholder %s is the singular name for a job listing post
+#. translators: Placeholder %s is the singular name for a event listing post
 #. type.
 msgid "%s Data"
 msgstr ""
@@ -778,14 +778,14 @@ msgid "Guest"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-writepanels.php:556
-#. translators: %1$s is placeholder for singular name of the job listing post
+#. translators: %1$s is placeholder for singular name of the event listing post
 #. type; %2$s is the intl formatted date the listing was last modified.
 msgid "%1$s was last modified by the user on %2$s."
 msgstr ""
 
 #: includes/admin/views/html-admin-notice-core-setup.php:15
 msgid ""
-"You are nearly ready to start listing jobs with <strong>WP Job "
+"You are nearly ready to start listing events with <strong>WP event "
 "Manager</strong>."
 msgstr ""
 
@@ -828,13 +828,13 @@ msgstr ""
 #: includes/admin/views/html-admin-setup-step-1.php:14
 msgid ""
 "Thanks for installing <em>WP Event Manager</em>! Let's get your site ready to "
-"accept job listings."
+"accept event listings."
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-1.php:15
 msgid ""
 "This setup wizard will walk you through the process of creating pages for "
-"job submissions, management, and listings."
+"event submissions, management, and listings."
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-1.php:19
@@ -859,7 +859,7 @@ msgstr ""
 #: includes/admin/views/html-admin-setup-step-2.php:14
 msgid ""
 "With WP Event Manager, employers and applicants can post, manage, and browse "
-"job listings right on your website. Tell us which of these common pages "
+"event listings right on your website. Tell us which of these common pages "
 "you'd like your site to have and we'll create and configure them for you."
 msgstr ""
 
@@ -890,7 +890,7 @@ msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:48
 msgid ""
-"Creates a page that allows employers to post new jobs directly from a page "
+"Creates a page that allows employers to post new events directly from a page "
 "on your website, instead of requiring them to log in to an admin area. If "
 "you'd rather not allow this -- for example, if you want employers to use "
 "the admin dashboard only -- you can uncheck this setting."
@@ -898,14 +898,14 @@ msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:56
 msgid ""
-"Creates a page that allows employers to manage their job listings directly "
+"Creates a page that allows employers to manage their event listings directly "
 "from a page on your website, instead of requiring them to log in to an "
-"admin area. If you want to manage all job listings from the admin dashboard "
+"admin area. If you want to manage all event listings from the admin dashboard "
 "only, you can uncheck this setting."
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:63
-msgid "Creates a page where visitors can browse, search, and filter job listings."
+msgid "Creates a page where visitors can browse, search, and filter event listings."
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:71
@@ -925,31 +925,31 @@ msgid "Tweak your settings"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:18
-msgid "Add a job using the admin dashboard"
+msgid "Add a event using the admin dashboard"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:23
-msgid "View submitted job listings"
+msgid "View submitted event listings"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:25
-msgid "Add job listings to a page using the [jobs] shortcode"
+msgid "Add event listings to a page using the [events] shortcode"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:32
-msgid "Add a job via the front-end"
+msgid "Add a event via the front-end"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:34
-msgid "Learn to use the front-end job submission board"
+msgid "Learn to use the front-end event submission board"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:41
-msgid "View the job dashboard"
+msgid "View the event dashboard"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:43
-msgid "Learn to use the front-end job dashboard"
+msgid "Learn to use the front-end event dashboard"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-3.php:52
@@ -1070,23 +1070,23 @@ msgid "WordPress Update Required"
 msgstr ""
 
 #: includes/class-wp-event-manager-email-notifications.php:227
-msgid "Job title"
+msgid "event title"
 msgstr ""
 
 #: includes/class-wp-event-manager-email-notifications.php:247
 #: includes/class-wp-event-manager-post-types.php:218
-#: includes/forms/class-wp-event-manager-form-submit-job.php:205
-msgid "Job type"
+#: includes/forms/class-wp-event-manager-form-submit-event.php:205
+msgid "event type"
 msgstr ""
 
 #: includes/class-wp-event-manager-email-notifications.php:257
 #: includes/class-wp-event-manager-post-types.php:154
-#: includes/forms/class-wp-event-manager-form-submit-job.php:214
-msgid "Job category"
+#: includes/forms/class-wp-event-manager-form-submit-event.php:214
+msgid "event category"
 msgstr ""
 
 #: includes/class-wp-event-manager-email-notifications.php:266
-#: includes/forms/class-wp-event-manager-form-submit-job.php:239
+#: includes/forms/class-wp-event-manager-form-submit-event.php:239
 msgid "Company name"
 msgstr ""
 
@@ -1136,17 +1136,17 @@ msgid "Employer"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:155
-msgid "Job categories"
+msgid "event categories"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:183
 #: includes/class-wp-event-manager-post-types.php:246
 #: includes/class-wp-event-manager-post-types.php:344
-#. translators: Placeholder %s is the plural label of the job listing category
+#. translators: Placeholder %s is the plural label of the event listing category
 #. taxonomy type.
-#. translators: Placeholder %s is the plural label of the job listing job type
+#. translators: Placeholder %s is the plural label of the event listing event type
 #. taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "Search %s"
 msgstr ""
@@ -1154,11 +1154,11 @@ msgstr ""
 #: includes/class-wp-event-manager-post-types.php:185
 #: includes/class-wp-event-manager-post-types.php:248
 #: includes/class-wp-event-manager-post-types.php:330
-#. translators: Placeholder %s is the plural label of the job listing category
+#. translators: Placeholder %s is the plural label of the event listing category
 #. taxonomy type.
-#. translators: Placeholder %s is the plural label of the job listing job type
+#. translators: Placeholder %s is the plural label of the event listing event type
 #. taxonomy type.
-#. translators: Placeholder %s is the plural label of the job listing post
+#. translators: Placeholder %s is the plural label of the event listing post
 #. type.
 msgid "All %s"
 msgstr ""
@@ -1166,20 +1166,20 @@ msgstr ""
 #: includes/class-wp-event-manager-post-types.php:187
 #: includes/class-wp-event-manager-post-types.php:250
 #: includes/class-wp-event-manager-post-types.php:350
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "Parent %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:189
 #: includes/class-wp-event-manager-post-types.php:252
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
 msgid "Parent %s:"
 msgstr ""
@@ -1187,52 +1187,52 @@ msgstr ""
 #: includes/class-wp-event-manager-post-types.php:191
 #: includes/class-wp-event-manager-post-types.php:254
 #: includes/class-wp-event-manager-post-types.php:336
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "Edit %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:193
 #: includes/class-wp-event-manager-post-types.php:256
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
 msgid "Update %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:195
 #: includes/class-wp-event-manager-post-types.php:258
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
 msgid "Add New %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:197
 #: includes/class-wp-event-manager-post-types.php:260
-#. translators: Placeholder %s is the singular label of the job listing
+#. translators: Placeholder %s is the singular label of the event listing
 #. category taxonomy type.
-#. translators: Placeholder %s is the singular label of the job listing job
+#. translators: Placeholder %s is the singular label of the event listing event
 #. type taxonomy type.
 msgid "New %s Name"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:219
-msgid "Job types"
+msgid "event types"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:297
-msgid "Job"
+msgid "event"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:298
-msgid "Jobs"
+msgid "events"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:331
@@ -1240,32 +1240,32 @@ msgid "Add New"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:333
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "Add %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:338
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "New %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:340
 #: includes/class-wp-event-manager-post-types.php:342
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "View %s"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:346
-#. translators: Placeholder %s is the singular label of the job listing post
+#. translators: Placeholder %s is the singular label of the event listing post
 #. type.
 msgid "No %s found"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:348
-#. translators: Placeholder %s is the plural label of the job listing post
+#. translators: Placeholder %s is the plural label of the event listing post
 #. type.
 msgid "No %s found in trash"
 msgstr ""
@@ -1283,7 +1283,7 @@ msgid "Use as company logo"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:357
-#. translators: Placeholder %s is the plural label of the job listing post
+#. translators: Placeholder %s is the plural label of the event listing post
 #. type.
 msgid "This is where you can create and manage %s."
 msgstr ""
@@ -1303,37 +1303,37 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/class-wp-event-manager-post-types.php:1162
-#: includes/forms/class-wp-event-manager-form-submit-job.php:174
+#: includes/forms/class-wp-event-manager-form-submit-event.php:174
 msgid "Application email/URL"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1163
-#: includes/forms/class-wp-event-manager-form-submit-job.php:175
+#: includes/forms/class-wp-event-manager-form-submit-event.php:175
 msgid "Enter an email address or website URL"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1166
-#: includes/forms/class-wp-event-manager-form-submit-job.php:164
+#: includes/forms/class-wp-event-manager-form-submit-event.php:164
 msgid "Application email"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1167
-#: includes/forms/class-wp-event-manager-form-submit-job.php:165
+#: includes/forms/class-wp-event-manager-form-submit-event.php:165
 msgid "you@example.com"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1169
-#: includes/forms/class-wp-event-manager-form-submit-job.php:169
+#: includes/forms/class-wp-event-manager-form-submit-event.php:169
 msgid "Application URL"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1170
-#: includes/forms/class-wp-event-manager-form-submit-job.php:170
+#: includes/forms/class-wp-event-manager-form-submit-event.php:170
 msgid "https://"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:1176
-#: includes/forms/class-wp-event-manager-form-submit-job.php:201
+#: includes/forms/class-wp-event-manager-form-submit-event.php:201
 msgid "e.g. \"London\""
 msgstr ""
 
@@ -1386,7 +1386,7 @@ msgid "This position has already been filled"
 msgstr ""
 
 #: includes/class-wp-event-manager-shortcodes.php:119
-#. translators: Placeholder %s is the job listing title.
+#. translators: Placeholder %s is the event listing title.
 msgid "%s has been filled"
 msgstr ""
 
@@ -1395,12 +1395,12 @@ msgid "This position is not filled"
 msgstr ""
 
 #: includes/class-wp-event-manager-shortcodes.php:132
-#. translators: Placeholder %s is the job listing title.
+#. translators: Placeholder %s is the event listing title.
 msgid "%s has been marked as not filled"
 msgstr ""
 
 #: includes/class-wp-event-manager-shortcodes.php:140
-#. translators: Placeholder %s is the job listing title.
+#. translators: Placeholder %s is the event listing title.
 msgid "%s has been deleted"
 msgstr ""
 
@@ -1410,9 +1410,9 @@ msgid "Missing submission page."
 msgstr ""
 
 #: includes/class-wp-event-manager-shortcodes.php:251
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:36
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:52
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:36
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:36
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:52
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:36
 msgid "Title"
 msgstr ""
 
@@ -1430,7 +1430,7 @@ msgid "Load more listings"
 msgstr ""
 
 #: includes/class-wp-event-manager-usage-tracking.php:227
-#. translators: Placeholder %s is a URL to the document on wpjobmanager.com
+#. translators: Placeholder %s is a URL to the document on wpeventmanager.com
 #. with info on usage tracking.
 msgid ""
 "We'd love if you helped us make WP Event Manager better by allowing us to "
@@ -1457,7 +1457,7 @@ msgstr ""
 #. translators: Placeholders %1$s and %2$s are the names of the two cookies
 #. used in WP Event Manager.
 msgid ""
-"This site adds the following cookies to help users resume job submissions "
+"This site adds the following cookies to help users resume event submissions "
 "that they\n"
 "\t\t\t\thave started but have not completed: %1$s and %2$s"
 msgstr ""
@@ -1471,7 +1471,7 @@ msgid "Invalid file type. Accepted types:"
 msgstr ""
 
 #: includes/class-wp-event-manager.php:425
-#: includes/forms/class-wp-event-manager-form-submit-job.php:390
+#: includes/forms/class-wp-event-manager-form-submit-event.php:390
 #. translators: Placeholder %d is the number of files to that users are limited
 #. to.
 msgid "You are only allowed to upload a maximum of %d files."
@@ -1485,177 +1485,177 @@ msgstr ""
 msgid "This field is required."
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-expiring-job.php:34
-msgid "Admin Notice of Expiring Job Listings"
+#: includes/emails/class-wp-event-manager-email-admin-expiring-event.php:34
+msgid "Admin Notice of Expiring event Listings"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-expiring-job.php:44
-msgid "Send notices to the site administrator before a job listing expires."
+#: includes/emails/class-wp-event-manager-email-admin-expiring-event.php:44
+msgid "Send notices to the site administrator before a event listing expires."
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-new-job.php:34
+#: includes/emails/class-wp-event-manager-email-admin-new-event.php:34
 msgid "Admin Notice of New Listing"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-new-job.php:44
+#: includes/emails/class-wp-event-manager-email-admin-new-event.php:44
 msgid ""
-"Send a notice to the site administrator when a new job is submitted on the "
+"Send a notice to the site administrator when a new event is submitted on the "
 "frontend."
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-new-job.php:63
-#. translators: Placeholder %s is the job listing post title.
-msgid "New Job Listing Submitted: %s"
+#: includes/emails/class-wp-event-manager-email-admin-new-event.php:63
+#. translators: Placeholder %s is the event listing post title.
+msgid "New event Listing Submitted: %s"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-updated-job.php:34
+#: includes/emails/class-wp-event-manager-email-admin-updated-event.php:34
 msgid "Admin Notice of Updated Listing"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-updated-job.php:44
+#: includes/emails/class-wp-event-manager-email-admin-updated-event.php:44
 msgid ""
-"Send a notice to the site administrator when a job is updated on the "
+"Send a notice to the site administrator when a event is updated on the "
 "frontend."
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-admin-updated-job.php:63
-#. translators: Placeholder %s is the job listing post title.
-msgid "Job Listing Updated: %s"
+#: includes/emails/class-wp-event-manager-email-admin-updated-event.php:63
+#. translators: Placeholder %s is the event listing post title.
+msgid "event Listing Updated: %s"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-employer-expiring-job.php:37
-msgid "Employer Notice of Expiring Job Listings"
+#: includes/emails/class-wp-event-manager-email-employer-expiring-event.php:37
+msgid "Employer Notice of Expiring event Listings"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-employer-expiring-job.php:47
-msgid "Send notices to employers before a job listing expires."
+#: includes/emails/class-wp-event-manager-email-employer-expiring-event.php:47
+msgid "Send notices to employers before a event listing expires."
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-employer-expiring-job.php:79
-#. translators: Placeholder %s is the job listing post title.
-msgid "Job Listing Expiring: %s"
+#: includes/emails/class-wp-event-manager-email-employer-expiring-event.php:79
+#. translators: Placeholder %s is the event listing post title.
+msgid "event Listing Expiring: %s"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-employer-expiring-job.php:132
+#: includes/emails/class-wp-event-manager-email-employer-expiring-event.php:132
 msgid "Notice Period"
 msgstr ""
 
-#: includes/emails/class-wp-event-manager-email-employer-expiring-job.php:134
+#: includes/emails/class-wp-event-manager-email-employer-expiring-event.php:134
 msgid "days"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:107
+#: includes/forms/class-wp-event-manager-form-edit-event.php:107
 msgid "Invalid listing"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:139
+#: includes/forms/class-wp-event-manager-form-edit-event.php:139
 msgid "Save changes"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:142
+#: includes/forms/class-wp-event-manager-form-edit-event.php:142
 msgid "Submit changes for approval"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:195
+#: includes/forms/class-wp-event-manager-form-edit-event.php:195
 msgid "Your changes have been saved."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:201
+#: includes/forms/class-wp-event-manager-form-edit-event.php:201
 msgid "View &rarr;"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-edit-job.php:203
+#: includes/forms/class-wp-event-manager-form-edit-event.php:203
 msgid ""
 "Your changes have been submitted and your listing will be visible again "
 "once approved."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:82
+#: includes/forms/class-wp-event-manager-form-submit-event.php:82
 msgid "Submit Details"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:88
-#: includes/forms/class-wp-event-manager-form-submit-job.php:562
-#: templates/job-preview.php:30
+#: includes/forms/class-wp-event-manager-form-submit-event.php:88
+#: includes/forms/class-wp-event-manager-form-submit-event.php:562
+#: templates/event-preview.php:30
 msgid "Preview"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:94
+#: includes/forms/class-wp-event-manager-form-submit-event.php:94
 msgid "Done"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:190
-msgid "Job Title"
+#: includes/forms/class-wp-event-manager-form-submit-event.php:190
+msgid "event Title"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:198
+#: includes/forms/class-wp-event-manager-form-submit-event.php:198
 msgid "Leave this blank if the location is not important"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:208
-msgid "Choose job type&hellip;"
+#: includes/forms/class-wp-event-manager-form-submit-event.php:208
+msgid "Choose event type&hellip;"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:223
+#: includes/forms/class-wp-event-manager-form-submit-event.php:223
 msgid "Description"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:242
+#: includes/forms/class-wp-event-manager-form-submit-event.php:242
 msgid "Enter the name of the company"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:246
-#: templates/content-single-job_listing-company.php:30
+#: includes/forms/class-wp-event-manager-form-submit-event.php:246
+#: templates/content-single-event_listing-company.php:30
 msgid "Website"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:250
+#: includes/forms/class-wp-event-manager-form-submit-event.php:250
 msgid "http://"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:254
+#: includes/forms/class-wp-event-manager-form-submit-event.php:254
 msgid "Tagline"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:257
+#: includes/forms/class-wp-event-manager-form-submit-event.php:257
 msgid "Briefly describe your company"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:262
+#: includes/forms/class-wp-event-manager-form-submit-event.php:262
 msgid "Video"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:266
+#: includes/forms/class-wp-event-manager-form-submit-event.php:266
 msgid "A link to a video about your company"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:270
+#: includes/forms/class-wp-event-manager-form-submit-event.php:270
 msgid "Twitter username"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:273
+#: includes/forms/class-wp-event-manager-form-submit-event.php:273
 msgid "@yourcompany"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:277
+#: includes/forms/class-wp-event-manager-form-submit-event.php:277
 msgid "Logo"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:327
+#: includes/forms/class-wp-event-manager-form-submit-event.php:327
 #. translators: Placeholder %s is the label for the required field.
 msgid "%s is a required field"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:338
+#: includes/forms/class-wp-event-manager-form-submit-event.php:338
 #. translators: Placeholder %s is the field label that is did not validate.
 msgid "%s is invalid"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:355
+#: includes/forms/class-wp-event-manager-form-submit-event.php:355
 msgid "Invalid attachment provided."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:373
+#: includes/forms/class-wp-event-manager-form-submit-event.php:373
 #: wp-event-manager-functions.php:1291
 #. translators: Placeholder %1$s is field label; %2$s is the file mime type;
 #. %3$s is the allowed mime-types.
@@ -1664,52 +1664,52 @@ msgstr ""
 msgid "\"%1$s\" (filetype %2$s) needs to be one of the following file types: %3$s"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:408
+#: includes/forms/class-wp-event-manager-form-submit-event.php:408
 msgid "Please enter a valid application email address"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:417
+#: includes/forms/class-wp-event-manager-form-submit-event.php:417
 msgid "Please enter a valid application URL"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:427
+#: includes/forms/class-wp-event-manager-form-submit-event.php:427
 msgid "Please enter a valid application email address or URL"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:615
+#: includes/forms/class-wp-event-manager-form-submit-event.php:615
 msgid "Please enter a username."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:619
+#: includes/forms/class-wp-event-manager-form-submit-event.php:619
 msgid "Please enter a password."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:623
+#: includes/forms/class-wp-event-manager-form-submit-event.php:623
 msgid "Please enter your email address."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:629
+#: includes/forms/class-wp-event-manager-form-submit-event.php:629
 msgid "Passwords must match."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:635
+#: includes/forms/class-wp-event-manager-form-submit-event.php:635
 #. translators: Placeholder %s is the password hint.
 msgid "Invalid Password: %s"
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:637
+#: includes/forms/class-wp-event-manager-form-submit-event.php:637
 msgid "Password is not valid."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:660
+#: includes/forms/class-wp-event-manager-form-submit-event.php:660
 msgid "You must be signed in to post a new listing."
 msgstr ""
 
-#: includes/forms/class-wp-event-manager-form-submit-job.php:678
-#. translators: placeholder is the URL to the job dashboard page.
+#: includes/forms/class-wp-event-manager-form-submit-event.php:678
+#. translators: placeholder is the URL to the event dashboard page.
 msgid ""
-"Draft was saved. Job listing drafts can be resumed from the <a "
-"href=\"%s\">job dashboard</a>."
+"Draft was saved. event listing drafts can be resumed from the <a "
+"href=\"%s\">event dashboard</a>."
 msgstr ""
 
 #: includes/helper/class-wp-event-manager-helper.php:272
@@ -1774,69 +1774,69 @@ msgstr ""
 msgid "No plugins are activated that have licenses managed by WP Event Manager."
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:27
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:35
-#. translators: Placeholder %s is the plural label for the job listing post
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:27
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:35
+#. translators: Placeholder %s is the plural label for the event listing post
 #. type.
 msgid "Featured %s"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:29
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:29
 msgid "Display a list of featured listings on your site."
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:44
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:54
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:44
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:54
 msgid "Number of listings to show"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:49
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:49
 msgid "Sort By"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:51
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:51
 msgid "Date"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:53
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:53
 msgid "Author"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:54
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:54
 msgid "Random"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:60
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:60
 msgid "Sort Direction"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:62
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:62
 msgid "Ascending"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:63
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:63
 msgid "Descending"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-featured-jobs.php:69
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:59
+#: includes/widgets/class-wp-event-manager-widget-featured-events.php:69
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:59
 msgid "Show Company Logo"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:27
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:35
-#. translators: Placeholder %s is the plural label for the job listing post
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:27
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:35
+#. translators: Placeholder %s is the plural label for the event listing post
 #. type.
 msgid "Recent %s"
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:29
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:29
 msgid ""
 "Display a list of recent listings on your site, optionally matching a "
 "keyword and location."
 msgstr ""
 
-#: includes/widgets/class-wp-event-manager-widget-recent-jobs.php:41
+#: includes/widgets/class-wp-event-manager-widget-recent-events.php:41
 msgid "Keyword"
 msgstr ""
 
@@ -1876,7 +1876,7 @@ msgstr ""
 msgid "Have an account?"
 msgstr ""
 
-#: templates/account-signin.php:41 templates/job-dashboard-login.php:20
+#: templates/account-signin.php:41 templates/event-dashboard-login.php:20
 msgid "Sign in"
 msgstr ""
 
@@ -1898,113 +1898,113 @@ msgstr ""
 msgid "You must sign in to create a new listing."
 msgstr ""
 
-#: templates/account-signin.php:63 templates/job-submit.php:43
-#: templates/job-submit.php:60
+#: templates/account-signin.php:63 templates/event-submit.php:43
+#: templates/event-submit.php:60
 msgid "(optional)"
 msgstr ""
 
-#: templates/content-no-jobs-found.php:20
+#: templates/content-no-events-found.php:20
 msgid "There are no listings matching your search."
 msgstr ""
 
-#: templates/content-no-jobs-found.php:22
+#: templates/content-no-events-found.php:22
 msgid "There are currently no vacancies."
 msgstr ""
 
-#: templates/content-single-job_listing-meta.php:42
+#: templates/content-single-event_listing-meta.php:42
 msgid "This position has been filled"
 msgstr ""
 
-#: templates/content-single-job_listing-meta.php:44
+#: templates/content-single-event_listing-meta.php:44
 msgid "Applications have closed"
 msgstr ""
 
-#: templates/content-single-job_listing.php:23
+#: templates/content-single-event_listing.php:23
 msgid "This listing has expired."
 msgstr ""
 
-#: templates/emails/admin-expiring-job.php:30
-#: templates/emails/employer-expiring-job.php:32
-msgid "The following job listing is expiring today from <a href=\"%s\">%s</a>."
+#: templates/emails/admin-expiring-event.php:30
+#: templates/emails/employer-expiring-event.php:32
+msgid "The following event listing is expiring today from <a href=\"%s\">%s</a>."
 msgstr ""
 
-#: templates/emails/admin-expiring-job.php:32
-#: templates/emails/employer-expiring-job.php:40
-msgid "The following job listing is expiring soon from <a href=\"%s\">%s</a>."
+#: templates/emails/admin-expiring-event.php:32
+#: templates/emails/employer-expiring-event.php:40
+msgid "The following event listing is expiring soon from <a href=\"%s\">%s</a>."
 msgstr ""
 
-#: templates/emails/admin-expiring-job.php:35
+#: templates/emails/admin-expiring-event.php:35
 msgid "Visit <a href=\"%s\">WordPress admin</a> to manage the listing."
 msgstr ""
 
-#: templates/emails/admin-new-job.php:26
-msgid "A new job listing has been submitted to <a href=\"%s\">%s</a>."
+#: templates/emails/admin-new-event.php:26
+msgid "A new event listing has been submitted to <a href=\"%s\">%s</a>."
 msgstr ""
 
-#: templates/emails/admin-new-job.php:33
-#: templates/emails/plain/admin-new-job.php:26
+#: templates/emails/admin-new-event.php:33
+#: templates/emails/plain/admin-new-event.php:26
 msgid "It has been published and is now available to the public."
 msgstr ""
 
-#: templates/emails/admin-new-job.php:38
+#: templates/emails/admin-new-event.php:38
 msgid ""
 "It is awaiting approval by an administrator in <a href=\"%s\">WordPress "
 "admin</a>."
 msgstr ""
 
-#: templates/emails/admin-updated-job.php:25
-msgid "A job listing has been updated on <a href=\"%s\">%s</a>."
+#: templates/emails/admin-updated-event.php:25
+msgid "A event listing has been updated on <a href=\"%s\">%s</a>."
 msgstr ""
 
-#: templates/emails/admin-updated-job.php:28
-#: templates/emails/plain/admin-updated-job.php:26
+#: templates/emails/admin-updated-event.php:28
+#: templates/emails/plain/admin-updated-event.php:26
 msgid "The changes have been published and are now available to the public."
 msgstr ""
 
-#: templates/emails/admin-updated-job.php:32
+#: templates/emails/admin-updated-event.php:32
 msgid ""
-"The job listing is not publicly available until the changes are approved by "
+"The event listing is not publicly available until the changes are approved by "
 "an administrator in the site's <a href=\"%s\">WordPress admin</a>."
 msgstr ""
 
-#: templates/emails/employer-expiring-job.php:48
-msgid "Visit the <a href=\"%s\">job listing dashboard</a> to manage the listing."
+#: templates/emails/employer-expiring-event.php:48
+msgid "Visit the <a href=\"%s\">event listing dashboard</a> to manage the listing."
 msgstr ""
 
-#: templates/emails/plain/admin-expiring-job.php:30
-#: templates/emails/plain/employer-expiring-job.php:29
-msgid "The following job listing is expiring today from %s (%s)."
+#: templates/emails/plain/admin-expiring-event.php:30
+#: templates/emails/plain/employer-expiring-event.php:29
+msgid "The following event listing is expiring today from %s (%s)."
 msgstr ""
 
-#: templates/emails/plain/admin-expiring-job.php:36
-#: templates/emails/plain/employer-expiring-job.php:31
-msgid "The following job listing is expiring soon from %s (%s)."
+#: templates/emails/plain/admin-expiring-event.php:36
+#: templates/emails/plain/employer-expiring-event.php:31
+msgid "The following event listing is expiring soon from %s (%s)."
 msgstr ""
 
-#: templates/emails/plain/admin-expiring-job.php:43
+#: templates/emails/plain/admin-expiring-event.php:43
 msgid "Visit WordPress admin (%s) to manage the listing."
 msgstr ""
 
-#: templates/emails/plain/admin-new-job.php:23
-msgid "A new job listing has been submitted to %s (%s)."
+#: templates/emails/plain/admin-new-event.php:23
+msgid "A new event listing has been submitted to %s (%s)."
 msgstr ""
 
-#: templates/emails/plain/admin-new-job.php:29
+#: templates/emails/plain/admin-new-event.php:29
 msgid "It is awaiting approval by an administrator in WordPress admin (%s)."
 msgstr ""
 
-#: templates/emails/plain/admin-updated-job.php:23
-msgid "A job listing has been updated on %s (%s)."
+#: templates/emails/plain/admin-updated-event.php:23
+msgid "A event listing has been updated on %s (%s)."
 msgstr ""
 
-#: templates/emails/plain/admin-updated-job.php:29
+#: templates/emails/plain/admin-updated-event.php:29
 msgid ""
-"The job listing is not publicly available until the changes are approved by "
+"The event listing is not publicly available until the changes are approved by "
 "an administrator in the site's WordPress admin (%s)."
 msgstr ""
 
-#: templates/emails/plain/employer-expiring-job.php:33
-msgid "Visit the job listing dashboard (%s) to manage the listing."
+#: templates/emails/plain/employer-expiring-event.php:33
+msgid "Visit the event listing dashboard (%s) to manage the listing."
 msgstr ""
 
 #: templates/form-fields/file-field.php:60
@@ -2026,107 +2026,107 @@ msgstr ""
 msgid "remove"
 msgstr ""
 
-#: templates/job-application-email.php:18
+#: templates/event-application-email.php:18
 msgid ""
-"To apply for this job <strong>email your details to</strong> <a "
-"class=\"job_application_email\" href=\"mailto:%1$s%2$s\">%1$s</a>"
+"To apply for this event <strong>email your details to</strong> <a "
+"class=\"event_application_email\" href=\"mailto:%1$s%2$s\">%1$s</a>"
 msgstr ""
 
-#: templates/job-application-url.php:18
-msgid "To apply for this job please visit"
+#: templates/event-application-url.php:18
+msgid "To apply for this event please visit"
 msgstr ""
 
-#: templates/job-application.php:24
-msgid "Apply for job"
+#: templates/event-application.php:24
+msgid "Apply for event"
 msgstr ""
 
-#: templates/job-dashboard-login.php:20
+#: templates/event-dashboard-login.php:20
 msgid "You need to be signed in to manage your listings."
 msgstr ""
 
-#: templates/job-dashboard.php:19
+#: templates/event-dashboard.php:19
 msgid "Your listings are shown in the table below."
 msgstr ""
 
-#: templates/job-dashboard.php:31
+#: templates/event-dashboard.php:31
 msgid "You do not have any active listings."
 msgstr ""
 
-#: templates/job-dashboard.php:44
-msgid "Featured Job"
+#: templates/event-dashboard.php:44
+msgid "Featured event"
 msgstr ""
 
-#: templates/job-dashboard.php:55
+#: templates/event-dashboard.php:55
 msgid "Mark not filled"
 msgstr ""
 
-#: templates/job-dashboard.php:57
+#: templates/event-dashboard.php:57
 msgid "Mark filled"
 msgstr ""
 
-#: templates/job-dashboard.php:60
+#: templates/event-dashboard.php:60
 msgid "Duplicate"
 msgstr ""
 
-#: templates/job-dashboard.php:64
+#: templates/event-dashboard.php:64
 msgid "Relist"
 msgstr ""
 
-#: templates/job-dashboard.php:75
+#: templates/event-dashboard.php:75
 msgid "Continue Submission"
 msgstr ""
 
-#: templates/job-filters.php:30 templates/job-filters.php:31
+#: templates/event-filters.php:30 templates/event-filters.php:31
 msgid "Keywords"
 msgstr ""
 
-#: templates/job-filters.php:47
+#: templates/event-filters.php:47
 msgid "Category"
 msgstr ""
 
-#: templates/job-filters.php:51
+#: templates/event-filters.php:51
 msgid "Any category"
 msgstr ""
 
-#: templates/job-filters.php:68
-msgid "Search Jobs"
+#: templates/event-filters.php:68
+msgid "Search events"
 msgstr ""
 
-#: templates/job-filters.php:80
+#: templates/event-filters.php:80
 msgid ""
 "Your browser does not support JavaScript, or it is disabled. JavaScript "
 "must be enabled in order to view listings."
 msgstr ""
 
-#: templates/job-preview.php:28
+#: templates/event-preview.php:28
 msgid "Submit Listing"
 msgstr ""
 
-#: templates/job-preview.php:29
+#: templates/event-preview.php:29
 msgid "Edit listing"
 msgstr ""
 
-#: templates/job-submit.php:24
-msgid "You are editing an existing job. %s"
+#: templates/event-submit.php:24
+msgid "You are editing an existing event. %s"
 msgstr ""
 
-#: templates/job-submit.php:24
-msgid "Create A New Job"
+#: templates/event-submit.php:24
+msgid "Create A New event"
 msgstr ""
 
-#: templates/job-submit.php:54
+#: templates/event-submit.php:54
 msgid "Company Details"
 msgstr ""
 
-#: templates/job-submit.php:79
+#: templates/event-submit.php:79
 msgid "Save Draft"
 msgstr ""
 
-#: templates/job-submitted.php:24
+#: templates/event-submitted.php:24
 msgid "%s listed successfully. To view your listing <a href=\"%s\">click here</a>."
 msgstr ""
 
-#: templates/job-submitted.php:33
+#: templates/event-submitted.php:33
 msgid "%s submitted successfully. Your listing will be visible once approved."
 msgstr ""
 
@@ -2200,7 +2200,7 @@ msgid "Inactive"
 msgstr ""
 
 #: wp-event-manager-template.php:249
-#. translators: %1$s is the job listing title; %2$s is the URL for the current
+#. translators: %1$s is the event listing title; %2$s is the URL for the current
 #. WordPress instance.
 msgid "Application via %1$s listing on %2$s"
 msgstr ""
@@ -2231,7 +2231,7 @@ msgstr ""
 
 #: wp-event-manager-template.php:748 wp-event-manager-template.php:769
 #. translators: Placeholder %s is the relative, human readable time since the
-#. job listing was posted.
+#. event listing was posted.
 msgid "Posted %s ago"
 msgstr ""
 
@@ -2240,13 +2240,13 @@ msgid "Anywhere"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://wpjobmanager.com/"
+msgid "https://wpeventmanager.com/"
 msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Manage job listings from the WordPress admin panel, and allow users to post "
-"jobs directly to your site."
+"Manage event listings from the WordPress admin panel, and allow users to post "
+"events directly to your site."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -2284,7 +2284,7 @@ msgid "Searching&hellip;"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-admin.php:123
-#: includes/forms/class-wp-event-manager-form-submit-job.php:474
+#: includes/forms/class-wp-event-manager-form-submit-event.php:474
 #. translators: jQuery date format, see
 #. http:api.jqueryui.com/datepicker/#utility-formatDate
 msgctxt "Date format for jQuery datepicker."
@@ -2293,35 +2293,35 @@ msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:108
 #: includes/class-wp-event-manager-post-types.php:901
-msgctxt "Job permalink - resave permalinks after changing this"
-msgid "job"
+msgctxt "event permalink - resave permalinks after changing this"
+msgid "event"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:117
 #: includes/class-wp-event-manager-post-types.php:902
-msgctxt "Job category slug - resave permalinks after changing this"
-msgid "job-category"
+msgctxt "event category slug - resave permalinks after changing this"
+msgid "event-category"
 msgstr ""
 
 #: includes/admin/class-wp-event-manager-permalink-settings.php:126
 #: includes/class-wp-event-manager-post-types.php:903
-msgctxt "Job type slug - resave permalinks after changing this"
-msgid "job-type"
+msgctxt "event type slug - resave permalinks after changing this"
+msgid "event-type"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:46
 msgctxt "Default page title (wizard)"
-msgid "Post a Job"
+msgid "Post a event"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:54
 msgctxt "Default page title (wizard)"
-msgid "Job Dashboard"
+msgid "event Dashboard"
 msgstr ""
 
 #: includes/admin/views/html-admin-setup-step-2.php:62
 msgctxt "Default page title (wizard)"
-msgid "Jobs"
+msgid "events"
 msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:391
@@ -2358,5 +2358,5 @@ msgstr ""
 
 #: includes/class-wp-event-manager-post-types.php:885
 msgctxt "Post type archive slug - resave permalinks after changing this"
-msgid "jobs"
+msgid "events"
 msgstr ""

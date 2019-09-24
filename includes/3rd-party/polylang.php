@@ -11,15 +11,15 @@
  * @since 1.26.0
  */
 function polylang_wpjm_init() {
-	add_filter( 'wpjm_lang', 'polylang_wpjm_get_job_listings_lang' );
+	add_filter( 'wpjm_lang', 'polylang_wpjm_get_event_listings_lang' );
 	add_filter( 'wpjm_page_id', 'polylang_wpjm_page_id' );
-	add_action( 'get_job_listings_query_args', 'polylang_wpjm_query_language' );
+	add_action( 'get_event_listings_query_args', 'polylang_wpjm_query_language' );
 }
 add_action( 'pll_init', 'polylang_wpjm_init' );
 
 
 /**
- * Sets the current language when running job listings query.
+ * Sets the current language when running event listings query.
  *
  * @since 1.29.1
  *
@@ -44,11 +44,11 @@ function polylang_wpjm_query_language( $query_args ) {
  * @param string $lang
  * @return string
  */
-function polylang_wpjm_get_job_listings_lang( $lang ) {
+function polylang_wpjm_get_event_listings_lang( $lang ) {
 	if (
 		function_exists( 'pll_current_language' )
 		&& function_exists( 'pll_is_translated_post_type' )
-		&& pll_is_translated_post_type( 'job_listing' )
+		&& pll_is_translated_post_type( 'event_listing' )
 	) {
 		return pll_current_language();
 	}

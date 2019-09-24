@@ -1,15 +1,15 @@
 <wpml-config>
   <custom-types>
-    <custom-type translate="1">job_listing</custom-type>
+    <custom-type translate="1">event_listing</custom-type>
   </custom-types>
   <taxonomies>
-    <taxonomy translate="1">job_listing_type</taxonomy>
+    <taxonomy translate="1">event_listing_type</taxonomy>
   </taxonomies>
   <custom-fields>
     <custom-field action="copy">_filled</custom-field>
     <custom-field action="copy">_featured</custom-field>
-    <custom-field action="copy">_job_expires</custom-field>
-    <custom-field action="translate">_job_location</custom-field>
+    <custom-field action="copy">_event_expires</custom-field>
+    <custom-field action="translate">_event_location</custom-field>
     <custom-field action="translate">_application</custom-field>
     <custom-field action="translate">_company_name</custom-field>
     <custom-field action="translate">_company_website</custom-field>

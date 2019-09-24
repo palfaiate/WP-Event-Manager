@@ -1,10 +1,10 @@
 <?php
 /**
- * Shows term `select` form field on job listing forms.
+ * Shows term `select` form field on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/term-select-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/term-select-field.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -31,7 +31,7 @@ if ( is_array( $selected ) ) {
 	$selected = current( $selected );
 }
 
-wp_dropdown_categories( apply_filters( 'job_manager_term_select_field_wp_dropdown_categories_args', [
+wp_dropdown_categories( apply_filters( 'event_manager_term_select_field_wp_dropdown_categories_args', [
 	'taxonomy'         => $field['taxonomy'],
 	'hierarchical'     => 1,
 	'show_option_all'  => false,

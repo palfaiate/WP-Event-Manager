@@ -1,21 +1,21 @@
 <?php
 
-class WP_Test_WP_Job_Manager_Category_Walker extends WPJM_BaseTest {
+class WP_Test_WP_event_Manager_Category_Walker extends WPJM_BaseTest {
 	private $terms;
 
 	public function setUp() {
 		parent::setUp();
-		include_once JOB_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
+		include_once event_MANAGER_PLUGIN_DIR . '/includes/class-wp-event-manager-category-walker.php';
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Category_Walker::start_el
+	 * @covers WP_event_Manager_Category_Walker::start_el
 	 */
 	public function test_start_el() {
 		$terms = $this->get_terms();
 		$this->assertCount( 1, $terms );
-		$walker = new WP_Job_Manager_Category_Walker();
+		$walker = new WP_event_Manager_Category_Walker();
 		// Typical call.
 		$test_output_a = '';
 		$walker->start_el( $test_output_a, $terms[0], 11 );

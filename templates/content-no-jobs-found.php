@@ -1,10 +1,10 @@
 <?php
 /**
- * Notice when no jobs were found in `[jobs]` shortcode.
+ * Notice when no events were found in `[events]` shortcode.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/content-no-jobs-found.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/content-no-events-found.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <?php if ( defined( 'DOING_AJAX' ) ) : ?>
-	<li class="no_job_listings_found"><?php esc_html_e( 'There are no listings matching your search.', 'wp-event-manager' ); ?></li>
+	<li class="no_event_listings_found"><?php esc_html_e( 'There are no listings matching your search.', 'wp-event-manager' ); ?></li>
 <?php else : ?>
-	<p class="no_job_listings_found"><?php esc_html_e( 'There are currently no vacancies.', 'wp-event-manager' ); ?></p>
+	<p class="no_event_listings_found"><?php esc_html_e( 'There are currently no vacancies.', 'wp-event-manager' ); ?></p>
 <?php endif; ?>

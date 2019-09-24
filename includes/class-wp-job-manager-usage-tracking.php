@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Usage_Tracking.
+ * File containing the class WP_event_Manager_Usage_Tracking.
  *
  * @package wp-event-manager
  */
@@ -14,24 +14,24 @@ require dirname( __FILE__ ) . '/../lib/usage-tracking/class-usage-tracking-base.
 /**
  * WPJM Usage Tracking subclass.
  */
-class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
+class WP_event_Manager_Usage_Tracking extends WP_event_Manager_Usage_Tracking_Base {
 
-	const WPJM_SETTING_NAME = 'job_manager_usage_tracking_enabled';
+	const WPJM_SETTING_NAME = 'event_manager_usage_tracking_enabled';
 
-	const WPJM_TRACKING_INFO_URL = 'https://wpjobmanager.com/document/what-data-does-wpjm-track';
+	const WPJM_TRACKING_INFO_URL = 'https://wpeventmanager.com/document/what-data-does-wpjm-track';
 
 	/**
-	 * WP_Job_Manager_Usage_Tracking constructor.
+	 * WP_event_Manager_Usage_Tracking constructor.
 	 */
 	protected function __construct() {
 		parent::__construct();
 
 		// Add filter for settings.
-		add_filter( 'job_manager_settings', [ $this, 'add_setting_field' ] );
+		add_filter( 'event_manager_settings', [ $this, 'add_setting_field' ] );
 
 		// In the setup wizard, do not display the normal opt-in dialog.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
-		if ( isset( $_GET['page'] ) && 'job-manager-setup' === $_GET['page'] ) {
+		if ( isset( $_GET['page'] ) && 'event-manager-setup' === $_GET['page'] ) {
 			remove_action( 'admin_notices', [ $this, 'maybe_display_tracking_opt_in' ] );
 		}
 	}
@@ -43,7 +43,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 */
 	protected function get_base_system_data() {
 		$base_data            = [];
-		$base_data['version'] = JOB_MANAGER_VERSION;
+		$base_data['version'] = event_MANAGER_VERSION;
 
 		return $base_data;
 	}
@@ -58,7 +58,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 */
 	public static function log_event( $event_name, $properties = [] ) {
 		$properties = array_merge(
-			WP_Job_Manager_Usage_Tracking_Data::get_event_logging_base_fields(),
+			WP_event_Manager_Usage_Tracking_Data::get_event_logging_base_fields(),
 			$properties
 		);
 
@@ -93,7 +93,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	/**
 	 * Check if current request is a REST API request.
 	 *
-	 * @todo move this to WP_Job_Manager_REST_API
+	 * @todo move this to WP_event_Manager_REST_API
 	 * @return bool
 	 */
 	public static function is_rest_request() {
@@ -101,19 +101,19 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	}
 
 	/**
-	 * Track the job submission event.
+	 * Track the event submission event.
 	 *
 	 * @param int   $post_id    Post ID.
 	 * @param array $properties Default properties to use.
 	 */
-	public static function track_job_submission( $post_id, $properties = [] ) {
-		// Only track the first time a job is submitted.
+	public static function track_event_submission( $post_id, $properties = [] ) {
+		// Only track the first time a event is submitted.
 		if ( get_post_meta( $post_id, '_tracked_submitted' ) ) {
 			return;
 		}
 		update_post_meta( $post_id, '_tracked_submitted', time() );
 
-		$properties['job_id']      = intval( $post_id );
+		$properties['event_id']      = intval( $post_id );
 		$properties['post_status'] = get_post_status( $post_id );
 
 		$user_role = self::get_current_role();
@@ -121,17 +121,17 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 			$properties['user_role'] = $user_role;
 		}
 
-		self::log_event( 'job_listing_submitted', $properties );
+		self::log_event( 'event_listing_submitted', $properties );
 	}
 
 	/**
-	 * Track the job approval event.
+	 * Track the event approval event.
 	 *
 	 * @param int   $post_id    Post ID.
 	 * @param array $properties Default properties to use.
 	 */
-	public static function track_job_approval( $post_id, $properties = [] ) {
-		// Only track the first time a job is approved.
+	public static function track_event_approval( $post_id, $properties = [] ) {
+		// Only track the first time a event is approved.
 		if ( get_post_meta( $post_id, '_tracked_approved' ) ) {
 			return;
 		}
@@ -139,7 +139,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 
 		$post = get_post( $post_id );
 
-		$properties['job_id'] = intval( $post_id );
+		$properties['event_id'] = intval( $post_id );
 		$properties['age']    = time() - strtotime( $post->post_date_gmt );
 
 		$user_role = self::get_current_role();
@@ -147,7 +147,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 			$properties['user_role'] = $user_role;
 		}
 
-		self::log_event( 'job_listing_approved', $properties );
+		self::log_event( 'event_listing_approved', $properties );
 	}
 
 	/**
@@ -169,7 +169,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 * @return string
 	 */
 	protected function get_prefix() {
-		return 'job_manager';
+		return 'event_manager';
 	}
 
 	/**
@@ -224,7 +224,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 */
 	protected function opt_in_dialog_text() {
 		return sprintf(
-			// translators: Placeholder %s is a URL to the document on wpjobmanager.com with info on usage tracking.
+			// translators: Placeholder %s is a URL to the document on wpeventmanager.com with info on usage tracking.
 			__(
 				'We\'d love if you helped us make WP Event Manager better by allowing us to collect
 				<a href="%s">usage tracking data</a>. No sensitive information is
@@ -242,7 +242,7 @@ class WP_Job_Manager_Usage_Tracking extends WP_Job_Manager_Usage_Tracking_Base {
 	 * @return bool
 	 */
 	protected function do_track_plugin( $plugin_slug ) {
-		if ( 1 === preg_match( '/^wp\-job\-manager/', $plugin_slug ) ) {
+		if ( 1 === preg_match( '/^wp\-event\-manager/', $plugin_slug ) ) {
 			return true;
 		}
 		$third_party_plugins = [

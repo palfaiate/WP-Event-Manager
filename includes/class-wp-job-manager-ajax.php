@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Ajax.
+ * File containing the class WP_event_Manager_Ajax.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles Job Manager's Ajax endpoints.
+ * Handles event Manager's Ajax endpoints.
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Ajax {
+class WP_event_Manager_Ajax {
 
 	/**
 	 * The single instance of the class.
@@ -46,15 +46,15 @@ class WP_Job_Manager_Ajax {
 		add_action( 'template_redirect', [ __CLASS__, 'do_jm_ajax' ], 0 );
 
 		// JM Ajax endpoints.
-		add_action( 'job_manager_ajax_get_listings', [ $this, 'get_listings' ] );
-		add_action( 'job_manager_ajax_upload_file', [ $this, 'upload_file' ] );
+		add_action( 'event_manager_ajax_get_listings', [ $this, 'get_listings' ] );
+		add_action( 'event_manager_ajax_upload_file', [ $this, 'upload_file' ] );
 
 		// BW compatible handlers.
-		add_action( 'wp_ajax_nopriv_job_manager_get_listings', [ $this, 'get_listings' ] );
-		add_action( 'wp_ajax_job_manager_get_listings', [ $this, 'get_listings' ] );
-		add_action( 'wp_ajax_nopriv_job_manager_upload_file', [ $this, 'upload_file' ] );
-		add_action( 'wp_ajax_job_manager_upload_file', [ $this, 'upload_file' ] );
-		add_action( 'wp_ajax_job_manager_search_users', [ $this, 'ajax_search_users' ] );
+		add_action( 'wp_ajax_nopriv_event_manager_get_listings', [ $this, 'get_listings' ] );
+		add_action( 'wp_ajax_event_manager_get_listings', [ $this, 'get_listings' ] );
+		add_action( 'wp_ajax_nopriv_event_manager_upload_file', [ $this, 'upload_file' ] );
+		add_action( 'wp_ajax_event_manager_upload_file', [ $this, 'upload_file' ] );
+		add_action( 'wp_ajax_event_manager_search_users', [ $this, 'ajax_search_users' ] );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class WP_Job_Manager_Ajax {
 	}
 
 	/**
-	 * Gets Job Manager's Ajax Endpoint.
+	 * Gets event Manager's Ajax Endpoint.
 	 *
 	 * @param  string $request      Optional.
 	 * @return string
@@ -84,7 +84,7 @@ class WP_Job_Manager_Ajax {
 	}
 
 	/**
-	 * Performs Job Manager's Ajax actions.
+	 * Performs event Manager's Ajax actions.
 	 */
 	public static function do_jm_ajax() {
 		global $wp_query;
@@ -110,13 +110,13 @@ class WP_Job_Manager_Ajax {
 			 *
 			 * @since 1.23.0
 			 */
-			do_action( 'job_manager_ajax_' . sanitize_text_field( $action ) );
+			do_action( 'event_manager_ajax_' . sanitize_text_field( $action ) );
 			wp_die();
 		}
 	}
 
 	/**
-	 * Returns Job Listings for Ajax endpoint.
+	 * Returns event Listings for Ajax endpoint.
 	 */
 	public function get_listings() {
 		// Get input variables.
@@ -124,12 +124,12 @@ class WP_Job_Manager_Ajax {
 		$search_location    = isset( $_REQUEST['search_location'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['search_location'] ) ) : '';
 		$search_keywords    = isset( $_REQUEST['search_keywords'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['search_keywords'] ) ) : '';
 		$search_categories  = isset( $_REQUEST['search_categories'] ) ? wp_unslash( $_REQUEST['search_categories'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Input is sanitized below.
-		$filter_job_types   = isset( $_REQUEST['filter_job_type'] ) ? array_filter( array_map( 'sanitize_title', wp_unslash( (array) $_REQUEST['filter_job_type'] ) ) ) : null;
+		$filter_event_types   = isset( $_REQUEST['filter_event_type'] ) ? array_filter( array_map( 'sanitize_title', wp_unslash( (array) $_REQUEST['filter_event_type'] ) ) ) : null;
 		$filter_post_status = isset( $_REQUEST['filter_post_status'] ) ? array_filter( array_map( 'sanitize_title', wp_unslash( (array) $_REQUEST['filter_post_status'] ) ) ) : null;
 		$order              = isset( $_REQUEST['order'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) : 'DESC';
 		$orderby            = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) : 'featured';
 		$page               = isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1;
-		$per_page           = isset( $_REQUEST['per_page'] ) ? absint( $_REQUEST['per_page'] ) : absint( get_option( 'job_manager_per_page' ) );
+		$per_page           = isset( $_REQUEST['per_page'] ) ? absint( $_REQUEST['per_page'] ) : absint( get_option( 'event_manager_per_page' ) );
 		$filled             = isset( $_REQUEST['filled'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['filled'] ) ) : null;
 		$featured           = isset( $_REQUEST['featured'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['featured'] ) ) : null;
 		$show_pagination    = isset( $_REQUEST['show_pagination'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['show_pagination'] ) ) : null;
@@ -141,14 +141,14 @@ class WP_Job_Manager_Ajax {
 			$search_categories = array_filter( [ sanitize_text_field( wp_unslash( $search_categories ) ) ] );
 		}
 
-		$types              = get_job_listing_types();
-		$job_types_filtered = ! is_null( $filter_job_types ) && count( $types ) !== count( $filter_job_types );
+		$types              = get_event_listing_types();
+		$event_types_filtered = ! is_null( $filter_event_types ) && count( $types ) !== count( $filter_event_types );
 
 		$args = [
 			'search_location'   => $search_location,
 			'search_keywords'   => $search_keywords,
 			'search_categories' => $search_categories,
-			'job_types'         => is_null( $filter_job_types ) || count( $types ) === count( $filter_job_types ) ? '' : $filter_job_types + [ 0 ],
+			'event_types'         => is_null( $filter_event_types ) || count( $types ) === count( $filter_event_types ) ? '' : $filter_event_types + [ 0 ],
 			'post_status'       => $filter_post_status,
 			'orderby'           => $orderby,
 			'order'             => $order,
@@ -166,23 +166,23 @@ class WP_Job_Manager_Ajax {
 		}
 
 		/**
-		 * Get the arguments to use when building the Job Listing WP Query.
+		 * Get the arguments to use when building the event Listing WP Query.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array $args Arguments used for generating Job Listing query (see `get_job_listings()`).
+		 * @param array $args Arguments used for generating event Listing query (see `get_event_listings()`).
 		 */
-		$jobs = get_job_listings( apply_filters( 'job_manager_get_listings_args', $args ) );
+		$events = get_event_listings( apply_filters( 'event_manager_get_listings_args', $args ) );
 
 		$result = [
-			'found_jobs'    => $jobs->have_posts(),
+			'found_events'    => $events->have_posts(),
 			'showing'       => '',
-			'max_num_pages' => $jobs->max_num_pages,
+			'max_num_pages' => $events->max_num_pages,
 		];
 
-		if ( $jobs->post_count && ( $search_location || $search_keywords || $search_categories || $job_types_filtered ) ) {
+		if ( $events->post_count && ( $search_location || $search_keywords || $search_categories || $event_types_filtered ) ) {
 			// translators: Placeholder %d is the number of found search results.
-			$message               = sprintf( _n( 'Search completed. Found %d matching record.', 'Search completed. Found %d matching records.', $jobs->found_posts, 'wp-event-manager' ), $jobs->found_posts );
+			$message               = sprintf( _n( 'Search completed. Found %d matching record.', 'Search completed. Found %d matching records.', $events->found_posts, 'wp-event-manager' ), $events->found_posts );
 			$result['showing_all'] = true;
 		} else {
 			$message = '';
@@ -203,17 +203,17 @@ class WP_Job_Manager_Ajax {
 		 * @param array $search_values {
 		 *  Helpful values often used in the generation of this message.
 		 *
-		 *  @type string $location   Query used to filter by job listing location.
+		 *  @type string $location   Query used to filter by event listing location.
 		 *  @type string $keywords   Query used to filter by general keywords.
 		 *  @type array  $categories List of the categories to filter by.
 		 * }
 		 */
-		$result['showing'] = apply_filters( 'job_manager_get_listings_custom_filter_text', $message, $search_values );
+		$result['showing'] = apply_filters( 'event_manager_get_listings_custom_filter_text', $message, $search_values );
 
 		// Generate RSS link.
-		$result['showing_links'] = job_manager_get_filtered_links(
+		$result['showing_links'] = event_manager_get_filtered_links(
 			[
-				'filter_job_types'  => $filter_job_types,
+				'filter_event_types'  => $filter_event_types,
 				'search_location'   => $search_location,
 				'search_categories' => $search_categories,
 				'search_keywords'   => $search_keywords,
@@ -226,51 +226,51 @@ class WP_Job_Manager_Ajax {
 		 * @since 1.26.0
 		 *
 		 * @param array $result
-		 * @param WP_Query $jobs
+		 * @param WP_Query $events
 		 * @return bool True by default. Change to false to halt further response.
 		 */
-		if ( true !== apply_filters( 'job_manager_ajax_get_jobs_html_results', true, $result, $jobs ) ) {
+		if ( true !== apply_filters( 'event_manager_ajax_get_events_html_results', true, $result, $events ) ) {
 			/**
-			 * Filters the results of the job listing Ajax query to be sent back to the client.
+			 * Filters the results of the event listing Ajax query to be sent back to the client.
 			 *
 			 * @since 1.0.0
 			 *
 			 * @param array $result {
 			 *  Package of the query results along with meta information.
 			 *
-			 *  @type bool   $found_jobs    Whether or not jobs were found in the query.
+			 *  @type bool   $found_events    Whether or not events were found in the query.
 			 *  @type string $showing       Description of the search query and results.
 			 *  @type int    $max_num_pages Number of pages in the search result.
 			 *  @type string $html          HTML representation of the search results (only if filter
-			 *                              `job_manager_ajax_get_jobs_html_results` returns true).
+			 *                              `event_manager_ajax_get_events_html_results` returns true).
 			 *  @type array $pagination     Pagination links to use for stepping through filter results.
 			 * }
 			 */
-			wp_send_json( apply_filters( 'job_manager_get_listings_result', $result, $jobs ) );
+			wp_send_json( apply_filters( 'event_manager_get_listings_result', $result, $events ) );
 
 			return;
 		}
 
 		ob_start();
 
-		if ( $result['found_jobs'] ) {
-			while ( $jobs->have_posts() ) {
-				$jobs->the_post();
-				get_job_manager_template_part( 'content', 'job_listing' );
+		if ( $result['found_events'] ) {
+			while ( $events->have_posts() ) {
+				$events->the_post();
+				get_event_manager_template_part( 'content', 'event_listing' );
 			}
 		} else {
-			get_job_manager_template_part( 'content', 'no-jobs-found' );
+			get_event_manager_template_part( 'content', 'no-events-found' );
 		}
 
 		$result['html'] = ob_get_clean();
 
 		// Generate pagination.
 		if ( 'true' === $show_pagination ) {
-			$result['pagination'] = get_job_listing_pagination( $jobs->max_num_pages, $page );
+			$result['pagination'] = get_event_listing_pagination( $events->max_num_pages, $page );
 		}
 
 		/** This filter is documented in includes/class-wp-event-manager-ajax.php (above) */
-		wp_send_json( apply_filters( 'job_manager_get_listings_result', $result, $jobs ) );
+		wp_send_json( apply_filters( 'event_manager_get_listings_result', $result, $events ) );
 	}
 
 	/**
@@ -279,7 +279,7 @@ class WP_Job_Manager_Ajax {
 	 * No nonce field since the form may be statically cached.
 	 */
 	public function upload_file() {
-		if ( ! job_manager_user_can_upload_file_via_ajax() ) {
+		if ( ! event_manager_user_can_upload_file_via_ajax() ) {
 			wp_send_json_error( __( 'You must be logged in to upload files using this method.', 'wp-event-manager' ) );
 			return;
 		}
@@ -289,9 +289,9 @@ class WP_Job_Manager_Ajax {
 
 		if ( ! empty( $_FILES ) ) {
 			foreach ( $_FILES as $file_key => $file ) {
-				$files_to_upload = job_manager_prepare_uploaded_files( $file );
+				$files_to_upload = event_manager_prepare_uploaded_files( $file );
 				foreach ( $files_to_upload as $file_to_upload ) {
-					$uploaded_file = job_manager_upload_file(
+					$uploaded_file = event_manager_upload_file(
 						$file_to_upload,
 						[
 							'file_key' => $file_key,
@@ -327,7 +327,7 @@ class WP_Job_Manager_Ajax {
 		 *
 		 * @param array $user_caps Array of capabilities/roles that are allowed to search for users.
 		 */
-		$allowed_capabilities = apply_filters( 'job_manager_caps_can_search_users', [ 'edit_job_listings' ] );
+		$allowed_capabilities = apply_filters( 'event_manager_caps_can_search_users', [ 'edit_event_listings' ] );
 		foreach ( $allowed_capabilities as $cap ) {
 			if ( current_user_can( $cap ) ) {
 				$user_can_search_users = true;
@@ -342,7 +342,7 @@ class WP_Job_Manager_Ajax {
 		 *
 		 * @param bool $user_can_search_users True if they are allowed, false if not.
 		 */
-		return apply_filters( 'job_manager_user_can_search_users', $user_can_search_users );
+		return apply_filters( 'event_manager_user_can_search_users', $user_can_search_users );
 	}
 
 	/**
@@ -402,7 +402,7 @@ class WP_Job_Manager_Ajax {
 			 * @param int[]  $exclude     Array of IDs to exclude.
 			 * @param int    $page        Current page.
 			 */
-			$search_args = apply_filters( 'job_manager_search_users_args', $search_args, $term, $exclude, $page );
+			$search_args = apply_filters( 'event_manager_search_users_args', $search_args, $term, $exclude, $page );
 
 			$user_query  = new WP_User_Query( $search_args );
 			$users       = $user_query->get_results();
@@ -440,10 +440,10 @@ class WP_Job_Manager_Ajax {
 		 * @param int[]  $exclude     Array of IDs to exclude.
 		 * @param int    $page        Current page.
 		 */
-		$response = apply_filters( 'job_manager_search_users_response', $response, $term, $exclude, $page );
+		$response = apply_filters( 'event_manager_search_users_response', $response, $term, $exclude, $page );
 
 		wp_send_json( $response );
 	}
 }
 
-WP_Job_Manager_Ajax::instance();
+WP_event_Manager_Ajax::instance();

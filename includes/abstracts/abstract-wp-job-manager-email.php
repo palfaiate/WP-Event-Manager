@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Email.
+ * File containing the class WP_event_Manager_Email.
  *
  * @package wp-event-manager
  */
@@ -17,12 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * notification.
  *
  * Additionally, inside of plugins and themes, load email notification files based on this class inside the
- * `job_manager_email_init` hook. This will prevent unnecessary loading and won't include the files if this abstract
+ * `event_manager_email_init` hook. This will prevent unnecessary loading and won't include the files if this abstract
  * class isn't available.
  *
  * Example:
  * ```
- * add_action( 'job_manager_email_init', 'custom_plugin_include_emails' );
+ * add_action( 'event_manager_email_init', 'custom_plugin_include_emails' );
  * function custom_plugin_include_emails() {
  *     include_once 'emails/custom-plugin-sent-resume.php`;
  * }
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.31.0
  */
-abstract class WP_Job_Manager_Email {
+abstract class WP_event_Manager_Email {
 	/**
 	 * Arguments used in an instance of an email notification.
 	 *
@@ -46,7 +46,7 @@ abstract class WP_Job_Manager_Email {
 	private $settings = [];
 
 	/**
-	 * WP_Job_Manager_Email constructor.
+	 * WP_event_Manager_Email constructor.
 	 *
 	 * @param array $args     Arguments used in forming email notification.
 	 * @param array $settings Settings for this notification.
@@ -94,7 +94,7 @@ abstract class WP_Job_Manager_Email {
 	 * @return string
 	 */
 	public static function get_context() {
-		return 'job_manager';
+		return 'event_manager';
 	}
 
 	/**
@@ -132,14 +132,14 @@ abstract class WP_Job_Manager_Email {
 	 * @return array
 	 */
 	protected function prepare_args( $args ) {
-		if ( isset( $args['job_id'] ) ) {
-			$job = get_post( $args['job_id'] );
-			if ( $job instanceof WP_Post ) {
-				$args['job'] = $job;
+		if ( isset( $args['event_id'] ) ) {
+			$event = get_post( $args['event_id'] );
+			if ( $event instanceof WP_Post ) {
+				$args['event'] = $event;
 			}
 		}
-		if ( isset( $args['job'] ) && $args['job'] instanceof WP_Post ) {
-			$author = get_user_by( 'ID', $args['job']->post_author );
+		if ( isset( $args['event'] ) && $args['event'] instanceof WP_Post ) {
+			$author = get_user_by( 'ID', $args['event']->post_author );
 			if ( $author instanceof WP_User ) {
 				$args['author'] = $author;
 			}

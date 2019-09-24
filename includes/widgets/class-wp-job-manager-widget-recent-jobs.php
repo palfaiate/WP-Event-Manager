@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Widget_Recent_Jobs.
+ * File containing the class WP_event_Manager_Widget_Recent_events.
  *
  * @package wp-event-manager
  */
@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Recent Jobs widget.
+ * Recent events widget.
  *
  * @package wp-event-manager
  * @since 1.0.0
  */
-class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
+class WP_event_Manager_Widget_Recent_events extends WP_event_Manager_Widget {
 
 	/**
 	 * Constructor.
@@ -23,16 +23,16 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 	public function __construct() {
 		global $wp_post_types;
 
-		// translators: Placeholder %s is the plural label for the job listing post type.
-		$this->widget_name        = sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name );
-		$this->widget_cssclass    = 'job_manager widget_recent_jobs';
+		// translators: Placeholder %s is the plural label for the event listing post type.
+		$this->widget_name        = sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['event_listing']->labels->name );
+		$this->widget_cssclass    = 'event_manager widget_recent_events';
 		$this->widget_description = __( 'Display a list of recent listings on your site, optionally matching a keyword and location.', 'wp-event-manager' );
-		$this->widget_id          = 'widget_recent_jobs';
+		$this->widget_id          = 'widget_recent_events';
 		$this->settings           = [
 			'title'     => [
 				'type'  => 'text',
-				// translators: Placeholder %s is the plural label for the job listing post type.
-				'std'   => sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['job_listing']->labels->name ),
+				// translators: Placeholder %s is the plural label for the event listing post type.
+				'std'   => sprintf( __( 'Recent %s', 'wp-event-manager' ), $wp_post_types['event_listing']->labels->name ),
 				'label' => __( 'Title', 'wp-event-manager' ),
 			],
 			'keyword'   => [
@@ -71,7 +71,7 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 	 * @param array $instance
 	 */
 	public function widget( $args, $instance ) {
-		wp_enqueue_style( 'wp-event-manager-job-listings' );
+		wp_enqueue_style( 'wp-event-manager-event-listings' );
 
 		if ( $this->get_cached_widget( $args ) ) {
 			return;
@@ -83,7 +83,7 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 
 		$title     = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 		$number    = absint( $instance['number'] );
-		$jobs      = get_job_listings(
+		$events      = get_event_listings(
 			[
 				'search_location' => $instance['location'],
 				'search_keywords' => $instance['keyword'],
@@ -95,17 +95,17 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 		$show_logo = absint( $instance['show_logo'] );
 
 		/**
-		 * Runs before Recent Jobs widget content.
+		 * Runs before Recent events widget content.
 		 *
 		 * @since 1.29.1
 		 *
 		 * @param array    $args
 		 * @param array    $instance
-		 * @param WP_Query $jobs
+		 * @param WP_Query $events
 		 */
-		do_action( 'job_manager_recent_jobs_widget_before', $args, $instance, $jobs );
+		do_action( 'event_manager_recent_events_widget_before', $args, $instance, $events );
 
-		if ( $jobs->have_posts() ) : ?>
+		if ( $events->have_posts() ) : ?>
 
 			<?php echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
@@ -115,14 +115,14 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 			}
 			?>
 
-			<ul class="job_listings">
+			<ul class="event_listings">
 
 				<?php
-				while ( $jobs->have_posts() ) :
-					$jobs->the_post();
+				while ( $events->have_posts() ) :
+					$events->the_post();
 					?>
 
-					<?php get_job_manager_template( 'content-widget-job_listing.php', [ 'show_logo' => $show_logo ] ); ?>
+					<?php get_event_manager_template( 'content-widget-event_listing.php', [ 'show_logo' => $show_logo ] ); ?>
 
 				<?php endwhile; ?>
 
@@ -132,21 +132,21 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 
 		<?php else : ?>
 
-			<?php get_job_manager_template_part( 'content-widget', 'no-jobs-found' ); ?>
+			<?php get_event_manager_template_part( 'content-widget', 'no-events-found' ); ?>
 
 			<?php
 		endif;
 
 		/**
-		 * Runs after Recent Jobs widget content.
+		 * Runs after Recent events widget content.
 		 *
 		 * @since 1.29.1
 		 *
 		 * @param array    $args
 		 * @param array    $instance
-		 * @param WP_Query $jobs
+		 * @param WP_Query $events
 		 */
-		do_action( 'job_manager_recent_jobs_widget_after', $args, $instance, $jobs );
+		do_action( 'event_manager_recent_events_widget_after', $args, $instance, $events );
 
 		wp_reset_postdata();
 
@@ -158,4 +158,4 @@ class WP_Job_Manager_Widget_Recent_Jobs extends WP_Job_Manager_Widget {
 	}
 }
 
-register_widget( 'WP_Job_Manager_Widget_Recent_Jobs' );
+register_widget( 'WP_event_Manager_Widget_Recent_events' );

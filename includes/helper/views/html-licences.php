@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( ! empty( $licenced_plugins ) ) : ?>
 		<?php foreach ( $licenced_plugins as $product_slug => $plugin_data ) : ?>
 			<?php
-			$licence = WP_Job_Manager_Helper::get_plugin_licence( $product_slug );
+			$licence = WP_event_Manager_Helper::get_plugin_licence( $product_slug );
 			?>
 		<div class="licence-row">
 			<div class="plugin-info">
@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 			<div class="plugin-licence">
 				<?php
-				$notices = WP_Job_Manager_Helper::get_messages( $product_slug );
+				$notices = WP_event_Manager_Helper::get_messages( $product_slug );
 				if ( empty( $notices ) && ! empty( $licence['errors'] ) ) {
 					$notices = [];
 					foreach ( $licence['errors'] as $key => $error_message ) {
@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	<?php endforeach; ?>
-		<div class="notice notice-info inline"><p><?php printf( 'Lost your license key? <a href="%s">Retrieve it here</a>.', 'https://wpjobmanager.com/lost-licence-key/' ); ?></p></div>
+		<div class="notice notice-info inline"><p><?php printf( 'Lost your license key? <a href="%s">Retrieve it here</a>.', 'https://wpeventmanager.com/lost-licence-key/' ); ?></p></div>
 	<?php else : ?>
 		<div class="notice notice-warning inline"><p><?php esc_html_e( 'No plugins are activated that have licenses managed by WP Event Manager.', 'wp-event-manager' ); ?></p></div>
 	<?php endif; ?>

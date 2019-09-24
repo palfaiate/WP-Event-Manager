@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="wrap wp_job_manager wp_job_manager_addons_wrap">
+<div class="wrap wp_event_manager wp_event_manager_addons_wrap">
 	<h2><?php esc_html_e( 'WP Event Manager Setup', 'wp-event-manager' ); ?></h2>
 
 	<ul class="wp-event-manager-setup-steps">

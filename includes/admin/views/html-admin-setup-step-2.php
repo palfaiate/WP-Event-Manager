@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <h3><?php esc_html_e( 'Page Setup', 'wp-event-manager' ); ?></h3>
 
-<p><?php esc_html_e( 'With WP Event Manager, employers and applicants can post, manage, and browse job listings right on your website. Tell us which of these common pages you\'d like your site to have and we\'ll create and configure them for you.', 'wp-event-manager' ); ?></p>
+<p><?php esc_html_e( 'With WP Event Manager, employers and applicants can post, manage, and browse event listings right on your website. Tell us which of these common pages you\'d like your site to have and we\'ll create and configure them for you.', 'wp-event-manager' ); ?></p>
 <p>
 	<?php
 	echo wp_kses_post(
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'wp-event-manager'
 			),
 			'http://codex.wordpress.org/Shortcode',
-			'https://wpjobmanager.com/document/shortcode-reference/'
+			'https://wpeventmanager.com/document/shortcode-reference/'
 		)
 	);
 	?>
@@ -43,26 +43,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</thead>
 		<tbody>
 		<tr>
-			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[submit_job_form]" /></td>
-			<td><input type="text" value="<?php echo esc_attr( _x( 'Post a Job', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[submit_job_form]" /></td>
+			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[submit_event_form]" /></td>
+			<td><input type="text" value="<?php echo esc_attr( _x( 'Post a event', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[submit_event_form]" /></td>
 			<td>
-				<p><?php esc_html_e( 'Creates a page that allows employers to post new jobs directly from a page on your website, instead of requiring them to log in to an admin area. If you\'d rather not allow this -- for example, if you want employers to use the admin dashboard only -- you can uncheck this setting.', 'wp-event-manager' ); ?></p>
+				<p><?php esc_html_e( 'Creates a page that allows employers to post new events directly from a page on your website, instead of requiring them to log in to an admin area. If you\'d rather not allow this -- for example, if you want employers to use the admin dashboard only -- you can uncheck this setting.', 'wp-event-manager' ); ?></p>
 			</td>
-			<td><code>[submit_job_form]</code></td>
+			<td><code>[submit_event_form]</code></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[job_dashboard]" /></td>
-			<td><input type="text" value="<?php echo esc_attr( _x( 'Job Dashboard', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[job_dashboard]" /></td>
+			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[event_dashboard]" /></td>
+			<td><input type="text" value="<?php echo esc_attr( _x( 'event Dashboard', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[event_dashboard]" /></td>
 			<td>
-				<p><?php esc_html_e( 'Creates a page that allows employers to manage their job listings directly from a page on your website, instead of requiring them to log in to an admin area. If you want to manage all job listings from the admin dashboard only, you can uncheck this setting.', 'wp-event-manager' ); ?></p>
+				<p><?php esc_html_e( 'Creates a page that allows employers to manage their event listings directly from a page on your website, instead of requiring them to log in to an admin area. If you want to manage all event listings from the admin dashboard only, you can uncheck this setting.', 'wp-event-manager' ); ?></p>
 			</td>
-			<td><code>[job_dashboard]</code></td>
+			<td><code>[event_dashboard]</code></td>
 		</tr>
 		<tr>
-			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[jobs]" /></td>
-			<td><input type="text" value="<?php echo esc_attr( _x( 'Jobs', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[jobs]" /></td>
-			<td><?php esc_html_e( 'Creates a page where visitors can browse, search, and filter job listings.', 'wp-event-manager' ); ?></td>
-			<td><code>[jobs]</code></td>
+			<td><input type="checkbox" checked="checked" name="wp-event-manager-create-page[events]" /></td>
+			<td><input type="text" value="<?php echo esc_attr( _x( 'events', 'Default page title (wizard)', 'wp-event-manager' ) ); ?>" name="wp-event-manager-page-title[events]" /></td>
+			<td><?php esc_html_e( 'Creates a page where visitors can browse, search, and filter event listings.', 'wp-event-manager' ); ?></td>
+			<td><code>[events]</code></td>
 		</tr>
 		</tbody>
 		<tfoot>

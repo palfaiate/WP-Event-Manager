@@ -14,33 +14,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 <p><?php esc_html_e( 'Wondering what to do now? Here are some of the most common next steps:', 'wp-event-manager' ); ?></p>
 
 <ul class="wp-event-manager-next-steps">
-	<li><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=job_listing&page=job-manager-settings' ) ); ?>"><?php esc_html_e( 'Tweak your settings', 'wp-event-manager' ); ?></a></li>
-	<li><a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=job_listing' ) ); ?>"><?php esc_html_e( 'Add a job using the admin dashboard', 'wp-event-manager' ); ?></a></li>
+	<li><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=event_listing&page=event-manager-settings' ) ); ?>"><?php esc_html_e( 'Tweak your settings', 'wp-event-manager' ); ?></a></li>
+	<li><a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=event_listing' ) ); ?>"><?php esc_html_e( 'Add a event using the admin dashboard', 'wp-event-manager' ); ?></a></li>
 	<?php
-	$permalink = job_manager_get_permalink( 'jobs' );
+	$permalink = event_manager_get_permalink( 'events' );
 	if ( $permalink ) {
 		?>
-		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'View submitted job listings', 'wp-event-manager' ); ?></a></li>
+		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'View submitted event listings', 'wp-event-manager' ); ?></a></li>
 	<?php } else { ?>
-		<li><a href="https://wpjobmanager.com/document/shortcode-reference/#section-1"><?php esc_html_e( 'Add job listings to a page using the [jobs] shortcode', 'wp-event-manager' ); ?></a></li>
+		<li><a href="https://wpeventmanager.com/document/shortcode-reference/#section-1"><?php esc_html_e( 'Add event listings to a page using the [events] shortcode', 'wp-event-manager' ); ?></a></li>
 	<?php } ?>
 
 	<?php
-	$permalink = job_manager_get_permalink( 'submit_job_form' );
+	$permalink = event_manager_get_permalink( 'submit_event_form' );
 	if ( $permalink ) {
 		?>
-		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'Add a job via the front-end', 'wp-event-manager' ); ?></a></li>
+		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'Add a event via the front-end', 'wp-event-manager' ); ?></a></li>
 	<?php } else { ?>
-		<li><a href="https://wpjobmanager.com/document/the-job-submission-form/"><?php esc_html_e( 'Learn to use the front-end job submission board', 'wp-event-manager' ); ?></a></li>
+		<li><a href="https://wpeventmanager.com/document/the-event-submission-form/"><?php esc_html_e( 'Learn to use the front-end event submission board', 'wp-event-manager' ); ?></a></li>
 	<?php } ?>
 
 	<?php
-	$permalink = job_manager_get_permalink( 'job_dashboard' );
+	$permalink = event_manager_get_permalink( 'event_dashboard' );
 	if ( $permalink ) {
 		?>
-		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'View the job dashboard', 'wp-event-manager' ); ?></a></li>
+		<li><a href="<?php echo esc_url( $permalink ); ?>"><?php esc_html_e( 'View the event dashboard', 'wp-event-manager' ); ?></a></li>
 	<?php } else { ?>
-		<li><a href="https://wpjobmanager.com/document/the-job-dashboard/"><?php esc_html_e( 'Learn to use the front-end job dashboard', 'wp-event-manager' ); ?></a></li>
+		<li><a href="https://wpeventmanager.com/document/the-event-dashboard/"><?php esc_html_e( 'Learn to use the front-end event dashboard', 'wp-event-manager' ); ?></a></li>
 	<?php } ?>
 </ul>
 
@@ -55,7 +55,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<a href="%2$s">WP Event Manager support forums</a>. Happy hiring!',
 				'wp-event-manager'
 			),
-			'https://wpjobmanager.com/documentation/',
+			'https://wpeventmanager.com/documentation/',
 			'https://wordpress.org/support/plugin/wp-event-manager'
 		)
 	);

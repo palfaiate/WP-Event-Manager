@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Email_Admin_New_Job.
+ * File containing the class WP_event_Manager_Email_Admin_New_event.
  *
  * @package wp-event-manager
  */
@@ -10,19 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email notification to administrator when a new job is submitted.
+ * Email notification to administrator when a new event is submitted.
  *
  * @since 1.31.0
- * @extends WP_Job_Manager_Email
+ * @extends WP_event_Manager_Email
  */
-class WP_Job_Manager_Email_Admin_New_Job extends WP_Job_Manager_Email_Template {
+class WP_event_Manager_Email_Admin_New_event extends WP_event_Manager_Email_Template {
 	/**
 	 * Get the unique email notification key.
 	 *
 	 * @return string
 	 */
 	public static function get_key() {
-		return 'admin_new_job';
+		return 'admin_new_event';
 	}
 
 	/**
@@ -41,7 +41,7 @@ class WP_Job_Manager_Email_Admin_New_Job extends WP_Job_Manager_Email_Template {
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send a notice to the site administrator when a new job is submitted on the frontend.', 'wp-event-manager' );
+		return __( 'Send a notice to the site administrator when a new event is submitted on the frontend.', 'wp-event-manager' );
 	}
 
 	/**
@@ -53,14 +53,14 @@ class WP_Job_Manager_Email_Admin_New_Job extends WP_Job_Manager_Email_Template {
 		$args = $this->get_args();
 
 		/**
-		 * Job listing post object.
+		 * event listing post object.
 		 *
-		 * @var WP_Post $job
+		 * @var WP_Post $event
 		 */
-		$job = $args['job'];
+		$event = $args['event'];
 
-		// translators: Placeholder %s is the job listing post title.
-		return sprintf( __( 'New Job Listing Submitted: %s', 'wp-event-manager' ), $job->post_title );
+		// translators: Placeholder %s is the event listing post title.
+		return sprintf( __( 'New event Listing Submitted: %s', 'wp-event-manager' ), $event->post_title );
 	}
 
 	/**
@@ -88,8 +88,8 @@ class WP_Job_Manager_Email_Admin_New_Job extends WP_Job_Manager_Email_Template {
 	 */
 	public function is_valid() {
 		$args = $this->get_args();
-		return isset( $args['job'] )
-				&& $args['job'] instanceof WP_Post
+		return isset( $args['event'] )
+				&& $args['event'] instanceof WP_Post
 				&& $this->get_to();
 	}
 }

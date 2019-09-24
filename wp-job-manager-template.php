@@ -2,7 +2,7 @@
 /**
  * Template Functions
  *
- * Template functions specifically created for job listings
+ * Template functions specifically created for event listings
  *
  * @author      Mike Jolley
  * @category    Core
@@ -19,12 +19,12 @@
  * @param string $template_path (default: '').
  * @param string $default_path (default: '').
  */
-function get_job_manager_template( $template_name, $args = [], $template_path = 'job_manager', $default_path = '' ) {
+function get_event_manager_template( $template_name, $args = [], $template_path = 'event_manager', $default_path = '' ) {
 	if ( $args && is_array( $args ) ) {
 		// phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- Please, forgive us.
 		extract( $args );
 	}
-	include locate_job_manager_template( $template_name, $template_path, $default_path );
+	include locate_event_manager_template( $template_name, $template_path, $default_path );
 }
 
 /**
@@ -38,11 +38,11 @@ function get_job_manager_template( $template_name, $args = [], $template_path = 
  *
  * @since 1.0.0
  * @param string      $template_name
- * @param string      $template_path (default: 'job_manager').
+ * @param string      $template_path (default: 'event_manager').
  * @param string|bool $default_path (default: '') False to not load a default.
  * @return string
  */
-function locate_job_manager_template( $template_name, $template_path = 'job_manager', $default_path = '' ) {
+function locate_event_manager_template( $template_name, $template_path = 'event_manager', $default_path = '' ) {
 	// Look within passed path within the theme - this is priority.
 	$template = locate_template(
 		[
@@ -53,14 +53,14 @@ function locate_job_manager_template( $template_name, $template_path = 'job_mana
 
 	// Get default template.
 	if ( ! $template && false !== $default_path ) {
-		$default_path = $default_path ? $default_path : JOB_MANAGER_PLUGIN_DIR . '/templates/';
+		$default_path = $default_path ? $default_path : event_MANAGER_PLUGIN_DIR . '/templates/';
 		if ( file_exists( trailingslashit( $default_path ) . $template_name ) ) {
 			$template = trailingslashit( $default_path ) . $template_name;
 		}
 	}
 
 	// Return what we found.
-	return apply_filters( 'job_manager_locate_template', $template, $template_name, $template_path );
+	return apply_filters( 'event_manager_locate_template', $template, $template_name, $template_path );
 }
 
 /**
@@ -69,19 +69,19 @@ function locate_job_manager_template( $template_name, $template_path = 'job_mana
  * @since 1.0.0
  * @param string      $slug
  * @param string      $name (default: '').
- * @param string      $template_path (default: 'job_manager').
+ * @param string      $template_path (default: 'event_manager').
  * @param string|bool $default_path (default: '') False to not load a default.
  */
-function get_job_manager_template_part( $slug, $name = '', $template_path = 'job_manager', $default_path = '' ) {
+function get_event_manager_template_part( $slug, $name = '', $template_path = 'event_manager', $default_path = '' ) {
 	$template = '';
 
 	if ( $name ) {
-		$template = locate_job_manager_template( "{$slug}-{$name}.php", $template_path, $default_path );
+		$template = locate_event_manager_template( "{$slug}-{$name}.php", $template_path, $default_path );
 	}
 
-	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/job_manager/slug.php.
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/event_manager/slug.php.
 	if ( ! $template ) {
-		$template = locate_job_manager_template( "{$slug}.php", $template_path, $default_path );
+		$template = locate_event_manager_template( "{$slug}.php", $template_path, $default_path );
 	}
 
 	if ( $template ) {
@@ -96,27 +96,27 @@ function get_job_manager_template_part( $slug, $name = '', $template_path = 'job
  * @param  array $classes
  * @return array
  */
-function job_manager_body_class( $classes ) {
+function event_manager_body_class( $classes ) {
 	$classes   = (array) $classes;
 	$classes[] = sanitize_title( wp_get_theme() );
 
 	return array_unique( $classes );
 }
 
-add_filter( 'body_class', 'job_manager_body_class' );
+add_filter( 'body_class', 'event_manager_body_class' );
 
 /**
- * Get jobs pagination for [jobs] shortcode.
+ * Get events pagination for [events] shortcode.
  *
  * @since 1.13.0
  * @param int $max_num_pages
  * @param int $current_page
  * @return string
  */
-function get_job_listing_pagination( $max_num_pages, $current_page = 1 ) {
+function get_event_listing_pagination( $max_num_pages, $current_page = 1 ) {
 	ob_start();
-	get_job_manager_template(
-		'job-pagination.php',
+	get_event_manager_template(
+		'event-pagination.php',
 		[
 			'max_num_pages' => $max_num_pages,
 			'current_page'  => absint( $current_page ),
@@ -126,26 +126,26 @@ function get_job_listing_pagination( $max_num_pages, $current_page = 1 ) {
 }
 
 /**
- * Displays the jobs status.
+ * Displays the events status.
  *
  * @since 1.0.0
  * @param int|WP_Post $post
  */
-function the_job_status( $post = null ) {
-	echo wp_kses_post( get_the_job_status( $post ) );
+function the_event_status( $post = null ) {
+	echo wp_kses_post( get_the_event_status( $post ) );
 }
 
 /**
- * Gets the jobs status.
+ * Gets the events status.
  *
  * @since 1.
  * @param int|WP_Post $post
  * @return string
  */
-function get_the_job_status( $post = null ) {
+function get_the_event_status( $post = null ) {
 	$post     = get_post( $post );
 	$status   = $post->post_status;
-	$statuses = get_job_listing_post_statuses();
+	$statuses = get_event_listing_post_statuses();
 	if ( 'preview' === $status ) {
 		$status = 'draft';
 	}
@@ -155,7 +155,7 @@ function get_the_job_status( $post = null ) {
 		$status = esc_html__( 'Inactive', 'wp-event-manager' );
 	}
 
-	return apply_filters( 'the_job_status', $status, $post );
+	return apply_filters( 'the_event_status', $status, $post );
 }
 
 /**
@@ -191,45 +191,45 @@ function is_position_featured( $post = null ) {
  */
 function candidates_can_apply( $post = null ) {
 	$post = get_post( $post );
-	return apply_filters( 'job_manager_candidates_can_apply', ( ! is_position_filled() && ! in_array( $post->post_status, [ 'preview', 'expired' ], true ) ), $post );
+	return apply_filters( 'event_manager_candidates_can_apply', ( ! is_position_filled() && ! in_array( $post->post_status, [ 'preview', 'expired' ], true ) ), $post );
 }
 
 /**
- * Displays the permalink for the job listing post.
+ * Displays the permalink for the event listing post.
  *
  * @since 1.0.0
  * @param int|WP_Post $post (default: null).
  * @return void
  */
-function the_job_permalink( $post = null ) {
-	echo esc_url( get_the_job_permalink( $post ) );
+function the_event_permalink( $post = null ) {
+	echo esc_url( get_the_event_permalink( $post ) );
 }
 
 /**
- * Gets the permalink for a job listing.
+ * Gets the permalink for a event listing.
  *
  * @since 1.0.0
  * @param int|WP_Post $post (default: null).
  * @return string
  */
-function get_the_job_permalink( $post = null ) {
+function get_the_event_permalink( $post = null ) {
 	$post = get_post( $post );
 	$link = get_permalink( $post );
 
-	return apply_filters( 'the_job_permalink', $link, $post );
+	return apply_filters( 'the_event_permalink', $link, $post );
 }
 
 /**
- * Gets the application method for the job listing.
+ * Gets the application method for the event listing.
  *
  * @since 1.0.0
  * @param int|WP_Post $post (default: null).
  * @return stdClass|bool|null
  */
-function get_the_job_application_method( $post = null ) {
+function get_the_event_application_method( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return;
 	}
 
@@ -237,7 +237,7 @@ function get_the_job_application_method( $post = null ) {
 	$apply  = $post->_application;
 
 	if ( empty( $apply ) ) {
-		return apply_filters( 'the_job_application_method', false, $post );
+		return apply_filters( 'the_event_application_method', false, $post );
 	}
 
 	if ( strstr( $apply, '@' ) && is_email( $apply ) ) {
@@ -245,8 +245,8 @@ function get_the_job_application_method( $post = null ) {
 		$method->raw_email = $apply;
 		$method->email     = antispambot( $apply );
 
-		// translators: %1$s is the job listing title; %2$s is the URL for the current WordPress instance.
-		$method->subject = apply_filters( 'job_manager_application_email_subject', sprintf( esc_html__( 'Application via %1$s listing on %2$s', 'wp-event-manager' ), esc_html( $post->post_title ), esc_url( home_url() ) ), $post );
+		// translators: %1$s is the event listing title; %2$s is the URL for the current WordPress instance.
+		$method->subject = apply_filters( 'event_manager_application_email_subject', sprintf( esc_html__( 'Application via %1$s listing on %2$s', 'wp-event-manager' ), esc_html( $post->post_title ), esc_url( home_url() ) ), $post );
 	} else {
 		if ( strpos( $apply, 'http' ) !== 0 ) {
 			$apply = 'http://' . $apply;
@@ -255,27 +255,27 @@ function get_the_job_application_method( $post = null ) {
 		$method->url  = $apply;
 	}
 
-	return apply_filters( 'the_job_application_method', $method, $post );
+	return apply_filters( 'the_event_application_method', $method, $post );
 }
 
 /**
- * Get the employment types for the job listing.
+ * Get the employment types for the event listing.
  *
  * @since 1.28.0
  *
  * @param WP_Post|int|null $post
  * @return bool|array
  */
-function wpjm_get_job_employment_types( $post = null ) {
-	if ( ! wpjm_job_listing_employment_type_enabled() ) {
+function wpjm_get_event_employment_types( $post = null ) {
+	if ( ! wpjm_event_listing_employment_type_enabled() ) {
 		return false;
 	}
 	$employment_types = [];
-	$job_types        = wpjm_get_the_job_types( $post );
+	$event_types        = wpjm_get_the_event_types( $post );
 
-	if ( ! empty( $job_types ) ) {
-		foreach ( $job_types as $job_type ) {
-			$employment_type = get_term_meta( $job_type->term_id, 'employment_type', true );
+	if ( ! empty( $event_types ) ) {
+		foreach ( $event_types as $event_type ) {
+			$employment_type = get_term_meta( $event_type->term_id, 'employment_type', true );
 			if ( ! empty( $employment_type ) ) {
 				$employment_types[] = $employment_type;
 			}
@@ -283,61 +283,61 @@ function wpjm_get_job_employment_types( $post = null ) {
 	}
 
 	/**
-	 * Filter the employment types for a job listing.
+	 * Filter the employment types for a event listing.
 	 *
 	 * @since 1.28.0
 	 *
 	 * @param array            $employment_types Employment types.
 	 * @param WP_Post|int|null $post
 	 */
-	return apply_filters( 'wpjm_get_job_employment_types', array_unique( $employment_types ), $post );
+	return apply_filters( 'wpjm_get_event_employment_types', array_unique( $employment_types ), $post );
 }
 
 /**
- * Returns if we allow indexing of a job listing.
+ * Returns if we allow indexing of a event listing.
  *
  * @since 1.28.0
  *
  * @param WP_Post|int|null $post
  * @return bool
  */
-function wpjm_allow_indexing_job_listing( $post = null ) {
+function wpjm_allow_indexing_event_listing( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return true;
 	}
 
-	// Only index job listings that are un-filled and published.
-	$index_job_listing = ! is_position_filled( $post ) && 'publish' === $post->post_status;
+	// Only index event listings that are un-filled and published.
+	$index_event_listing = ! is_position_filled( $post ) && 'publish' === $post->post_status;
 
 	/**
-	 * Filter if we should allow indexing of job listing.
+	 * Filter if we should allow indexing of event listing.
 	 *
 	 * @since 1.28.0
 	 *
-	 * @param bool             $index_job_listing True if we should allow indexing of job listing.
+	 * @param bool             $index_event_listing True if we should allow indexing of event listing.
 	 * @param WP_Post|int|null $post
 	 */
-	return apply_filters( 'wpjm_allow_indexing_job_listing', $index_job_listing, $post );
+	return apply_filters( 'wpjm_allow_indexing_event_listing', $index_event_listing, $post );
 }
 
 /**
- * Returns if we output job listing structured data for a post.
+ * Returns if we output event listing structured data for a post.
  *
  * @since 1.28.0
  *
  * @param WP_Post|int|null $post
  * @return bool
  */
-function wpjm_output_job_listing_structured_data( $post = null ) {
+function wpjm_output_event_listing_structured_data( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return false;
 	}
 
-	// Only show structured data for un-filled and published job listings.
+	// Only show structured data for un-filled and published event listings.
 	$output_structured_data = ! is_position_filled( $post ) && 'publish' === $post->post_status;
 
 	/**
@@ -348,39 +348,39 @@ function wpjm_output_job_listing_structured_data( $post = null ) {
 	 * @param bool             $output_structured_data True if we should show structured data for post.
 	 * @param WP_Post|int|null $post
 	 */
-	return apply_filters( 'wpjm_output_job_listing_structured_data', $output_structured_data, $post );
+	return apply_filters( 'wpjm_output_event_listing_structured_data', $output_structured_data, $post );
 }
 
 /**
- * Gets the structured data for the job listing.
+ * Gets the structured data for the event listing.
  *
  * @since 1.28.0
- * @see https://developers.google.com/search/docs/data-types/job-postings
+ * @see https://developers.google.com/search/docs/data-types/event-postings
  *
  * @param WP_Post|int|null $post
  * @return bool|array False if functionality is disabled; otherwise array of structured data.
  */
-function wpjm_get_job_listing_structured_data( $post = null ) {
+function wpjm_get_event_listing_structured_data( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return false;
 	}
 
 	$data               = [];
 	$data['@context']   = 'http://schema.org/';
-	$data['@type']      = 'JobPosting';
+	$data['@type']      = 'eventPosting';
 	$data['datePosted'] = get_post_time( 'c', false, $post );
 
-	$job_expires = get_post_meta( $post->ID, '_job_expires', true );
-	if ( ! empty( $job_expires ) ) {
-		$data['validThrough'] = date( 'c', strtotime( $job_expires ) );
+	$event_expires = get_post_meta( $post->ID, '_event_expires', true );
+	if ( ! empty( $event_expires ) ) {
+		$data['validThrough'] = date( 'c', strtotime( $event_expires ) );
 	}
 
-	$data['title']       = wp_strip_all_tags( wpjm_get_the_job_title( $post ) );
-	$data['description'] = wpjm_get_the_job_description( $post );
+	$data['title']       = wp_strip_all_tags( wpjm_get_the_event_title( $post ) );
+	$data['description'] = wpjm_get_the_event_description( $post );
 
-	$employment_types = wpjm_get_job_employment_types();
+	$employment_types = wpjm_get_event_employment_types();
 	if ( ! empty( $employment_types ) ) {
 		$data['employmentType'] = $employment_types;
 	}
@@ -405,39 +405,39 @@ function wpjm_get_job_listing_structured_data( $post = null ) {
 	$data['identifier']['name']  = get_the_company_name( $post );
 	$data['identifier']['value'] = get_the_guid( $post );
 
-	$location = get_the_job_location( $post );
+	$location = get_the_event_location( $post );
 	if ( ! empty( $location ) ) {
-		$data['jobLocation']            = [];
-		$data['jobLocation']['@type']   = 'Place';
-		$data['jobLocation']['address'] = wpjm_get_job_listing_location_structured_data( $post );
-		if ( empty( $data['jobLocation']['address'] ) ) {
-			$data['jobLocation']['address'] = $location;
+		$data['eventLocation']            = [];
+		$data['eventLocation']['@type']   = 'Place';
+		$data['eventLocation']['address'] = wpjm_get_event_listing_location_structured_data( $post );
+		if ( empty( $data['eventLocation']['address'] ) ) {
+			$data['eventLocation']['address'] = $location;
 		}
 	}
 
 	/**
-	 * Filter the structured data for a job listing.
+	 * Filter the structured data for a event listing.
 	 *
 	 * @since 1.28.0
 	 *
 	 * @param bool|array $structured_data False if functionality is disabled; otherwise array of structured data.
 	 * @param WP_Post    $post
 	 */
-	return apply_filters( 'wpjm_get_job_listing_structured_data', $data, $post );
+	return apply_filters( 'wpjm_get_event_listing_structured_data', $data, $post );
 }
 
 /**
- * Gets the job listing location data.
+ * Gets the event listing location data.
  *
  * @see http://schema.org/PostalAddress
  *
  * @param WP_Post $post
  * @return array|bool
  */
-function wpjm_get_job_listing_location_structured_data( $post ) {
+function wpjm_get_event_listing_location_structured_data( $post ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return false;
 	}
 
@@ -474,203 +474,203 @@ function wpjm_get_job_listing_location_structured_data( $post ) {
 	}
 
 	/**
-	 * Gets the job listing location structured data.
+	 * Gets the event listing location structured data.
 	 *
 	 * @since 1.28.0
 	 *
 	 * @param array|bool $address Array of address data.
 	 * @param WP_Post    $post
 	 */
-	return apply_filters( 'wpjm_get_job_listing_location_structured_data', $address, $post );
+	return apply_filters( 'wpjm_get_event_listing_location_structured_data', $address, $post );
 }
 
 /**
- * Displays the job title for the listing.
+ * Displays the event title for the listing.
  *
  * @since 1.27.0
  * @param int|WP_Post $post
  */
-function wpjm_the_job_title( $post = null ) {
-	$job_title = wpjm_get_the_job_title( $post );
-	if ( $job_title ) {
-		echo wp_kses_post( $job_title );
+function wpjm_the_event_title( $post = null ) {
+	$event_title = wpjm_get_the_event_title( $post );
+	if ( $event_title ) {
+		echo wp_kses_post( $event_title );
 	}
 }
 
 /**
- * Gets the job title for the listing.
+ * Gets the event title for the listing.
  *
  * @since 1.27.0
  * @param int|WP_Post $post (default: null).
  * @return string|bool|null
  */
-function wpjm_get_the_job_title( $post = null ) {
+function wpjm_get_the_event_title( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 
 	$title = wp_strip_all_tags( get_the_title( $post ) );
 
 	/**
-	 * Filter for the job title.
+	 * Filter for the event title.
 	 *
 	 * @since 1.27.0
 	 * @param string      $title Title to be filtered.
 	 * @param int|WP_Post $post
 	 */
-	return apply_filters( 'wpjm_the_job_title', $title, $post );
+	return apply_filters( 'wpjm_the_event_title', $title, $post );
 }
 
 /**
- * Displays the job description for the listing.
+ * Displays the event description for the listing.
  *
  * @since 1.28.0
  * @param int|WP_Post $post
  */
-function wpjm_the_job_description( $post = null ) {
-	$job_description = wpjm_get_the_job_description( $post );
-	if ( $job_description ) {
-		WP_Job_Manager_Post_Types::output_kses_post( $job_description );
+function wpjm_the_event_description( $post = null ) {
+	$event_description = wpjm_get_the_event_description( $post );
+	if ( $event_description ) {
+		WP_event_Manager_Post_Types::output_kses_post( $event_description );
 	}
 }
 
 /**
- * Gets the job description for the listing.
+ * Gets the event description for the listing.
  *
  * @since 1.28.0
  * @param int|WP_Post $post (default: null).
  * @return string|bool|null
  */
-function wpjm_get_the_job_description( $post = null ) {
+function wpjm_get_the_event_description( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 
-	$description = apply_filters( 'the_job_description', wp_kses_post( $post->post_content ) );
+	$description = apply_filters( 'the_event_description', wp_kses_post( $post->post_content ) );
 
 	/**
-	 * Filter for the job description.
+	 * Filter for the event description.
 	 *
 	 * @since 1.28.0
-	 * @param string      $job_description Job description to be filtered.
+	 * @param string      $event_description event description to be filtered.
 	 * @param int|WP_Post $post
 	 */
-	return apply_filters( 'wpjm_the_job_description', $description, $post );
+	return apply_filters( 'wpjm_the_event_description', $description, $post );
 }
 
 /**
- * Displays multiple job types for the listing.
+ * Displays multiple event types for the listing.
  *
  * @since 1.27.0
  *
  * @param int|WP_Post $post Current post object.
  * @param string      $separator String to join the term names with.
  */
-function wpjm_the_job_types( $post = null, $separator = ', ' ) {
-	if ( ! get_option( 'job_manager_enable_types' ) ) {
+function wpjm_the_event_types( $post = null, $separator = ', ' ) {
+	if ( ! get_option( 'event_manager_enable_types' ) ) {
 		return;
 	}
 
-	$job_types = wpjm_get_the_job_types( $post );
+	$event_types = wpjm_get_the_event_types( $post );
 
-	if ( $job_types ) {
-		$names = wp_list_pluck( $job_types, 'name' );
+	if ( $event_types ) {
+		$names = wp_list_pluck( $event_types, 'name' );
 
 		echo esc_html( implode( $separator, $names ) );
 	}
 }
 
 /**
- * Gets the job type for the listing.
+ * Gets the event type for the listing.
  *
  * @since 1.27.0
  *
  * @param int|WP_Post $post (default: null).
  * @return bool|array
  */
-function wpjm_get_the_job_types( $post = null ) {
+function wpjm_get_the_event_types( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return false;
 	}
 
-	$types = get_the_terms( $post->ID, 'job_listing_type' );
+	$types = get_the_terms( $post->ID, 'event_listing_type' );
 
 	if ( empty( $types ) || is_wp_error( $types ) ) {
 		$types = [];
 	}
 
 	// Return single if not enabled.
-	if ( ! empty( $types ) && ! job_manager_multi_job_type() ) {
+	if ( ! empty( $types ) && ! event_manager_multi_event_type() ) {
 		$types = [ current( $types ) ];
 	}
 
 	/**
-	 * Filter the returned job types for a post.
+	 * Filter the returned event types for a post.
 	 *
 	 * @since 1.27.0
 	 *
 	 * @param array   $types
 	 * @param WP_Post $post
 	 */
-	return apply_filters( 'wpjm_the_job_types', $types, $post );
+	return apply_filters( 'wpjm_the_event_types', $types, $post );
 }
 
 /**
- * Displays job categories for the listing.
+ * Displays event categories for the listing.
  *
  * @since 1.31.0
  *
  * @param int|WP_Post $post      Current post object.
  * @param string      $separator String to join the term names with.
  */
-function wpjm_the_job_categories( $post = null, $separator = ', ' ) {
-	if ( ! get_option( 'job_manager_enable_categories' ) ) {
+function wpjm_the_event_categories( $post = null, $separator = ', ' ) {
+	if ( ! get_option( 'event_manager_enable_categories' ) ) {
 		return;
 	}
 
-	$job_categories = wpjm_get_the_job_categories( $post );
+	$event_categories = wpjm_get_the_event_categories( $post );
 
-	if ( $job_categories ) {
-		$names = wp_list_pluck( $job_categories, 'name' );
+	if ( $event_categories ) {
+		$names = wp_list_pluck( $event_categories, 'name' );
 
 		echo esc_html( implode( $separator, $names ) );
 	}
 }
 
 /**
- * Gets the job type for the listing.
+ * Gets the event type for the listing.
  *
  * @since 1.31.0
  *
  * @param int|WP_Post $post (default: null).
  * @return bool|array
  */
-function wpjm_get_the_job_categories( $post = null ) {
+function wpjm_get_the_event_categories( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return false;
 	}
 
-	$categories = get_the_terms( $post->ID, 'job_listing_category' );
+	$categories = get_the_terms( $post->ID, 'event_listing_category' );
 
 	if ( empty( $categories ) || is_wp_error( $categories ) ) {
 		$categories = [];
 	}
 
 	/**
-	 * Filter the returned job categories for a post.
+	 * Filter the returned event categories for a post.
 	 *
 	 * @since 1.31.0
 	 *
 	 * @param array   $types
 	 * @param WP_Post $post
 	 */
-	return apply_filters( 'wpjm_the_job_categories', $categories, $post );
+	return apply_filters( 'wpjm_the_event_categories', $categories, $post );
 }
 
 /**
@@ -681,12 +681,12 @@ function wpjm_get_the_job_categories( $post = null ) {
  * @return array $registration_fields.
  */
 function wpjm_get_registration_fields() {
-	$generate_username_from_email      = job_manager_generate_username_from_email();
+	$generate_username_from_email      = event_manager_generate_username_from_email();
 	$use_standard_password_setup_email = wpjm_use_standard_password_setup_email();
-	$account_required                  = job_manager_user_requires_account();
+	$account_required                  = event_manager_user_requires_account();
 
 	$registration_fields = [];
-	if ( job_manager_enable_registration() ) {
+	if ( event_manager_enable_registration() ) {
 		$registration_fields['create_account_email'] = [
 			'type'        => 'text',
 			'label'       => esc_html__( 'Your email', 'wp-event-manager' ),
@@ -735,18 +735,18 @@ function wpjm_get_registration_fields() {
 }
 
 /**
- * Displays the published date of the job listing.
+ * Displays the published date of the event listing.
  *
  * @since 1.25.3
  * @param int|WP_Post $post (default: null).
  */
-function the_job_publish_date( $post = null ) {
-	$date_format = get_option( 'job_manager_date_format' );
+function the_event_publish_date( $post = null ) {
+	$date_format = get_option( 'event_manager_date_format' );
 
 	if ( 'default' === $date_format ) {
 		$display_date = esc_html__( 'Posted on ', 'wp-event-manager' ) . date_i18n( get_option( 'date_format' ), get_post_time( 'U' ) );
 	} else {
-		// translators: Placeholder %s is the relative, human readable time since the job listing was posted.
+		// translators: Placeholder %s is the relative, human readable time since the event listing was posted.
 		$display_date = sprintf( esc_html__( 'Posted %s ago', 'wp-event-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
 	}
 
@@ -755,40 +755,40 @@ function the_job_publish_date( $post = null ) {
 
 
 /**
- * Gets the published date of the job listing.
+ * Gets the published date of the event listing.
  *
  * @since 1.25.3
  * @param int|WP_Post $post (default: null).
  * @return string|int|false
  */
-function get_the_job_publish_date( $post = null ) {
-	$date_format = get_option( 'job_manager_date_format' );
+function get_the_event_publish_date( $post = null ) {
+	$date_format = get_option( 'event_manager_date_format' );
 
 	if ( 'default' === $date_format ) {
 		return get_post_time( get_option( 'date_format' ) );
 	} else {
-		// translators: Placeholder %s is the relative, human readable time since the job listing was posted.
+		// translators: Placeholder %s is the relative, human readable time since the event listing was posted.
 		return sprintf( __( 'Posted %s ago', 'wp-event-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) );
 	}
 }
 
 
 /**
- * Displays the location for the job listing.
+ * Displays the location for the event listing.
  *
  * @since 1.0.0
  * @param  bool        $map_link whether or not to link to Google Maps.
  * @param int|WP_Post $post
  */
-function the_job_location( $map_link = true, $post = null ) {
-	$location = get_the_job_location( $post );
+function the_event_location( $map_link = true, $post = null ) {
+	$location = get_the_event_location( $post );
 
 	if ( $location ) {
 		if ( $map_link ) {
 			// If linking to google maps, we don't want anything but text here.
 			echo wp_kses_post(
 				apply_filters(
-					'the_job_location_map_link',
+					'the_event_location_map_link',
 					'<a class="google_map_link" href="' . esc_url( 'https://maps.google.com/maps?q=' . rawurlencode( wp_strip_all_tags( $location ) ) . '&zoom=14&size=512x512&maptype=roadmap&sensor=false' ) . '">' . esc_html( wp_strip_all_tags( $location ) ) . '</a>',
 					$location,
 					$post
@@ -798,24 +798,24 @@ function the_job_location( $map_link = true, $post = null ) {
 			echo wp_kses_post( $location );
 		}
 	} else {
-		echo wp_kses_post( apply_filters( 'the_job_location_anywhere_text', __( 'Anywhere', 'wp-event-manager' ) ) );
+		echo wp_kses_post( apply_filters( 'the_event_location_anywhere_text', __( 'Anywhere', 'wp-event-manager' ) ) );
 	}
 }
 
 /**
- * Gets the location for the job listing.
+ * Gets the location for the event listing.
  *
  * @since 1.0.0
  * @param int|WP_Post $post (default: null).
  * @return string|null
  */
-function get_the_job_location( $post = null ) {
+function get_the_event_location( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 
-	return apply_filters( 'the_job_location', $post->_job_location, $post );
+	return apply_filters( 'the_event_location', $post->_event_location, $post );
 }
 
 /**
@@ -835,13 +835,13 @@ function the_company_logo( $size = 'thumbnail', $default = null, $post = null ) 
 		// Before 1.24.0, logo URLs were stored in post meta.
 	} elseif ( ! empty( $logo ) && ( strstr( $logo, 'http' ) || file_exists( $logo ) ) ) {
 		if ( 'full' !== $size ) {
-			$logo = job_manager_get_resized_image( $logo, $size );
+			$logo = event_manager_get_resized_image( $logo, $size );
 		}
 		echo '<img class="company_logo" src="' . esc_url( $logo ) . '" alt="' . esc_attr( get_the_company_name( $post ) ) . '" />';
 	} elseif ( $default ) {
 		echo '<img class="company_logo" src="' . esc_url( $default ) . '" alt="' . esc_attr( get_the_company_name( $post ) ) . '" />';
 	} else {
-		echo '<img class="company_logo" src="' . esc_url( apply_filters( 'job_manager_default_company_logo', JOB_MANAGER_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( get_the_company_name( $post ) ) . '" />';
+		echo '<img class="company_logo" src="' . esc_url( apply_filters( 'event_manager_default_company_logo', event_MANAGER_PLUGIN_URL . '/assets/images/company.png' ) ) . '" alt="' . esc_attr( get_the_company_name( $post ) ) . '" />';
 	}
 }
 
@@ -875,7 +875,7 @@ function get_the_company_logo( $post = null, $size = 'thumbnail' ) {
  * @param  string $size
  * @return string
  */
-function job_manager_get_resized_image( $logo, $size ) {
+function event_manager_get_resized_image( $logo, $size ) {
 	global $_wp_additional_image_sizes;
 
 	if (
@@ -971,7 +971,7 @@ function the_company_video( $post = null ) {
  */
 function get_the_company_video( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 	return apply_filters( 'the_company_video', $post->_company_video, $post );
@@ -1014,7 +1014,7 @@ function the_company_name( $before = '', $after = '', $echo = true, $post = null
  */
 function get_the_company_name( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return '';
 	}
 
@@ -1031,7 +1031,7 @@ function get_the_company_name( $post = null ) {
 function get_the_company_website( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return;
 	}
 
@@ -1081,7 +1081,7 @@ function the_company_tagline( $before = '', $after = '', $echo = true, $post = n
 function get_the_company_tagline( $post = null ) {
 	$post = get_post( $post );
 
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 
@@ -1123,7 +1123,7 @@ function the_company_twitter( $before = '', $after = '', $echo = true, $post = n
  */
 function get_the_company_twitter( $post = null ) {
 	$post = get_post( $post );
-	if ( ! $post || 'job_listing' !== $post->post_type ) {
+	if ( ! $post || 'event_listing' !== $post->post_type ) {
 		return null;
 	}
 
@@ -1141,29 +1141,29 @@ function get_the_company_twitter( $post = null ) {
 }
 
 /**
- * Outputs the job listing class.
+ * Outputs the event listing class.
  *
  * @since 1.0.0
  * @param string      $class (default: '').
  * @param int|WP_Post $post_id (default: null).
  */
-function job_listing_class( $class = '', $post_id = null ) {
+function event_listing_class( $class = '', $post_id = null ) {
 	// Separates classes with a single space, collates classes for post DIV.
-	echo 'class="' . esc_attr( join( ' ', get_job_listing_class( $class, $post_id ) ) ) . '"';
+	echo 'class="' . esc_attr( join( ' ', get_event_listing_class( $class, $post_id ) ) ) . '"';
 }
 
 /**
- * Gets the job listing class.
+ * Gets the event listing class.
  *
  * @since 1.0.0
  * @param string      $class
  * @param int|WP_Post $post_id (default: null).
  * @return array
  */
-function get_job_listing_class( $class = '', $post_id = null ) {
+function get_event_listing_class( $class = '', $post_id = null ) {
 	$post = get_post( $post_id );
 
-	if ( empty( $post ) || 'job_listing' !== $post->post_type ) {
+	if ( empty( $post ) || 'event_listing' !== $post->post_type ) {
 		return [];
 	}
 
@@ -1180,7 +1180,7 @@ function get_job_listing_class( $class = '', $post_id = null ) {
 }
 
 /**
- * Adds post classes with meta info and the status of the job listing.
+ * Adds post classes with meta info and the status of the event listing.
  *
  * @since 1.27.0
  *
@@ -1192,27 +1192,27 @@ function get_job_listing_class( $class = '', $post_id = null ) {
 function wpjm_add_post_class( $classes, $class, $post_id ) {
 	$post = get_post( $post_id );
 
-	if ( empty( $post ) || 'job_listing' !== $post->post_type ) {
+	if ( empty( $post ) || 'event_listing' !== $post->post_type ) {
 		return $classes;
 	}
 
-	$classes[] = 'job_listing';
+	$classes[] = 'event_listing';
 
-	if ( get_option( 'job_manager_enable_types' ) ) {
-		$job_types = wpjm_get_the_job_types( $post );
-		if ( ! empty( $job_types ) ) {
-			foreach ( $job_types as $job_type ) {
-				$classes[] = 'job-type-' . sanitize_title( $job_type->name );
+	if ( get_option( 'event_manager_enable_types' ) ) {
+		$event_types = wpjm_get_the_event_types( $post );
+		if ( ! empty( $event_types ) ) {
+			foreach ( $event_types as $event_type ) {
+				$classes[] = 'event-type-' . sanitize_title( $event_type->name );
 			}
 		}
 	}
 
 	if ( is_position_filled( $post ) ) {
-		$classes[] = 'job_position_filled';
+		$classes[] = 'event_position_filled';
 	}
 
 	if ( is_position_featured( $post ) ) {
-		$classes[] = 'job_position_featured';
+		$classes[] = 'event_position_featured';
 	}
 
 	return $classes;
@@ -1220,21 +1220,21 @@ function wpjm_add_post_class( $classes, $class, $post_id ) {
 add_action( 'post_class', 'wpjm_add_post_class', 10, 3 );
 
 /**
- * Displays job meta data on the single job page.
+ * Displays event meta data on the single event page.
  *
  * @since 1.14.0
  */
-function job_listing_meta_display() {
-	get_job_manager_template( 'content-single-job_listing-meta.php', [] );
+function event_listing_meta_display() {
+	get_event_manager_template( 'content-single-event_listing-meta.php', [] );
 }
-add_action( 'single_job_listing_start', 'job_listing_meta_display', 20 );
+add_action( 'single_event_listing_start', 'event_listing_meta_display', 20 );
 
 /**
- * Displays job company data on the single job page.
+ * Displays event company data on the single event page.
  *
  * @since 1.14.0
  */
-function job_listing_company_display() {
-	get_job_manager_template( 'content-single-job_listing-company.php', [] );
+function event_listing_company_display() {
+	get_event_manager_template( 'content-single-event_listing-company.php', [] );
 }
-add_action( 'single_job_listing_start', 'job_listing_company_display', 30 );
+add_action( 'single_event_listing_start', 'event_listing_company_display', 30 );

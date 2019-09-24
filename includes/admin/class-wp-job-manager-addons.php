@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Addons.
+ * File containing the class WP_event_Manager_Addons.
  *
  * @package wp-event-manager
  */
@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.1.0
  */
-class WP_Job_Manager_Addons {
-	const WPJM_COM_PRODUCTS_API_BASE_URL = 'https://wpjobmanager.com/wp-json/wpjmcom-products/1.0';
+class WP_event_Manager_Addons {
+	const WPJM_COM_PRODUCTS_API_BASE_URL = 'https://wpeventmanager.com/wp-json/wpjmcom-products/1.0';
 
 	/**
 	 * The single instance of the class.
@@ -76,7 +76,7 @@ class WP_Job_Manager_Addons {
 				}
 			}
 		}
-		return apply_filters( 'job_manager_add_on_categories', $add_on_categories );
+		return apply_filters( 'event_manager_add_on_categories', $add_on_categories );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class WP_Job_Manager_Addons {
 			$raw_messages = wp_safe_remote_get(
 				add_query_arg(
 					[
-						'version' => JOB_MANAGER_VERSION,
+						'version' => event_MANAGER_VERSION,
 						'lang'    => get_locale(),
 					],
 					self::WPJM_COM_PRODUCTS_API_BASE_URL . '/messages'
@@ -105,7 +105,7 @@ class WP_Job_Manager_Addons {
 				}
 			}
 		}
-		return apply_filters( 'job_manager_add_on_messages', $add_on_messages );
+		return apply_filters( 'event_manager_add_on_messages', $add_on_messages );
 	}
 
 	/**
@@ -113,9 +113,9 @@ class WP_Job_Manager_Addons {
 	 */
 	public function output() {
 		?>
-		<div class="wrap wp_job_manager wp_job_manager_add_ons_wrap">
+		<div class="wrap wp_event_manager wp_event_manager_add_ons_wrap">
 			<nav class="nav-tab-wrapper woo-nav-tab-wrapper">
-				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=job_listing&page=job-manager-addons' ) ); ?>" class="nav-tab
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=event_listing&page=event-manager-addons' ) ); ?>" class="nav-tab
 									<?php
 									// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
 									if ( ! isset( $_GET['section'] ) || 'helper' !== $_GET['section'] ) {
@@ -124,7 +124,7 @@ class WP_Job_Manager_Addons {
 									?>
 				"><?php esc_html_e( 'WP Event Manager Add-ons', 'wp-event-manager' ); ?></a>
 				<?php if ( current_user_can( 'update_plugins' ) ) : ?>
-				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=job_listing&page=job-manager-addons&section=helper' ) ); ?>" class="nav-tab
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=event_listing&page=event-manager-addons&section=helper' ) ); ?>" class="nav-tab
 									<?php
 									// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
 									if ( isset( $_GET['section'] ) && 'helper' === $_GET['section'] ) {
@@ -136,7 +136,7 @@ class WP_Job_Manager_Addons {
 			<?php
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
 			if ( isset( $_GET['section'] ) && 'helper' === $_GET['section'] ) {
-				do_action( 'job_manager_helper_output' );
+				do_action( 'event_manager_helper_output' );
 			} else {
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Input is used safely.
 				$category   = isset( $_GET['category'] ) ? sanitize_text_field( wp_unslash( $_GET['category'] ) ) : null;
@@ -152,4 +152,4 @@ class WP_Job_Manager_Addons {
 	}
 }
 
-return WP_Job_Manager_Addons::instance();
+return WP_event_Manager_Addons::instance();

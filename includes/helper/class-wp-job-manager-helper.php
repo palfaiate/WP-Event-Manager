@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Helper.
+ * File containing the class WP_event_Manager_Helper.
  *
  * @package wp-event-manager
  */
@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles Job Manager's Ajax endpoints.
+ * Handles event Manager's Ajax endpoints.
  *
  * @package wp-event-manager
  * @since 1.29.0
  */
-class WP_Job_Manager_Helper {
+class WP_event_Manager_Helper {
 	/**
 	 * License messages to display to the user.
 	 *
@@ -26,7 +26,7 @@ class WP_Job_Manager_Helper {
 	/**
 	 * API object.
 	 *
-	 * @var WP_Job_Manager_Helper_API
+	 * @var WP_event_Manager_Helper_API
 	 */
 	protected $api;
 
@@ -67,11 +67,11 @@ class WP_Job_Manager_Helper {
 		include_once dirname( __FILE__ ) . '/class-wp-event-manager-helper-options.php';
 		include_once dirname( __FILE__ ) . '/class-wp-event-manager-helper-api.php';
 
-		$this->api = WP_Job_Manager_Helper_API::instance();
+		$this->api = WP_event_Manager_Helper_API::instance();
 
-		add_action( 'job_manager_helper_output', [ $this, 'licence_output' ] );
+		add_action( 'event_manager_helper_output', [ $this, 'licence_output' ] );
 
-		add_filter( 'job_manager_addon_core_version_check', [ $this, 'addon_core_version_check' ], 10, 2 );
+		add_filter( 'event_manager_addon_core_version_check', [ $this, 'addon_core_version_check' ], 10, 2 );
 		add_filter( 'extra_plugin_headers', [ $this, 'extra_headers' ] );
 		add_filter( 'plugins_api', [ $this, 'plugins_api' ], 20, 3 );
 		add_action( 'pre_set_site_transient_update_plugins', [ $this, 'check_for_updates' ] );
@@ -104,7 +104,7 @@ class WP_Job_Manager_Helper {
 		if ( ! empty( $product_slug ) ) {
 			$product_plugins = $this->get_installed_plugins();
 			if ( isset( $product_plugins[ $product_slug ] ) ) {
-				WP_Job_Manager_Helper_Options::update( $product_slug, 'hide_key_notice', true );
+				WP_event_Manager_Helper_Options::update( $product_slug, 'hide_key_notice', true );
 			}
 		}
 	}
@@ -121,16 +121,16 @@ class WP_Job_Manager_Helper {
 			return false;
 		}
 
-		// We only want to show the notices on the plugins page and main job listing admin page.
+		// We only want to show the notices on the plugins page and main event listing admin page.
 		$screen = get_current_screen();
-		if ( null === $screen || ! in_array( $screen->id, [ 'plugins', 'edit-job_listing' ], true ) ) {
+		if ( null === $screen || ! in_array( $screen->id, [ 'plugins', 'edit-event_listing' ], true ) ) {
 			return false;
 		}
 
-		$dev_version_loc = strpos( JOB_MANAGER_VERSION, '-dev' );
+		$dev_version_loc = strpos( event_MANAGER_VERSION, '-dev' );
 		if (
 			false !== $dev_version_loc
-			&& substr( JOB_MANAGER_VERSION, 0, $dev_version_loc ) === $minimum_required_core_version
+			&& substr( event_MANAGER_VERSION, 0, $dev_version_loc ) === $minimum_required_core_version
 		) {
 			return false;
 		}
@@ -212,7 +212,7 @@ class WP_Job_Manager_Helper {
 				continue;
 			}
 
-			WP_Job_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
+			WP_event_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
 			break;
 		}
 	}
@@ -285,7 +285,7 @@ class WP_Job_Manager_Helper {
 			$manage_licence_label = __( 'Activate License', 'wp-event-manager' );
 			$css_class            = 'wpjm-activate-licence-link';
 		}
-		$actions[] = '<a class="' . esc_attr( $css_class ) . '" href="' . esc_url( admin_url( 'edit.php?post_type=job_listing&page=job-manager-addons&section=helper' ) ) . '">' . esc_html( $manage_licence_label ) . '</a>';
+		$actions[] = '<a class="' . esc_attr( $css_class ) . '" href="' . esc_url( admin_url( 'edit.php?post_type=event_listing&page=event-manager-addons&section=helper' ) ) . '">' . esc_html( $manage_licence_label ) . '</a>';
 
 		return $actions;
 	}
@@ -359,9 +359,9 @@ class WP_Job_Manager_Helper {
 	 * @return array|bool
 	 */
 	public function get_plugin_licence( $product_slug ) {
-		$licence_key      = WP_Job_Manager_Helper_Options::get( $product_slug, 'licence_key' );
-		$activation_email = WP_Job_Manager_Helper_Options::get( $product_slug, 'email' );
-		$errors           = WP_Job_Manager_Helper_Options::get( $product_slug, 'errors' );
+		$licence_key      = WP_event_Manager_Helper_Options::get( $product_slug, 'licence_key' );
+		$activation_email = WP_event_Manager_Helper_Options::get( $product_slug, 'email' );
+		$errors           = WP_event_Manager_Helper_Options::get( $product_slug, 'errors' );
 
 		return [
 			'licence_key' => $licence_key,
@@ -412,7 +412,7 @@ class WP_Job_Manager_Helper {
 		 *
 		 * @param bool $clear_plugin_cache True if we should clear the plugin cache.
 		 */
-		if ( ! self::$cleared_plugin_cache && apply_filters( 'job_manager_clear_plugin_cache', true ) ) {
+		if ( ! self::$cleared_plugin_cache && apply_filters( 'event_manager_clear_plugin_cache', true ) ) {
 			// Reset the plugin cache on the first call. Some plugins prematurely hydrate the cache.
 			wp_clean_plugins_cache( false );
 			self::$cleared_plugin_cache = true;
@@ -456,12 +456,12 @@ class WP_Job_Manager_Helper {
 	 */
 	public function licence_error_notices() {
 		$screen = get_current_screen();
-		if ( null === $screen || in_array( $screen->id, [ 'job_listing_page_job-manager-addons' ], true ) ) {
+		if ( null === $screen || in_array( $screen->id, [ 'event_listing_page_event-manager-addons' ], true ) ) {
 			return;
 		}
 		foreach ( $this->get_installed_plugins() as $product_slug => $plugin_data ) {
 			$licence = $this->get_plugin_licence( $product_slug );
-			if ( ! WP_Job_Manager_Helper_Options::get( $product_slug, 'hide_key_notice' ) ) {
+			if ( ! WP_event_Manager_Helper_Options::get( $product_slug, 'hide_key_notice' ) ) {
 				if ( empty( $licence['licence_key'] ) ) {
 					include 'views/html-licence-key-notice.php';
 				} elseif ( ! empty( $licence['errors'] ) ) {
@@ -528,10 +528,10 @@ class WP_Job_Manager_Helper {
 			$error = $response['error_code'];
 			$this->add_error( $product_slug, $response['error'] );
 		} elseif ( ! empty( $response['activated'] ) ) {
-			WP_Job_Manager_Helper_Options::update( $product_slug, 'licence_key', $licence_key );
-			WP_Job_Manager_Helper_Options::update( $product_slug, 'email', $email );
-			WP_Job_Manager_Helper_Options::delete( $product_slug, 'errors' );
-			WP_Job_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
+			WP_event_Manager_Helper_Options::update( $product_slug, 'licence_key', $licence_key );
+			WP_event_Manager_Helper_Options::update( $product_slug, 'email', $email );
+			WP_event_Manager_Helper_Options::delete( $product_slug, 'errors' );
+			WP_event_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
 			$this->add_success( $product_slug, __( 'Plugin license has been activated.', 'wp-event-manager' ) );
 		} else {
 			$error = 'unknown';
@@ -566,10 +566,10 @@ class WP_Job_Manager_Helper {
 			]
 		);
 
-		WP_Job_Manager_Helper_Options::delete( $product_slug, 'licence_key' );
-		WP_Job_Manager_Helper_Options::delete( $product_slug, 'email' );
-		WP_Job_Manager_Helper_Options::delete( $product_slug, 'errors' );
-		WP_Job_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
+		WP_event_Manager_Helper_Options::delete( $product_slug, 'licence_key' );
+		WP_event_Manager_Helper_Options::delete( $product_slug, 'email' );
+		WP_event_Manager_Helper_Options::delete( $product_slug, 'errors' );
+		WP_event_Manager_Helper_Options::delete( $product_slug, 'hide_key_notice' );
 		delete_site_transient( 'update_plugins' );
 		$this->add_success( $product_slug, __( 'Plugin license has been deactivated.', 'wp-event-manager' ) );
 
@@ -605,7 +605,7 @@ class WP_Job_Manager_Helper {
 			$this->deactivate_licence( $product_slug );
 		}
 
-		WP_Job_Manager_Helper_Options::update( $product_slug, 'errors', $errors );
+		WP_event_Manager_Helper_Options::update( $product_slug, 'errors', $errors );
 	}
 
 	/**
@@ -660,18 +660,18 @@ class WP_Job_Manager_Helper {
 	}
 
 	/**
-	 * Thin wrapper for WP_Job_Manager_Usage_Tracking::log_event().
+	 * Thin wrapper for WP_event_Manager_Usage_Tracking::log_event().
 	 *
 	 * @param string $event_name The name of the event, without the `wpjm` prefix.
 	 * @param array  $properties The event properties to be sent.
 	 */
 	private function log_event( $event_name, $properties = [] ) {
-		if ( ! class_exists( 'WP_Job_Manager_Usage_Tracking' ) ) {
+		if ( ! class_exists( 'WP_event_Manager_Usage_Tracking' ) ) {
 			return;
 		}
 
-		WP_Job_Manager_Usage_Tracking::log_event( $event_name, $properties );
+		WP_event_Manager_Usage_Tracking::log_event( $event_name, $properties );
 	}
 }
 
-WP_Job_Manager_Helper::instance()->init();
+WP_event_Manager_Helper::instance()->init();

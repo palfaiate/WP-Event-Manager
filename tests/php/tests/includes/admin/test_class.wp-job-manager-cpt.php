@@ -2,12 +2,12 @@
 
 require 'includes/admin/class-wp-event-manager-cpt.php';
 
-class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
+class WP_Test_WP_event_Manager_CPT extends WPJM_BaseTest {
 	public function setUp() {
 		parent::setUp();
 
 		// Ensure the hooks are set up.
-		$this->job_manager_cpt = new WP_Job_Manager_CPT();
+		$this->event_manager_cpt = new WP_event_Manager_CPT();
 	}
 
 	/**
@@ -15,7 +15,7 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 	 * the URL parameters.
 	 *
 	 * @since 1.31.0
-	 * @covers WP_Job_Manager_CPT::filter_meta
+	 * @covers WP_event_Manager_CPT::filter_meta
 	 */
 	public function test_filter_meta() {
 		global $pagenow;
@@ -52,7 +52,7 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 		// When no filters are given.
 		$query = new WP_Query(
 			[
-				'post_type' => 'job_listing',
+				'post_type' => 'event_listing',
 				'fields'    => 'ids',
 			]
 		);
@@ -62,10 +62,10 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 		$this->assertContains( $listing_filled_featured_id, $query->posts );
 
 		// Filtering on Filled.
-		$_GET['job_listing_filled'] = '1';
+		$_GET['event_listing_filled'] = '1';
 		$query                      = new WP_Query(
 			[
-				'post_type' => 'job_listing',
+				'post_type' => 'event_listing',
 				'fields'    => 'ids',
 			]
 		);
@@ -75,11 +75,11 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 		$this->assertContains( $listing_filled_featured_id, $query->posts );
 
 		// Filtering on Featured.
-		$_GET['job_listing_filled']   = '';
-		$_GET['job_listing_featured'] = '0';
+		$_GET['event_listing_filled']   = '';
+		$_GET['event_listing_featured'] = '0';
 		$query                        = new WP_Query(
 			[
-				'post_type' => 'job_listing',
+				'post_type' => 'event_listing',
 				'fields'    => 'ids',
 			]
 		);
@@ -94,25 +94,25 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 	 * edit.php page.
 	 *
 	 * @since 1.31.0
-	 * @covers WP_Job_Manager_CPT::filter_meta
+	 * @covers WP_event_Manager_CPT::filter_meta
 	 */
 	public function test_filter_meta_only_on_edit() {
 		global $pagenow;
 
 		// Create some listings.
 		$listing_id = $this->factory->post->create(
-			[ 'post_type' => 'job_listing' ]
+			[ 'post_type' => 'event_listing' ]
 		);
 
 		// Simulate viewing some other page.
 		$pagenow = 'index.php';
 
 		// Filter should do nothing.
-		$_GET['job_listing_filled']   = '1';
-		$_GET['job_listing_featured'] = '1';
+		$_GET['event_listing_filled']   = '1';
+		$_GET['event_listing_featured'] = '1';
 		$query                        = new WP_Query(
 			[
-				'post_type' => 'job_listing',
+				'post_type' => 'event_listing',
 				'fields'    => 'ids',
 			]
 		);
@@ -123,7 +123,7 @@ class WP_Test_WP_Job_Manager_CPT extends WPJM_BaseTest {
 
 	private function create_listing_with_meta( $meta ) {
 		$id = $this->factory->post->create(
-			[ 'post_type' => 'job_listing' ]
+			[ 'post_type' => 'event_listing' ]
 		);
 
 		foreach ( $meta as $meta_key => $meta_value ) {

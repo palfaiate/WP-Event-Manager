@@ -12,7 +12,7 @@ Usage_Tracking_Test_Subclass::get_instance();
  *
  * @group usage-tracking
  */
-class WP_Job_Manager_Usage_Tracking_Test extends WP_UnitTestCase {
+class WP_event_Manager_Usage_Tracking_Test extends WP_UnitTestCase {
 	private $event_counts       = array();
 	private $track_http_request = array();
 
@@ -24,11 +24,11 @@ class WP_Job_Manager_Usage_Tracking_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Ensure cron job action is set up.
+	 * Ensure cron event action is set up.
 	 *
 	 * @covers {Prefix}_Usage_Tracking::hook
 	 */
-	public function testCronJobActionAdded() {
+	public function testCroneventActionAdded() {
 		$this->assertTrue( !! has_action( $this->usage_tracking->get_prefix() . '_usage_tracking_send_usage_data', array( $this->usage_tracking, 'send_usage_data' ) ) );
 	}
 
@@ -48,12 +48,12 @@ class WP_Job_Manager_Usage_Tracking_Test extends WP_UnitTestCase {
 		// Should successfully schedule the task.
 		$this->assertFalse( wp_get_schedule( $this->usage_tracking->get_prefix() . '_usage_tracking_send_usage_data' ), 'Not scheduled initial' );
 		$this->usage_tracking->schedule_tracking_task();
-		$this->assertNotFalse( wp_get_schedule( $this->usage_tracking->get_prefix() . '_usage_tracking_send_usage_data' ), 'Schedules a job' );
-		$this->assertEquals( 1, $this->event_counts['schedule_event'], 'Schedules only one job' );
+		$this->assertNotFalse( wp_get_schedule( $this->usage_tracking->get_prefix() . '_usage_tracking_send_usage_data' ), 'Schedules a event' );
+		$this->assertEquals( 1, $this->event_counts['schedule_event'], 'Schedules only one event' );
 
 		// Should not duplicate when called again.
 		$this->usage_tracking->schedule_tracking_task();
-		$this->assertEquals( 1, $this->event_counts['schedule_event'], 'Does not schedule an additional job' );
+		$this->assertEquals( 1, $this->event_counts['schedule_event'], 'Does not schedule an additional event' );
 	}
 
 	/* Test ajax request cases */

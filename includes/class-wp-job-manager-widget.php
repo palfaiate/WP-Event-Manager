@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Widget.
+ * File containing the class WP_event_Manager_Widget.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Job Manager Widget base.
+ * event Manager Widget base.
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Widget extends WP_Widget {
+class WP_event_Manager_Widget extends WP_Widget {
 
 	/**
 	 * Widget CSS class.

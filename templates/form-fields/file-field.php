@@ -1,10 +1,10 @@
 <?php
 /**
- * Shows the `file` form field on job listing forms.
+ * Shows the `file` form field on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/file-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/file-field.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -25,19 +25,19 @@ if ( ! empty( $field['multiple'] ) && ! empty( $field['file_limit'] ) ) {
 	$file_limit = $field['file_limit'];
 }
 
-if ( ! empty( $field['ajax'] ) && job_manager_user_can_upload_file_via_ajax() ) {
+if ( ! empty( $field['ajax'] ) && event_manager_user_can_upload_file_via_ajax() ) {
 	wp_enqueue_script( 'wp-event-manager-ajax-file-upload' );
 	$classes[] = 'wp-event-manager-file-upload';
 }
 ?>
-<div class="job-manager-uploaded-files">
+<div class="event-manager-uploaded-files">
 	<?php if ( ! empty( $field['value'] ) ) : ?>
 		<?php if ( is_array( $field['value'] ) ) : ?>
 			<?php foreach ( $field['value'] as $value ) : ?>
-				<?php get_job_manager_template( 'form-fields/uploaded-file-html.php', [ 'key' => $key, 'name' => 'current_' . $field_name, 'value' => $value, 'field' => $field ] ); ?>
+				<?php get_event_manager_template( 'form-fields/uploaded-file-html.php', [ 'key' => $key, 'name' => 'current_' . $field_name, 'value' => $value, 'field' => $field ] ); ?>
 			<?php endforeach; ?>
 		<?php elseif ( $value = $field['value'] ) : ?>
-			<?php get_job_manager_template( 'form-fields/uploaded-file-html.php', [ 'key' => $key, 'name' => 'current_' . $field_name, 'value' => $value, 'field' => $field ] ); ?>
+			<?php get_event_manager_template( 'form-fields/uploaded-file-html.php', [ 'key' => $key, 'name' => 'current_' . $field_name, 'value' => $value, 'field' => $field ] ); ?>
 		<?php endif; ?>
 	<?php endif; ?>
 </div>

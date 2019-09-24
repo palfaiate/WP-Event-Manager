@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles Job Manager's Gutenberg Blocks.
+ * Handles event Manager's Gutenberg Blocks.
  *
  * @package wp-event-manager
  * @since 1.32.0
@@ -11,11 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WP_Job_Manager_Blocks.
+ * Class WP_event_Manager_Blocks.
  */
-class WP_Job_Manager_Blocks {
+class WP_event_Manager_Blocks {
 	/**
-	 * The static instance of the WP_Job_Manager_Blocks
+	 * The static instance of the WP_event_Manager_Blocks
 	 *
 	 * @var self
 	 */
@@ -28,7 +28,7 @@ class WP_Job_Manager_Blocks {
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {
-			self::$instance = new WP_Job_Manager_Blocks();
+			self::$instance = new WP_event_Manager_Blocks();
 		}
 
 		return self::$instance;
@@ -53,4 +53,4 @@ class WP_Job_Manager_Blocks {
 	}
 }
 
-WP_Job_Manager_Blocks::get_instance();
+WP_event_Manager_Blocks::get_instance();

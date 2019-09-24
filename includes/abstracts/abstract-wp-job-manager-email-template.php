@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Email_Template.
+ * File containing the class WP_event_Manager_Email_Template.
  *
  * @package wp-event-manager
  */
@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class WP_Job_Manager_Email_Template
+ * Class WP_event_Manager_Email_Template
  */
-abstract class WP_Job_Manager_Email_Template extends WP_Job_Manager_Email {
+abstract class WP_event_Manager_Email_Template extends WP_event_Manager_Email {
 	/**
 	 * Get the template path for overriding templates.
 	 *
@@ -20,7 +20,7 @@ abstract class WP_Job_Manager_Email_Template extends WP_Job_Manager_Email {
 	 * @return string
 	 */
 	public static function get_template_path() {
-		return 'job_manager';
+		return 'event_manager';
 	}
 
 	/**
@@ -94,7 +94,7 @@ abstract class WP_Job_Manager_Email_Template extends WP_Job_Manager_Email {
 		$class_name            = get_class( $this );
 		$template_path         = call_user_func( [ $class_name, 'get_template_path' ] );
 		$template_default_path = call_user_func( [ $class_name, 'get_template_default_path' ] );
-		return locate_job_manager_template( $this->get_template_file_name( $plain_text ), $template_path, $template_default_path );
+		return locate_event_manager_template( $this->get_template_file_name( $plain_text ), $template_path, $template_default_path );
 	}
 
 	/**

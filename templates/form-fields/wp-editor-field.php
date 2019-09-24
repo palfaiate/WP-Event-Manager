@@ -1,10 +1,10 @@
 <?php
 /**
- * Shows the right `textarea` form field with WP Editor on job listing forms.
+ * Shows the right `textarea` form field with WP Editor on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/wp-editor-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/wp-editor-field.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$editor = apply_filters( 'submit_job_form_wp_editor_args', [
+$editor = apply_filters( 'submit_event_form_wp_editor_args', [
 	'textarea_name' => isset( $field['name'] ) ? $field['name'] : $key,
 	'media_buttons' => false,
 	'textarea_rows' => 8,

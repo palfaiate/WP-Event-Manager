@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Post_Types.
+ * File containing the class WP_event_Manager_Post_Types.
  *
  * @package wp-event-manager
  */
@@ -10,13 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handles displays and hooks for the Job Listing custom post type.
+ * Handles displays and hooks for the event Listing custom post type.
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Post_Types {
+class WP_event_Manager_Post_Types {
 
-	const PERMALINK_OPTION_NAME = 'job_manager_permalinks';
+	const PERMALINK_OPTION_NAME = 'event_manager_permalinks';
 
 	/**
 	 * The single instance of the class.
@@ -48,8 +48,8 @@ class WP_Job_Manager_Post_Types {
 		add_action( 'init', [ $this, 'prepare_block_editor' ] );
 		add_action( 'init', [ $this, 'register_meta_fields' ] );
 		add_filter( 'admin_head', [ $this, 'admin_head' ] );
-		add_action( 'job_manager_check_for_expired_jobs', [ $this, 'check_for_expired_jobs' ] );
-		add_action( 'job_manager_delete_old_previews', [ $this, 'delete_old_previews' ] );
+		add_action( 'event_manager_check_for_expired_events', [ $this, 'check_for_expired_events' ] );
+		add_action( 'event_manager_delete_old_previews', [ $this, 'delete_old_previews' ] );
 
 		add_action( 'pending_to_publish', [ $this, 'set_expiry' ] );
 		add_action( 'preview_to_publish', [ $this, 'set_expiry' ] );
@@ -57,35 +57,35 @@ class WP_Job_Manager_Post_Types {
 		add_action( 'auto-draft_to_publish', [ $this, 'set_expiry' ] );
 		add_action( 'expired_to_publish', [ $this, 'set_expiry' ] );
 
-		add_action( 'wp_head', [ $this, 'noindex_expired_filled_job_listings' ] );
+		add_action( 'wp_head', [ $this, 'noindex_expired_filled_event_listings' ] );
 		add_action( 'wp_footer', [ $this, 'output_structured_data' ] );
 
-		add_filter( 'the_job_description', 'wptexturize' );
-		add_filter( 'the_job_description', 'convert_smilies' );
-		add_filter( 'the_job_description', 'convert_chars' );
-		add_filter( 'the_job_description', 'wpautop' );
-		add_filter( 'the_job_description', 'shortcode_unautop' );
-		add_filter( 'the_job_description', 'prepend_attachment' );
+		add_filter( 'the_event_description', 'wptexturize' );
+		add_filter( 'the_event_description', 'convert_smilies' );
+		add_filter( 'the_event_description', 'convert_chars' );
+		add_filter( 'the_event_description', 'wpautop' );
+		add_filter( 'the_event_description', 'shortcode_unautop' );
+		add_filter( 'the_event_description', 'prepend_attachment' );
 		if ( ! empty( $GLOBALS['wp_embed'] ) ) {
-			add_filter( 'the_job_description', [ $GLOBALS['wp_embed'], 'run_shortcode' ], 8 );
-			add_filter( 'the_job_description', [ $GLOBALS['wp_embed'], 'autoembed' ], 8 );
+			add_filter( 'the_event_description', [ $GLOBALS['wp_embed'], 'run_shortcode' ], 8 );
+			add_filter( 'the_event_description', [ $GLOBALS['wp_embed'], 'autoembed' ], 8 );
 		}
 
-		add_action( 'job_manager_application_details_email', [ $this, 'application_details_email' ] );
-		add_action( 'job_manager_application_details_url', [ $this, 'application_details_url' ] );
+		add_action( 'event_manager_application_details_email', [ $this, 'application_details_email' ] );
+		add_action( 'event_manager_application_details_url', [ $this, 'application_details_url' ] );
 
 		add_filter( 'wp_insert_post_data', [ $this, 'fix_post_name' ], 10, 2 );
 		add_action( 'add_post_meta', [ $this, 'maybe_add_geolocation_data' ], 10, 3 );
 		add_action( 'update_post_meta', [ $this, 'update_post_meta' ], 10, 4 );
 		add_action( 'wp_insert_post', [ $this, 'maybe_add_default_meta_data' ], 10, 2 );
-		add_filter( 'post_types_to_delete_with_user', [ $this, 'delete_user_add_job_listings_post_type' ] );
+		add_filter( 'post_types_to_delete_with_user', [ $this, 'delete_user_add_event_listings_post_type' ] );
 
-		add_action( 'transition_post_status', [ $this, 'track_job_submission' ], 10, 3 );
+		add_action( 'transition_post_status', [ $this, 'track_event_submission' ], 10, 3 );
 
 		add_action( 'parse_query', [ $this, 'add_feed_query_args' ] );
 
-		// Single job content.
-		$this->job_content_filter( true );
+		// Single event content.
+		$this->event_content_filter( true );
 	}
 
 	/**
@@ -94,13 +94,13 @@ class WP_Job_Manager_Post_Types {
 	public function prepare_block_editor() {
 		add_filter( 'allowed_block_types', [ $this, 'force_classic_block' ], 10, 2 );
 
-		if ( false === job_manager_multi_job_type() ) {
-			add_filter( 'rest_prepare_taxonomy', [ $this, 'hide_job_type_block_editor_selector' ], 10, 3 );
+		if ( false === event_manager_multi_event_type() ) {
+			add_filter( 'rest_prepare_taxonomy', [ $this, 'hide_event_type_block_editor_selector' ], 10, 3 );
 		}
 	}
 
 	/**
-	 * Forces job listings to just have the classic block. This is necessary with the use of the classic editor on
+	 * Forces event listings to just have the classic block. This is necessary with the use of the classic editor on
 	 * the frontend.
 	 *
 	 * @param array   $allowed_block_types
@@ -108,7 +108,7 @@ class WP_Job_Manager_Post_Types {
 	 * @return array
 	 */
 	public function force_classic_block( $allowed_block_types, $post ) {
-		if ( 'job_listing' === $post->post_type ) {
+		if ( 'event_listing' === $post->post_type ) {
 			return [ 'core/freeform' ];
 		}
 		return $allowed_block_types;
@@ -125,9 +125,9 @@ class WP_Job_Manager_Post_Types {
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function hide_job_type_block_editor_selector( $response, $taxonomy, $request ) {
+	public function hide_event_type_block_editor_selector( $response, $taxonomy, $request ) {
 		if (
-			'job_listing_type' === $taxonomy->name
+			'event_listing_type' === $taxonomy->name
 			&& 'edit' === $request->get_param( 'context' )
 		) {
 			$response->data['visibility']['show_ui'] = false;
@@ -139,22 +139,22 @@ class WP_Job_Manager_Post_Types {
 	 * Registers the custom post type and taxonomies.
 	 */
 	public function register_post_types() {
-		if ( post_type_exists( 'job_listing' ) ) {
+		if ( post_type_exists( 'event_listing' ) ) {
 			return;
 		}
 
-		$admin_capability = 'manage_job_listings';
+		$admin_capability = 'manage_event_listings';
 
 		$permalink_structure = self::get_permalink_structure();
 
 		/**
 		 * Taxonomies
 		 */
-		if ( get_option( 'job_manager_enable_categories' ) ) {
-			$singular = __( 'Job category', 'wp-event-manager' );
-			$plural   = __( 'Job categories', 'wp-event-manager' );
+		if ( get_option( 'event_manager_enable_categories' ) ) {
+			$singular = __( 'event category', 'wp-event-manager' );
+			$plural   = __( 'event categories', 'wp-event-manager' );
 
-			if ( current_theme_supports( 'job-manager-templates' ) ) {
+			if ( current_theme_supports( 'event-manager-templates' ) ) {
 				$rewrite = [
 					'slug'         => $permalink_structure['category_rewrite_slug'],
 					'with_front'   => false,
@@ -167,10 +167,10 @@ class WP_Job_Manager_Post_Types {
 			}
 
 			register_taxonomy(
-				'job_listing_category',
-				apply_filters( 'register_taxonomy_job_listing_category_object_type', [ 'job_listing' ] ),
+				'event_listing_category',
+				apply_filters( 'register_taxonomy_event_listing_category_object_type', [ 'event_listing' ] ),
 				apply_filters(
-					'register_taxonomy_job_listing_category_args',
+					'register_taxonomy_event_listing_category_args',
 					[
 						'hierarchical'          => true,
 						'update_count_callback' => '_update_post_term_count',
@@ -179,21 +179,21 @@ class WP_Job_Manager_Post_Types {
 							'name'              => $plural,
 							'singular_name'     => $singular,
 							'menu_name'         => ucwords( $plural ),
-							// translators: Placeholder %s is the plural label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the plural label of the event listing category taxonomy type.
 							'search_items'      => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
-							// translators: Placeholder %s is the plural label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the plural label of the event listing category taxonomy type.
 							'all_items'         => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'parent_item'       => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'edit_item'         => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'update_item'       => sprintf( __( 'Update %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing category taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing category taxonomy type.
 							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-event-manager' ), $singular ),
 						],
 						'show_ui'               => true,
@@ -207,18 +207,18 @@ class WP_Job_Manager_Post_Types {
 						],
 						'rewrite'               => $rewrite,
 						'show_in_rest'          => true,
-						'rest_base'             => 'job-categories',
+						'rest_base'             => 'event-categories',
 
 					]
 				)
 			);
 		}
 
-		if ( get_option( 'job_manager_enable_types' ) ) {
-			$singular = __( 'Job type', 'wp-event-manager' );
-			$plural   = __( 'Job types', 'wp-event-manager' );
+		if ( get_option( 'event_manager_enable_types' ) ) {
+			$singular = __( 'event type', 'wp-event-manager' );
+			$plural   = __( 'event types', 'wp-event-manager' );
 
-			if ( current_theme_supports( 'job-manager-templates' ) ) {
+			if ( current_theme_supports( 'event-manager-templates' ) ) {
 				$rewrite = [
 					'slug'         => $permalink_structure['type_rewrite_slug'],
 					'with_front'   => false,
@@ -231,10 +231,10 @@ class WP_Job_Manager_Post_Types {
 			}
 
 			register_taxonomy(
-				'job_listing_type',
-				apply_filters( 'register_taxonomy_job_listing_type_object_type', [ 'job_listing' ] ),
+				'event_listing_type',
+				apply_filters( 'register_taxonomy_event_listing_type_object_type', [ 'event_listing' ] ),
 				apply_filters(
-					'register_taxonomy_job_listing_type_args',
+					'register_taxonomy_event_listing_type_args',
 					[
 						'hierarchical'         => true,
 						'label'                => $plural,
@@ -242,21 +242,21 @@ class WP_Job_Manager_Post_Types {
 							'name'              => $plural,
 							'singular_name'     => $singular,
 							'menu_name'         => ucwords( $plural ),
-							// translators: Placeholder %s is the plural label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the plural label of the event listing event type taxonomy type.
 							'search_items'      => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
-							// translators: Placeholder %s is the plural label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the plural label of the event listing event type taxonomy type.
 							'all_items'         => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'parent_item'       => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'parent_item_colon' => sprintf( __( 'Parent %s:', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'edit_item'         => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'update_item'       => sprintf( __( 'Update %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'add_new_item'      => sprintf( __( 'Add New %s', 'wp-event-manager' ), $singular ),
-							// translators: Placeholder %s is the singular label of the job listing job type taxonomy type.
+							// translators: Placeholder %s is the singular label of the event listing event type taxonomy type.
 							'new_item_name'     => sprintf( __( 'New %s Name', 'wp-event-manager' ), $singular ),
 						],
 						'show_ui'              => true,
@@ -270,17 +270,17 @@ class WP_Job_Manager_Post_Types {
 						],
 						'rewrite'              => $rewrite,
 						'show_in_rest'         => true,
-						'rest_base'            => 'job-types',
-						'meta_box_sanitize_cb' => [ $this, 'sanitize_job_type_meta_box_input' ],
+						'rest_base'            => 'event-types',
+						'meta_box_sanitize_cb' => [ $this, 'sanitize_event_type_meta_box_input' ],
 					]
 				)
 			);
-			if ( function_exists( 'wpjm_job_listing_employment_type_enabled' ) && wpjm_job_listing_employment_type_enabled() ) {
+			if ( function_exists( 'wpjm_event_listing_employment_type_enabled' ) && wpjm_event_listing_employment_type_enabled() ) {
 				register_meta(
 					'term',
 					'employment_type',
 					[
-						'object_subtype'    => 'job_listing_type',
+						'object_subtype'    => 'event_listing_type',
 						'show_in_rest'      => true,
 						'type'              => 'string',
 						'single'            => true,
@@ -294,70 +294,70 @@ class WP_Job_Manager_Post_Types {
 		/**
 		 * Post types
 		 */
-		$singular = __( 'Job', 'wp-event-manager' );
-		$plural   = __( 'Jobs', 'wp-event-manager' );
+		$singular = __( 'event', 'wp-event-manager' );
+		$plural   = __( 'events', 'wp-event-manager' );
 
 		/**
-		 * Set whether to add archive page support when registering the job listing post type.
+		 * Set whether to add archive page support when registering the event listing post type.
 		 *
 		 * @since 1.30.0
 		 *
-		 * @param bool $enable_job_archive_page
+		 * @param bool $enable_event_archive_page
 		 */
-		if ( apply_filters( 'job_manager_enable_job_archive_page', current_theme_supports( 'job-manager-templates' ) ) ) {
-			$has_archive = $permalink_structure['jobs_archive_rewrite_slug'];
+		if ( apply_filters( 'event_manager_enable_event_archive_page', current_theme_supports( 'event-manager-templates' ) ) ) {
+			$has_archive = $permalink_structure['events_archive_rewrite_slug'];
 		} else {
 			$has_archive = false;
 		}
 
 		$rewrite = [
-			'slug'       => $permalink_structure['job_rewrite_slug'],
+			'slug'       => $permalink_structure['event_rewrite_slug'],
 			'with_front' => false,
 			'feeds'      => true,
 			'pages'      => false,
 		];
 
 		register_post_type(
-			'job_listing',
+			'event_listing',
 			apply_filters(
-				'register_post_type_job_listing',
+				'register_post_type_event_listing',
 				[
 					'labels'                => [
 						'name'                  => $plural,
 						'singular_name'         => $singular,
-						'menu_name'             => __( 'Job Listings', 'wp-event-manager' ),
-						// translators: Placeholder %s is the plural label of the job listing post type.
+						'menu_name'             => __( 'event Listings', 'wp-event-manager' ),
+						// translators: Placeholder %s is the plural label of the event listing post type.
 						'all_items'             => sprintf( __( 'All %s', 'wp-event-manager' ), $plural ),
 						'add_new'               => __( 'Add New', 'wp-event-manager' ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'add_new_item'          => sprintf( __( 'Add %s', 'wp-event-manager' ), $singular ),
 						'edit'                  => __( 'Edit', 'wp-event-manager' ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'edit_item'             => sprintf( __( 'Edit %s', 'wp-event-manager' ), $singular ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'new_item'              => sprintf( __( 'New %s', 'wp-event-manager' ), $singular ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'view'                  => sprintf( __( 'View %s', 'wp-event-manager' ), $singular ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'view_item'             => sprintf( __( 'View %s', 'wp-event-manager' ), $singular ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'search_items'          => sprintf( __( 'Search %s', 'wp-event-manager' ), $plural ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'not_found'             => sprintf( __( 'No %s found', 'wp-event-manager' ), $plural ),
-						// translators: Placeholder %s is the plural label of the job listing post type.
+						// translators: Placeholder %s is the plural label of the event listing post type.
 						'not_found_in_trash'    => sprintf( __( 'No %s found in trash', 'wp-event-manager' ), $plural ),
-						// translators: Placeholder %s is the singular label of the job listing post type.
+						// translators: Placeholder %s is the singular label of the event listing post type.
 						'parent'                => sprintf( __( 'Parent %s', 'wp-event-manager' ), $singular ),
 						'featured_image'        => __( 'Company Logo', 'wp-event-manager' ),
 						'set_featured_image'    => __( 'Set company logo', 'wp-event-manager' ),
 						'remove_featured_image' => __( 'Remove company logo', 'wp-event-manager' ),
 						'use_featured_image'    => __( 'Use as company logo', 'wp-event-manager' ),
 					],
-					// translators: Placeholder %s is the plural label of the job listing post type.
+					// translators: Placeholder %s is the plural label of the event listing post type.
 					'description'           => sprintf( __( 'This is where you can create and manage %s.', 'wp-event-manager' ), $plural ),
 					'public'                => true,
 					'show_ui'               => true,
-					'capability_type'       => 'job_listing',
+					'capability_type'       => 'event_listing',
 					'map_meta_cap'          => true,
 					'publicly_queryable'    => true,
 					'exclude_from_search'   => false,
@@ -369,7 +369,7 @@ class WP_Job_Manager_Post_Types {
 					'show_in_nav_menus'     => false,
 					'delete_with_user'      => true,
 					'show_in_rest'          => true,
-					'rest_base'             => 'job-listings',
+					'rest_base'             => 'event-listings',
 					'rest_controller_class' => 'WP_REST_Posts_Controller',
 					'template'              => [ [ 'core/freeform' ] ],
 					'template_lock'         => 'all',
@@ -381,7 +381,7 @@ class WP_Job_Manager_Post_Types {
 		/**
 		 * Feeds
 		 */
-		add_feed( self::get_job_feed_name(), [ $this, 'job_feed' ] );
+		add_feed( self::get_event_feed_name(), [ $this, 'event_feed' ] );
 
 		/**
 		 * Post status
@@ -414,33 +414,33 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Change label for admin menu item to show number of Job Listing items pending approval.
+	 * Change label for admin menu item to show number of event Listing items pending approval.
 	 */
 	public function admin_head() {
 		global $menu;
 
-		$pending_jobs = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$pending_events = WP_event_Manager_Cache_Helper::get_listings_count();
 
-		// No need to go further if no pending jobs, menu is not set, or is not an array.
-		if ( empty( $pending_jobs ) || empty( $menu ) || ! is_array( $menu ) ) {
+		// No need to go further if no pending events, menu is not set, or is not an array.
+		if ( empty( $pending_events ) || empty( $menu ) || ! is_array( $menu ) ) {
 			return;
 		}
 
 		// Try to pull menu_name from post type object to support themes/plugins that change the menu string.
-		$post_type = get_post_type_object( 'job_listing' );
-		$plural    = isset( $post_type->labels, $post_type->labels->menu_name ) ? $post_type->labels->menu_name : __( 'Job Listings', 'wp-event-manager' );
+		$post_type = get_post_type_object( 'event_listing' );
+		$plural    = isset( $post_type->labels, $post_type->labels->menu_name ) ? $post_type->labels->menu_name : __( 'event Listings', 'wp-event-manager' );
 
 		foreach ( $menu as $key => $menu_item ) {
 			if ( strpos( $menu_item[0], $plural ) === 0 ) {
 				// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Only way to add pending listing count.
-				$menu[ $key ][0] .= " <span class='awaiting-mod update-plugins count-" . esc_attr( $pending_jobs ) . "'><span class='pending-count'>" . absint( number_format_i18n( $pending_jobs ) ) . '</span></span>';
+				$menu[ $key ][0] .= " <span class='awaiting-mod update-plugins count-" . esc_attr( $pending_events ) . "'><span class='pending-count'>" . absint( number_format_i18n( $pending_events ) ) . '</span></span>';
 				break;
 			}
 		}
 	}
 
 	/**
-	 * Filter the post content of job listings.
+	 * Filter the post content of event listings.
 	 *
 	 * @since 1.33.0
 	 * @param string $post_content Post content to filter.
@@ -450,21 +450,21 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Returns the expanded set of tags allowed in job listing content.
+	 * Returns the expanded set of tags allowed in event listing content.
 	 *
 	 * @since 1.33.0
 	 * @return string
 	 */
 	private static function kses_allowed_html() {
 		/**
-		 * Change the allowed tags in job listing content.
+		 * Change the allowed tags in event listing content.
 		 *
 		 * @since 1.33.0
 		 *
-		 * @param array $allowed_html Tags allowed in job listing posts.
+		 * @param array $allowed_html Tags allowed in event listing posts.
 		 */
 		return apply_filters(
-			'job_manager_kses_allowed_html',
+			'event_manager_kses_allowed_html',
 			array_replace_recursive( // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.array_replace_recursiveFound
 				wp_kses_allowed_html( 'post' ),
 				[
@@ -486,13 +486,13 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Sanitize job type meta box input data from WP admin.
+	 * Sanitize event type meta box input data from WP admin.
 	 *
 	 * @param WP_Taxonomy $taxonomy  Taxonomy being sterilized.
 	 * @param mixed       $input     Raw term data from the 'tax_input' field.
 	 * @return int[]|int
 	 */
-	public function sanitize_job_type_meta_box_input( $taxonomy, $input ) {
+	public function sanitize_event_type_meta_box_input( $taxonomy, $input ) {
 		if ( is_array( $input ) ) {
 			return array_map( 'intval', $input );
 		}
@@ -504,58 +504,58 @@ class WP_Job_Manager_Post_Types {
 	 *
 	 * @param bool $enable
 	 */
-	private function job_content_filter( $enable ) {
+	private function event_content_filter( $enable ) {
 		if ( ! $enable ) {
-			remove_filter( 'the_content', [ $this, 'job_content' ] );
+			remove_filter( 'the_content', [ $this, 'event_content' ] );
 		} else {
-			add_filter( 'the_content', [ $this, 'job_content' ] );
+			add_filter( 'the_content', [ $this, 'event_content' ] );
 		}
 	}
 
 	/**
-	 * Adds extra content before/after the post for single job listings.
+	 * Adds extra content before/after the post for single event listings.
 	 *
 	 * @param string $content
 	 * @return string
 	 */
-	public function job_content( $content ) {
+	public function event_content( $content ) {
 		global $post;
 
-		if ( ! is_singular( 'job_listing' ) || ! in_the_loop() || 'job_listing' !== $post->post_type ) {
+		if ( ! is_singular( 'event_listing' ) || ! in_the_loop() || 'event_listing' !== $post->post_type ) {
 			return $content;
 		}
 
 		ob_start();
 
-		$this->job_content_filter( false );
+		$this->event_content_filter( false );
 
-		do_action( 'job_content_start' );
+		do_action( 'event_content_start' );
 
-		get_job_manager_template_part( 'content-single', 'job_listing' );
+		get_event_manager_template_part( 'content-single', 'event_listing' );
 
-		do_action( 'job_content_end' );
+		do_action( 'event_content_end' );
 
-		$this->job_content_filter( true );
+		$this->event_content_filter( true );
 
-		return apply_filters( 'job_manager_single_job_content', ob_get_clean(), $post );
+		return apply_filters( 'event_manager_single_event_content', ob_get_clean(), $post );
 	}
 
 	/**
-	 * Generates the RSS feed for Job Listings.
+	 * Generates the RSS feed for event Listings.
 	 */
-	public function job_feed() {
-		global $job_manager_keyword;
+	public function event_feed() {
+		global $event_manager_keyword;
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Input used to filter public data in feed.
 		$input_posts_per_page  = isset( $_GET['posts_per_page'] ) ? absint( $_GET['posts_per_page'] ) : 10;
 		$input_search_location = isset( $_GET['search_location'] ) ? sanitize_text_field( wp_unslash( $_GET['search_location'] ) ) : false;
-		$input_job_types       = isset( $_GET['job_types'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['job_types'] ) ) ) : false;
-		$input_job_categories  = isset( $_GET['job_categories'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['job_categories'] ) ) ) : false;
-		$job_manager_keyword   = isset( $_GET['search_keywords'] ) ? sanitize_text_field( wp_unslash( $_GET['search_keywords'] ) ) : '';
+		$input_event_types       = isset( $_GET['event_types'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['event_types'] ) ) ) : false;
+		$input_event_categories  = isset( $_GET['event_categories'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['event_categories'] ) ) ) : false;
+		$event_manager_keyword   = isset( $_GET['search_keywords'] ) ? sanitize_text_field( wp_unslash( $_GET['search_keywords'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$query_args = [
-			'post_type'           => 'job_listing',
+			'post_type'           => 'event_listing',
 			'post_status'         => 'publish',
 			'ignore_sticky_posts' => 1,
 			'posts_per_page'      => $input_posts_per_page,
@@ -565,7 +565,7 @@ class WP_Job_Manager_Post_Types {
 		];
 
 		if ( ! empty( $input_search_location ) ) {
-			$location_meta_keys = [ 'geolocation_formatted_address', '_job_location', 'geolocation_state_long' ];
+			$location_meta_keys = [ 'geolocation_formatted_address', '_event_location', 'geolocation_state_long' ];
 			$location_search    = [ 'relation' => 'OR' ];
 			foreach ( $location_meta_keys as $meta_key ) {
 				$location_search[] = [
@@ -577,20 +577,20 @@ class WP_Job_Manager_Post_Types {
 			$query_args['meta_query'][] = $location_search;
 		}
 
-		if ( ! empty( $input_job_types ) ) {
+		if ( ! empty( $input_event_types ) ) {
 			$query_args['tax_query'][] = [
-				'taxonomy' => 'job_listing_type',
+				'taxonomy' => 'event_listing_type',
 				'field'    => 'slug',
-				'terms'    => $input_job_types + [ 0 ],
+				'terms'    => $input_event_types + [ 0 ],
 			];
 		}
 
-		if ( ! empty( $input_job_categories ) ) {
-			$cats                      = $input_job_categories + [ 0 ];
+		if ( ! empty( $input_event_categories ) ) {
+			$cats                      = $input_event_categories + [ 0 ];
 			$field                     = is_numeric( $cats ) ? 'term_id' : 'slug';
-			$operator                  = 'all' === get_option( 'job_manager_category_filter_type', 'all' ) && count( $cats ) > 1 ? 'AND' : 'IN';
+			$operator                  = 'all' === get_option( 'event_manager_category_filter_type', 'all' ) && count( $cats ) > 1 ? 'AND' : 'IN';
 			$query_args['tax_query'][] = [
-				'taxonomy'         => 'job_listing_category',
+				'taxonomy'         => 'event_listing_category',
 				'field'            => $field,
 				'terms'            => $cats,
 				'include_children' => 'AND' !== $operator,
@@ -598,9 +598,9 @@ class WP_Job_Manager_Post_Types {
 			];
 		}
 
-		if ( ! empty( $job_manager_keyword ) ) {
-			$query_args['s'] = $job_manager_keyword;
-			add_filter( 'posts_search', 'get_job_listings_keyword_search' );
+		if ( ! empty( $event_manager_keyword ) ) {
+			$query_args['s'] = $event_manager_keyword;
+			add_filter( 'posts_search', 'get_event_listings_keyword_search' );
 		}
 
 		if ( empty( $query_args['meta_query'] ) ) {
@@ -612,22 +612,22 @@ class WP_Job_Manager_Post_Types {
 		}
 
 		// phpcs:ignore WordPress.WP.DiscouragedFunctions
-		query_posts( apply_filters( 'job_feed_args', $query_args ) );
-		add_action( 'rss2_ns', [ $this, 'job_feed_namespace' ] );
-		add_action( 'rss2_item', [ $this, 'job_feed_item' ] );
+		query_posts( apply_filters( 'event_feed_args', $query_args ) );
+		add_action( 'rss2_ns', [ $this, 'event_feed_namespace' ] );
+		add_action( 'rss2_item', [ $this, 'event_feed_item' ] );
 		do_feed_rss2( false );
-		remove_filter( 'posts_search', 'get_job_listings_keyword_search' );
+		remove_filter( 'posts_search', 'get_event_listings_keyword_search' );
 	}
 
 	/**
-	 * Adds query arguments in order to make sure that the feed properly queries the 'job_listing' type.
+	 * Adds query arguments in order to make sure that the feed properly queries the 'event_listing' type.
 	 *
 	 * @param WP_Query $wp
 	 */
 	public function add_feed_query_args( $wp ) {
 
-		// Let's leave if not the job feed.
-		if ( ! isset( $wp->query_vars['feed'] ) || self::get_job_feed_name() !== $wp->query_vars['feed'] ) {
+		// Let's leave if not the event feed.
+		if ( ! isset( $wp->query_vars['feed'] ) || self::get_event_feed_name() !== $wp->query_vars['feed'] ) {
 			return;
 		}
 
@@ -641,64 +641,64 @@ class WP_Job_Manager_Post_Types {
 			return;
 		}
 
-		$wp->query_vars['post_type'] = 'job_listing';
+		$wp->query_vars['post_type'] = 'event_listing';
 	}
 
 	/**
-	 * Adds a custom namespace to the job feed.
+	 * Adds a custom namespace to the event feed.
 	 */
-	public function job_feed_namespace() {
-		echo 'xmlns:job_listing="' . esc_url( site_url() ) . '"' . "\n";
+	public function event_feed_namespace() {
+		echo 'xmlns:event_listing="' . esc_url( site_url() ) . '"' . "\n";
 	}
 
 	/**
-	 * Adds custom data to the job feed.
+	 * Adds custom data to the event feed.
 	 */
-	public function job_feed_item() {
+	public function event_feed_item() {
 		$post_id   = get_the_ID();
-		$location  = get_the_job_location( $post_id );
+		$location  = get_the_event_location( $post_id );
 		$company   = get_the_company_name( $post_id );
-		$job_types = wpjm_get_the_job_types( $post_id );
+		$event_types = wpjm_get_the_event_types( $post_id );
 
 		if ( $location ) {
-			echo '<job_listing:location><![CDATA[' . esc_html( $location ) . "]]></job_listing:location>\n";
+			echo '<event_listing:location><![CDATA[' . esc_html( $location ) . "]]></event_listing:location>\n";
 		}
-		if ( ! empty( $job_types ) ) {
-			$job_types_names = implode( ', ', wp_list_pluck( $job_types, 'name' ) );
-			echo '<job_listing:job_type><![CDATA[' . esc_html( $job_types_names ) . "]]></job_listing:job_type>\n";
+		if ( ! empty( $event_types ) ) {
+			$event_types_names = implode( ', ', wp_list_pluck( $event_types, 'name' ) );
+			echo '<event_listing:event_type><![CDATA[' . esc_html( $event_types_names ) . "]]></event_listing:event_type>\n";
 		}
 		if ( $company ) {
-			echo '<job_listing:company><![CDATA[' . esc_html( $company ) . "]]></job_listing:company>\n";
+			echo '<event_listing:company><![CDATA[' . esc_html( $company ) . "]]></event_listing:company>\n";
 		}
 
 		/**
-		 * Fires at the end of each job RSS feed item.
+		 * Fires at the end of each event RSS feed item.
 		 *
-		 * @param int $post_id The post ID of the job.
+		 * @param int $post_id The post ID of the event.
 		 */
-		do_action( 'job_feed_item', $post_id );
+		do_action( 'event_feed_item', $post_id );
 	}
 
 	/**
-	 * Maintenance task to expire jobs.
+	 * Maintenance task to expire events.
 	 */
-	public function check_for_expired_jobs() {
+	public function check_for_expired_events() {
 		// Change status to expired.
-		$job_ids = get_posts(
+		$event_ids = get_posts(
 			[
-				'post_type'      => 'job_listing',
+				'post_type'      => 'event_listing',
 				'post_status'    => 'publish',
 				'fields'         => 'ids',
 				'posts_per_page' => -1,
 				'meta_query'     => [
 					'relation' => 'AND',
 					[
-						'key'     => '_job_expires',
+						'key'     => '_event_expires',
 						'value'   => 0,
 						'compare' => '>',
 					],
 					[
-						'key'     => '_job_expires',
+						'key'     => '_event_expires',
 						'value'   => date( 'Y-m-d', current_time( 'timestamp' ) ),
 						'compare' => '<',
 					],
@@ -706,65 +706,65 @@ class WP_Job_Manager_Post_Types {
 			]
 		);
 
-		if ( $job_ids ) {
-			foreach ( $job_ids as $job_id ) {
-				$job_data                = [];
-				$job_data['ID']          = $job_id;
-				$job_data['post_status'] = 'expired';
-				wp_update_post( $job_data );
+		if ( $event_ids ) {
+			foreach ( $event_ids as $event_id ) {
+				$event_data                = [];
+				$event_data['ID']          = $event_id;
+				$event_data['post_status'] = 'expired';
+				wp_update_post( $event_data );
 			}
 		}
 
-		// Delete old expired jobs.
+		// Delete old expired events.
 
 		/**
-		 * Set whether or not we should delete expired jobs after a certain amount of time.
+		 * Set whether or not we should delete expired events after a certain amount of time.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param bool $delete_expired_jobs Whether we should delete expired jobs after a certain amount of time. Defaults to false.
+		 * @param bool $delete_expired_events Whether we should delete expired events after a certain amount of time. Defaults to false.
 		 */
-		if ( apply_filters( 'job_manager_delete_expired_jobs', false ) ) {
+		if ( apply_filters( 'event_manager_delete_expired_events', false ) ) {
 			/**
-			 * Days to preserve expired job listings before deleting them.
+			 * Days to preserve expired event listings before deleting them.
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param int $delete_expired_jobs_days Number of days to preserve expired job listings before deleting them.
+			 * @param int $delete_expired_events_days Number of days to preserve expired event listings before deleting them.
 			 */
-			$delete_expired_jobs_days = apply_filters( 'job_manager_delete_expired_jobs_days', 30 );
+			$delete_expired_events_days = apply_filters( 'event_manager_delete_expired_events_days', 30 );
 
-			$job_ids = get_posts(
+			$event_ids = get_posts(
 				[
-					'post_type'      => 'job_listing',
+					'post_type'      => 'event_listing',
 					'post_status'    => 'expired',
 					'fields'         => 'ids',
 					'date_query'     => [
 						[
 							'column' => 'post_modified',
-							'before' => date( 'Y-m-d', strtotime( '-' . $delete_expired_jobs_days . ' days', current_time( 'timestamp' ) ) ),
+							'before' => date( 'Y-m-d', strtotime( '-' . $delete_expired_events_days . ' days', current_time( 'timestamp' ) ) ),
 						],
 					],
 					'posts_per_page' => -1,
 				]
 			);
 
-			if ( $job_ids ) {
-				foreach ( $job_ids as $job_id ) {
-					wp_trash_post( $job_id );
+			if ( $event_ids ) {
+				foreach ( $event_ids as $event_id ) {
+					wp_trash_post( $event_id );
 				}
 			}
 		}
 	}
 
 	/**
-	 * Deletes old previewed jobs after 30 days to keep the DB clean.
+	 * Deletes old previewed events after 30 days to keep the DB clean.
 	 */
 	public function delete_old_previews() {
-		// Delete old jobs stuck in preview.
-		$job_ids = get_posts(
+		// Delete old events stuck in preview.
+		$event_ids = get_posts(
 			[
-				'post_type'      => 'job_listing',
+				'post_type'      => 'event_listing',
 				'post_status'    => 'preview',
 				'fields'         => 'ids',
 				'date_query'     => [
@@ -777,9 +777,9 @@ class WP_Job_Manager_Post_Types {
 			]
 		);
 
-		if ( $job_ids ) {
-			foreach ( $job_ids as $job_id ) {
-				wp_delete_post( $job_id, true );
+		if ( $event_ids ) {
+			foreach ( $event_ids as $event_id ) {
+				wp_delete_post( $event_id, true );
 			}
 		}
 	}
@@ -792,42 +792,42 @@ class WP_Job_Manager_Post_Types {
 	 * @deprecated 1.0.1
 	 */
 	public function set_expirey( $post ) {
-		_deprecated_function( __METHOD__, '1.0.1', 'WP_Job_Manager_Post_Types::set_expiry' );
+		_deprecated_function( __METHOD__, '1.0.1', 'WP_event_Manager_Post_Types::set_expiry' );
 		$this->set_expiry( $post );
 	}
 
 	/**
-	 * Sets expiry date when job status changes.
+	 * Sets expiry date when event status changes.
 	 *
 	 * @param WP_Post $post
 	 */
 	public function set_expiry( $post ) {
-		if ( 'job_listing' !== $post->post_type ) {
+		if ( 'event_listing' !== $post->post_type ) {
 			return;
 		}
 
 		// See if it is already set.
-		if ( metadata_exists( 'post', $post->ID, '_job_expires' ) ) {
-			$expires = get_post_meta( $post->ID, '_job_expires', true );
+		if ( metadata_exists( 'post', $post->ID, '_event_expires' ) ) {
+			$expires = get_post_meta( $post->ID, '_event_expires', true );
 			if ( $expires && strtotime( $expires ) < current_time( 'timestamp' ) ) {
-				update_post_meta( $post->ID, '_job_expires', '' );
+				update_post_meta( $post->ID, '_event_expires', '' );
 			}
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce check handled by WP core.
-		$input_job_expires = isset( $_POST['_job_expires'] ) ? sanitize_text_field( wp_unslash( $_POST['_job_expires'] ) ) : null;
+		$input_event_expires = isset( $_POST['_event_expires'] ) ? sanitize_text_field( wp_unslash( $_POST['_event_expires'] ) ) : null;
 
 		// See if the user has set the expiry manually.
-		if ( ! empty( $input_job_expires ) ) {
-			update_post_meta( $post->ID, '_job_expires', date( 'Y-m-d', strtotime( $input_job_expires ) ) );
+		if ( ! empty( $input_event_expires ) ) {
+			update_post_meta( $post->ID, '_event_expires', date( 'Y-m-d', strtotime( $input_event_expires ) ) );
 		} elseif ( ! isset( $expires ) ) {
 			// No manual setting? Lets generate a date if there isn't already one.
-			$expires = calculate_job_expiry( $post->ID );
-			update_post_meta( $post->ID, '_job_expires', $expires );
+			$expires = calculate_event_expiry( $post->ID );
+			update_post_meta( $post->ID, '_event_expires', $expires );
 
 			// In case we are saving a post, ensure post data is updated so the field is not overridden.
-			if ( null !== $input_job_expires ) {
-				$_POST['_job_expires'] = $expires;
+			if ( null !== $input_event_expires ) {
+				$_POST['_event_expires'] = $expires;
 			}
 		}
 	}
@@ -838,7 +838,7 @@ class WP_Job_Manager_Post_Types {
 	 * @param stdClass $apply
 	 */
 	public function application_details_email( $apply ) {
-		get_job_manager_template( 'job-application-email.php', [ 'apply' => $apply ] );
+		get_event_manager_template( 'event-application-email.php', [ 'apply' => $apply ] );
 	}
 
 	/**
@@ -847,7 +847,7 @@ class WP_Job_Manager_Post_Types {
 	 * @param stdClass $apply
 	 */
 	public function application_details_url( $apply ) {
-		get_job_manager_template( 'job-application-url.php', [ 'apply' => $apply ] );
+		get_event_manager_template( 'event-application-url.php', [ 'apply' => $apply ] );
 	}
 
 	/**
@@ -858,7 +858,7 @@ class WP_Job_Manager_Post_Types {
 	 * @return array
 	 */
 	public function fix_post_name( $data, $postarr ) {
-		if ( 'job_listing' === $data['post_type']
+		if ( 'event_listing' === $data['post_type']
 			&& 'pending' === $data['post_status']
 			&& ! current_user_can( 'publish_posts' )
 			&& isset( $postarr['post_name'] )
@@ -869,21 +869,21 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Returns the name of the job RSS feed.
+	 * Returns the name of the event RSS feed.
 	 *
 	 * @return string
 	 */
-	public static function get_job_feed_name() {
+	public static function get_event_feed_name() {
 		/**
-		 * Change the name of the job feed.
+		 * Change the name of the event feed.
 		 *
 		 * NOTE: When you override this, you must re-save permalink settings to clear the rewrite cache.
 		 *
 		 * @since 1.32.0
 		 *
-		 * @param string $job_feed_name Slug used for the job feed.
+		 * @param string $event_feed_name Slug used for the event feed.
 		 */
-		return apply_filters( 'job_manager_job_feed_name', 'job_feed' );
+		return apply_filters( 'event_manager_event_feed_name', 'event_feed' );
 	}
 
 	/**
@@ -922,12 +922,12 @@ class WP_Job_Manager_Post_Types {
 		$permalink_settings = self::get_raw_permalink_settings();
 
 		// First-time activations will get this cleared on activation.
-		if ( ! array_key_exists( 'jobs_archive', $permalink_settings ) ) {
+		if ( ! array_key_exists( 'events_archive', $permalink_settings ) ) {
 			// Create entry to prevent future checks.
-			$permalink_settings['jobs_archive'] = '';
-			if ( current_theme_supports( 'job-manager-templates' ) ) {
+			$permalink_settings['events_archive'] = '';
+			if ( current_theme_supports( 'event-manager-templates' ) ) {
 				// This isn't the first activation and the theme supports it. Set the default to legacy value.
-				$permalink_settings['jobs_archive'] = _x( 'jobs', 'Post type archive slug - resave permalinks after changing this', 'wp-event-manager' );
+				$permalink_settings['events_archive'] = _x( 'events', 'Post type archive slug - resave permalinks after changing this', 'wp-event-manager' );
 			}
 			update_option( self::PERMALINK_OPTION_NAME, wp_json_encode( $permalink_settings ) );
 		}
@@ -935,18 +935,18 @@ class WP_Job_Manager_Post_Types {
 		$permalinks = wp_parse_args(
 			$permalink_settings,
 			[
-				'job_base'      => '',
+				'event_base'      => '',
 				'category_base' => '',
 				'type_base'     => '',
-				'jobs_archive'  => '',
+				'events_archive'  => '',
 			]
 		);
 
 		// Ensure rewrite slugs are set. Use legacy translation options if not.
-		$permalinks['job_rewrite_slug']          = untrailingslashit( empty( $permalinks['job_base'] ) ? _x( 'job', 'Job permalink - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['job_base'] );
-		$permalinks['category_rewrite_slug']     = untrailingslashit( empty( $permalinks['category_base'] ) ? _x( 'job-category', 'Job category slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['category_base'] );
-		$permalinks['type_rewrite_slug']         = untrailingslashit( empty( $permalinks['type_base'] ) ? _x( 'job-type', 'Job type slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['type_base'] );
-		$permalinks['jobs_archive_rewrite_slug'] = untrailingslashit( empty( $permalinks['jobs_archive'] ) ? 'job-listings' : $permalinks['jobs_archive'] );
+		$permalinks['event_rewrite_slug']          = untrailingslashit( empty( $permalinks['event_base'] ) ? _x( 'event', 'event permalink - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['event_base'] );
+		$permalinks['category_rewrite_slug']     = untrailingslashit( empty( $permalinks['category_base'] ) ? _x( 'event-category', 'event category slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['category_base'] );
+		$permalinks['type_rewrite_slug']         = untrailingslashit( empty( $permalinks['type_base'] ) ? _x( 'event-type', 'event type slug - resave permalinks after changing this', 'wp-event-manager' ) : $permalinks['type_base'] );
+		$permalinks['events_archive_rewrite_slug'] = untrailingslashit( empty( $permalinks['events_archive'] ) ? 'event-listings' : $permalinks['events_archive'] );
 
 		// Restore the original locale.
 		if ( function_exists( 'restore_current_locale' ) && did_action( 'admin_init' ) ) {
@@ -963,14 +963,14 @@ class WP_Job_Manager_Post_Types {
 	 * @param mixed  $meta_value
 	 */
 	public function maybe_add_geolocation_data( $object_id, $meta_key, $meta_value ) {
-		if ( '_job_location' !== $meta_key || 'job_listing' !== get_post_type( $object_id ) ) {
+		if ( '_event_location' !== $meta_key || 'event_listing' !== get_post_type( $object_id ) ) {
 			return;
 		}
-		do_action( 'job_manager_job_location_edited', $object_id, $meta_value );
+		do_action( 'event_manager_event_location_edited', $object_id, $meta_value );
 	}
 
 	/**
-	 * Triggered when updating meta on a job listing.
+	 * Triggered when updating meta on a event listing.
 	 *
 	 * @param int    $meta_id
 	 * @param int    $object_id
@@ -978,12 +978,12 @@ class WP_Job_Manager_Post_Types {
 	 * @param mixed  $meta_value
 	 */
 	public function update_post_meta( $meta_id, $object_id, $meta_key, $meta_value ) {
-		if ( 'job_listing' !== get_post_type( $object_id ) ) {
+		if ( 'event_listing' !== get_post_type( $object_id ) ) {
 			return;
 		}
 
 		switch ( $meta_key ) {
-			case '_job_location':
+			case '_event_location':
 				$this->maybe_update_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value );
 				break;
 			case '_featured':
@@ -1001,11 +1001,11 @@ class WP_Job_Manager_Post_Types {
 	 * @param mixed  $meta_value
 	 */
 	public function maybe_update_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value ) {
-		do_action( 'job_manager_job_location_edited', $object_id, $meta_value );
+		do_action( 'event_manager_event_location_edited', $object_id, $meta_value );
 	}
 
 	/**
-	 * Maybe sets menu_order if the featured status of a job is changed.
+	 * Maybe sets menu_order if the featured status of a event is changed.
 	 *
 	 * @param int    $meta_id (Unused).
 	 * @param int    $object_id
@@ -1047,32 +1047,32 @@ class WP_Job_Manager_Post_Types {
 	 * @deprecated 1.19.1
 	 */
 	public function maybe_generate_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value ) {
-		_deprecated_function( __METHOD__, '1.19.1', 'WP_Job_Manager_Post_Types::maybe_update_geolocation_data' );
+		_deprecated_function( __METHOD__, '1.19.1', 'WP_event_Manager_Post_Types::maybe_update_geolocation_data' );
 		$this->maybe_update_geolocation_data( $meta_id, $object_id, $meta_key, $meta_value );
 	}
 
 	/**
-	 * Maybe sets default meta data for job listings.
+	 * Maybe sets default meta data for event listings.
 	 *
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post    Post object.
 	 */
 	public function maybe_add_default_meta_data( $post_id, $post ) {
-		if ( empty( $post ) || 'job_listing' === $post->post_type ) {
+		if ( empty( $post ) || 'event_listing' === $post->post_type ) {
 			add_post_meta( $post_id, '_filled', 0, true );
 			add_post_meta( $post_id, '_featured', 0, true );
 		}
 	}
 
 	/**
-	 * Track job submission from the backend.
+	 * Track event submission from the backend.
 	 *
 	 * @param string  $new_status  New post status.
 	 * @param string  $old_status  Old status.
 	 * @param WP_Post $post        Post object.
 	 */
-	public function track_job_submission( $new_status, $old_status, $post ) {
-		if ( empty( $post ) || 'job_listing' !== get_post_type( $post ) ) {
+	public function track_event_submission( $new_status, $old_status, $post ) {
+		if ( empty( $post ) || 'event_listing' !== get_post_type( $post ) ) {
 			return;
 		}
 
@@ -1081,15 +1081,15 @@ class WP_Job_Manager_Post_Types {
 		}
 
 		// For the purpose of this event, we only care about admin requests and REST API requests.
-		if ( ! is_admin() && ! WP_Job_Manager_Usage_Tracking::is_rest_request() ) {
+		if ( ! is_admin() && ! WP_event_Manager_Usage_Tracking::is_rest_request() ) {
 			return;
 		}
 
-		$source = WP_Job_Manager_Usage_Tracking::is_rest_request() ? 'rest_api' : 'admin';
+		$source = WP_event_Manager_Usage_Tracking::is_rest_request() ? 'rest_api' : 'admin';
 
 		if ( 'pending' === $old_status ) {
-			// Track approving a new job listing.
-			WP_Job_Manager_Usage_Tracking::track_job_approval(
+			// Track approving a new event listing.
+			WP_event_Manager_Usage_Tracking::track_event_approval(
 				$post->ID,
 				[
 					'source' => $source,
@@ -1099,7 +1099,7 @@ class WP_Job_Manager_Post_Types {
 			return;
 		}
 
-		WP_Job_Manager_Usage_Tracking::track_job_submission(
+		WP_event_Manager_Usage_Tracking::track_event_submission(
 			$post->ID,
 			[
 				'source'     => $source,
@@ -1109,19 +1109,19 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Add noindex for expired and filled job listings.
+	 * Add noindex for expired and filled event listings.
 	 */
-	public function noindex_expired_filled_job_listings() {
+	public function noindex_expired_filled_event_listings() {
 		if ( ! is_single() ) {
 			return;
 		}
 
 		$post = get_post();
-		if ( ! $post || 'job_listing' !== $post->post_type ) {
+		if ( ! $post || 'event_listing' !== $post->post_type ) {
 			return;
 		}
 
-		if ( wpjm_allow_indexing_job_listing() ) {
+		if ( wpjm_allow_indexing_event_listing() ) {
 			return;
 		}
 
@@ -1129,18 +1129,18 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Add structured data to the footer of job listing pages.
+	 * Add structured data to the footer of event listing pages.
 	 */
 	public function output_structured_data() {
 		if ( ! is_single() ) {
 			return;
 		}
 
-		if ( ! wpjm_output_job_listing_structured_data() ) {
+		if ( ! wpjm_output_event_listing_structured_data() ) {
 			return;
 		}
 
-		$structured_data = wpjm_get_job_listing_structured_data();
+		$structured_data = wpjm_get_event_listing_structured_data();
 		if ( ! empty( $structured_data ) ) {
 			echo '<!-- WP Event Manager Structured Data -->' . "\r\n";
 			echo '<script type="application/ld+json">' . wpjm_esc_json( wp_json_encode( $structured_data ), true ) . '</script>';
@@ -1154,7 +1154,7 @@ class WP_Job_Manager_Post_Types {
 	 * @return string
 	 */
 	public function sanitize_employment_type( $employment_type ) {
-		$employment_types = wpjm_job_listing_employment_type_options();
+		$employment_types = wpjm_event_listing_employment_type_options();
 		if ( ! isset( $employment_types[ $employment_type ] ) ) {
 			return null;
 		}
@@ -1162,10 +1162,10 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Registers job listing meta fields.
+	 * Registers event listing meta fields.
 	 */
 	public function register_meta_fields() {
-		$fields = self::get_job_listing_fields();
+		$fields = self::get_event_listing_fields();
 
 		foreach ( $fields as $meta_key => $field ) {
 			register_meta(
@@ -1178,18 +1178,18 @@ class WP_Job_Manager_Post_Types {
 					'sanitize_callback' => $field['sanitize_callback'],
 					'auth_callback'     => $field['auth_edit_callback'],
 					'single'            => true,
-					'object_subtype'    => 'job_listing',
+					'object_subtype'    => 'event_listing',
 				]
 			);
 		}
 	}
 
 	/**
-	 * Returns configuration for custom fields on Job Listing posts.
+	 * Returns configuration for custom fields on event Listing posts.
 	 *
-	 * @return array See `job_manager_job_listing_data_fields` filter for more documentation.
+	 * @return array See `event_manager_event_listing_data_fields` filter for more documentation.
 	 */
-	public static function get_job_listing_fields() {
+	public static function get_event_listing_fields() {
 		$default_field = [
 			'label'              => null,
 			'placeholder'        => null,
@@ -1202,12 +1202,12 @@ class WP_Job_Manager_Post_Types {
 			'data_type'          => 'string',
 			'show_in_admin'      => true,
 			'show_in_rest'       => false,
-			'auth_edit_callback' => [ __CLASS__, 'auth_check_can_edit_job_listings' ],
+			'auth_edit_callback' => [ __CLASS__, 'auth_check_can_edit_event_listings' ],
 			'auth_view_callback' => null,
 			'sanitize_callback'  => [ __CLASS__, 'sanitize_meta_field_based_on_input_type' ],
 		];
 
-		$allowed_application_method     = get_option( 'job_manager_allowed_application_method', '' );
+		$allowed_application_method     = get_option( 'event_manager_allowed_application_method', '' );
 		$application_method_label       = __( 'Application email/URL', 'wp-event-manager' );
 		$application_method_placeholder = __( 'Enter an email address or website URL', 'wp-event-manager' );
 
@@ -1220,7 +1220,7 @@ class WP_Job_Manager_Post_Types {
 		}
 
 		$fields = [
-			'_job_location'    => [
+			'_event_location'    => [
 				'label'         => __( 'Location', 'wp-event-manager' ),
 				'placeholder'   => __( 'e.g. "London"', 'wp-event-manager' ),
 				'description'   => __( 'Leave this blank if the location is not important.', 'wp-event-manager' ),
@@ -1299,34 +1299,34 @@ class WP_Job_Manager_Post_Types {
 				'data_type'          => 'integer',
 				'show_in_admin'      => true,
 				'show_in_rest'       => true,
-				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_job_listings' ],
+				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_event_listings' ],
 			],
-			'_job_expires'     => [
+			'_event_expires'     => [
 				'label'              => __( 'Listing Expiry Date', 'wp-event-manager' ),
 				'priority'           => 11,
 				'show_in_admin'      => true,
 				'show_in_rest'       => true,
 				'data_type'          => 'string',
-				'classes'            => [ 'job-manager-datepicker' ],
-				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_job_listings' ],
-				'auth_view_callback' => [ __CLASS__, 'auth_check_can_edit_job_listings' ],
+				'classes'            => [ 'event-manager-datepicker' ],
+				'auth_edit_callback' => [ __CLASS__, 'auth_check_can_manage_event_listings' ],
+				'auth_view_callback' => [ __CLASS__, 'auth_check_can_edit_event_listings' ],
 				'sanitize_callback'  => [ __CLASS__, 'sanitize_meta_field_date' ],
 			],
 		];
 
 		/**
-		 * Filters job listing data fields.
+		 * Filters event listing data fields.
 		 *
 		 * For the REST API, do not pass fields you don't want to be visible to the current visitor when `show_in_rest`
 		 * is `true`. To add values and other data when generating the WP admin form, use filter
-		 * `job_manager_job_listing_wp_admin_fields` which should have `$post_id` in context.
+		 * `event_manager_event_listing_wp_admin_fields` which should have `$post_id` in context.
 		 *
 		 * @since 1.0.0
 		 * @since 1.27.0 $post_id was added.
 		 * @since 1.33.0 Used both in WP admin and REST API. Removed `$post_id` attribute. Added fields for REST API.
 		 *
 		 * @param array    $fields  {
-		 *     Job listing meta fields for REST API and WP admin. Associative array with meta key as the index.
+		 *     event listing meta fields for REST API and WP admin. Associative array with meta key as the index.
 		 *     All fields except for `$label` are optional and have working defaults.
 		 *
 		 *     @type array $meta_key {
@@ -1350,12 +1350,12 @@ class WP_Job_Manager_Post_Types {
 		 *                                                 callable that returns boolean. Used in: WP Admin
 		 *                                                 (Since 1.33.0; Default: true).
 		 *         @type bool|array    $show_in_rest       Whether data associated with this meta key can put in REST
-		 *                                                 API response for job listings. Can be used to pass REST API
+		 *                                                 API response for event listings. Can be used to pass REST API
 		 *                                                 arguments in `show_in_rest` parameter. Used in: REST API
 		 *                                                 (Since 1.33.0; Default: false).
 		 *         @type callable      $auth_edit_callback {
 		 *             Decides if specific user can edit the meta key. Used in: WP Admin; REST API.
-		 *             Defaults to callable that limits to those who can edit specific the job listing (also limited
+		 *             Defaults to callable that limits to those who can edit specific the event listing (also limited
 		 *             by relevant endpoints).
 		 *
 		 *             @see WP core filter `auth_{$object_type}_meta_{$meta_key}_for_{$object_subtype}`.
@@ -1363,7 +1363,7 @@ class WP_Job_Manager_Post_Types {
 		 *
 		 *             @param bool   $allowed   Whether the user can add the object meta. Default false.
 		 *             @param string $meta_key  The meta key.
-		 *             @param int    $object_id Post ID for Job Listing.
+		 *             @param int    $object_id Post ID for event Listing.
 		 *             @param int    $user_id   User ID.
 		 *
 		 *             @return bool
@@ -1372,12 +1372,12 @@ class WP_Job_Manager_Post_Types {
 		 *             Decides if specific user can view value of the meta key. Used in: REST API.
 		 *             Defaults to visible to all (if shown in REST API, which by default is false).
 		 *
-		 *             @see WPJM method `WP_Job_Manager_REST_API::prepare_job_listing()`.
+		 *             @see WPJM method `WP_event_Manager_REST_API::prepare_event_listing()`.
 		 *             @since 1.33.0
 		 *
 		 *             @param bool   $allowed   Whether the user can add the object meta. Default false.
 		 *             @param string $meta_key  The meta key.
-		 *             @param int    $object_id Post ID for Job Listing.
+		 *             @param int    $object_id Post ID for event Listing.
 		 *             @param int    $user_id   User ID.
 		 *
 		 *             @return bool
@@ -1397,7 +1397,7 @@ class WP_Job_Manager_Post_Types {
 		 *     }
 		 * }
 		 */
-		$fields = apply_filters( 'job_manager_job_listing_data_fields', $fields );
+		$fields = apply_filters( 'event_manager_event_listing_data_fields', $fields );
 
 		// Ensure default fields are set.
 		foreach ( $fields as $key => $field ) {
@@ -1415,7 +1415,7 @@ class WP_Job_Manager_Post_Types {
 	 * @return mixed
 	 */
 	public static function sanitize_meta_field_based_on_input_type( $meta_value, $meta_key ) {
-		$fields = self::get_job_listing_fields();
+		$fields = self::get_event_listing_fields();
 
 		if ( is_string( $meta_value ) ) {
 			$meta_value = trim( $meta_value );
@@ -1497,36 +1497,36 @@ class WP_Job_Manager_Post_Types {
 	}
 
 	/**
-	 * Checks if user can manage job listings.
+	 * Checks if user can manage event listings.
 	 *
-	 * @param bool   $allowed   Whether the user can edit the job listing meta.
+	 * @param bool   $allowed   Whether the user can edit the event listing meta.
 	 * @param string $meta_key  The meta key.
-	 * @param int    $post_id   Job listing's post ID.
+	 * @param int    $post_id   event listing's post ID.
 	 * @param int    $user_id   User ID.
 	 *
-	 * @return bool Whether the user can edit the job listing meta.
+	 * @return bool Whether the user can edit the event listing meta.
 	 */
-	public static function auth_check_can_manage_job_listings( $allowed, $meta_key, $post_id, $user_id ) {
+	public static function auth_check_can_manage_event_listings( $allowed, $meta_key, $post_id, $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		if ( ! $user ) {
 			return false;
 		}
 
-		return $user->has_cap( 'manage_job_listings' );
+		return $user->has_cap( 'manage_event_listings' );
 	}
 
 	/**
-	 * Checks if user can edit job listings.
+	 * Checks if user can edit event listings.
 	 *
-	 * @param bool   $allowed   Whether the user can edit the job listing meta.
+	 * @param bool   $allowed   Whether the user can edit the event listing meta.
 	 * @param string $meta_key  The meta key.
-	 * @param int    $post_id   Job listing's post ID.
+	 * @param int    $post_id   event listing's post ID.
 	 * @param int    $user_id   User ID.
 	 *
-	 * @return bool Whether the user can edit the job listing meta.
+	 * @return bool Whether the user can edit the event listing meta.
 	 */
-	public static function auth_check_can_edit_job_listings( $allowed, $meta_key, $post_id, $user_id ) {
+	public static function auth_check_can_edit_event_listings( $allowed, $meta_key, $post_id, $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		if ( ! $user ) {
@@ -1534,42 +1534,42 @@ class WP_Job_Manager_Post_Types {
 		}
 
 		if ( empty( $post_id ) ) {
-			return current_user_can( 'edit_job_listings' );
+			return current_user_can( 'edit_event_listings' );
 		}
 
-		return job_manager_user_can_edit_job( $post_id );
+		return event_manager_user_can_edit_event( $post_id );
 	}
 
 	/**
-	 * Checks if user can edit other's job listings.
+	 * Checks if user can edit other's event listings.
 	 *
-	 * @param bool   $allowed   Whether the user can edit the job listing meta.
+	 * @param bool   $allowed   Whether the user can edit the event listing meta.
 	 * @param string $meta_key  The meta key.
-	 * @param int    $post_id   Job listing's post ID.
+	 * @param int    $post_id   event listing's post ID.
 	 * @param int    $user_id   User ID.
 	 *
-	 * @return bool Whether the user can edit the job listing meta.
+	 * @return bool Whether the user can edit the event listing meta.
 	 */
-	public static function auth_check_can_edit_others_job_listings( $allowed, $meta_key, $post_id, $user_id ) {
+	public static function auth_check_can_edit_others_event_listings( $allowed, $meta_key, $post_id, $user_id ) {
 		$user = get_user_by( 'ID', $user_id );
 
 		if ( ! $user ) {
 			return false;
 		}
 
-		return $user->has_cap( 'edit_others_job_listings' );
+		return $user->has_cap( 'edit_others_event_listings' );
 	}
 
 	/**
-	 * Add post type for Job Manager to list of post types deleted with user.
+	 * Add post type for event Manager to list of post types deleted with user.
 	 *
 	 * @since 1.33.0
 	 *
 	 * @param array $types
 	 * @return array
 	 */
-	public function delete_user_add_job_listings_post_type( $types ) {
-		$types[] = 'job_listing';
+	public function delete_user_add_event_listings_post_type( $types ) {
+		$types[] = 'event_listing';
 
 		return $types;
 	}

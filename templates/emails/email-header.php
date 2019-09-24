@@ -2,9 +2,9 @@
 /**
  * Header for email notifications.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/emails/email-header.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/emails/email-header.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template

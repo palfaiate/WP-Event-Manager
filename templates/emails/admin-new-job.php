@@ -1,10 +1,10 @@
 <?php
 /**
- * Email content when notifying admin of a new job listing.
+ * Email content when notifying admin of a new event listing.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/emails/admin-new-job.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/emails/admin-new-event.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -16,19 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * @var WP_Post $job
+ * @var WP_Post $event
  */
-$job = $args['job'];
+$event = $args['event'];
 ?>
 	<p><?php
 		echo wp_kses_post(
 			sprintf(
-				__( 'A new job listing has been submitted to <a href="%s">%s</a>.', 'wp-event-manager' ),
+				__( 'A new event listing has been submitted to <a href="%s">%s</a>.', 'wp-event-manager' ),
 				home_url(),
 				get_bloginfo( 'name' )
 			)
 		);
-		switch ( $job->post_status ) {
+		switch ( $event->post_status ) {
 			case 'publish':
 				printf( ' ' . esc_html__( 'It has been published and is now available to the public.', 'wp-event-manager' ) );
 				break;
@@ -36,7 +36,7 @@ $job = $args['job'];
 				echo wp_kses_post(
 					sprintf(
 						' ' . __( 'It is awaiting approval by an administrator in <a href="%s">WordPress admin</a>.','wp-event-manager' ),
-						esc_url( admin_url( 'edit.php?post_type=job_listing' ) )
+						esc_url( admin_url( 'edit.php?post_type=event_listing' ) )
 					)
 				);
 				break;
@@ -45,11 +45,11 @@ $job = $args['job'];
 <?php
 
 /**
- * Show details about the job listing.
+ * Show details about the event listing.
  *
- * @param WP_Post              $job            The job listing to show details for.
- * @param WP_Job_Manager_Email $email          Email object for the notification.
+ * @param WP_Post              $event            The event listing to show details for.
+ * @param WP_event_Manager_Email $email          Email object for the notification.
  * @param bool                 $sent_to_admin  True if this is being sent to an administrator.
  * @param bool                 $plain_text     True if the email is being sent as plain text.
  */
-do_action( 'job_manager_email_job_details', $job, $email, true, $plain_text );
+do_action( 'event_manager_email_event_details', $event, $email, true, $plain_text );

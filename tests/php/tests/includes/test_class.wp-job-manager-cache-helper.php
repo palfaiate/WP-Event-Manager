@@ -1,118 +1,118 @@
 <?php
 
-class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
-	const GROUP_CACHE_KEY_JOB_LISTINGS     = 'get_job_listings';
-	const GROUP_CACHE_KEY_PREFIX_JOB_TERMS = 'jm_get_';
+class WP_Test_WP_event_Manager_Cache_Helper extends WPJM_BaseTest {
+	const GROUP_CACHE_KEY_event_LISTINGS     = 'get_event_listings';
+	const GROUP_CACHE_KEY_PREFIX_event_TERMS = 'jm_get_';
 
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache
+	 * @covers WP_event_Manager_Cache_Helper::flush_get_event_listings_cache
 	 */
-	public function test_flush_get_job_listings_cache_explicit_trigger() {
-		$post = $this->factory->job_listing->create();
+	public function test_flush_get_event_listings_cache_explicit_trigger() {
+		$post = $this->factory->event_listing->create();
 
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $initial_version, $middle_version );
 
 		// Manually trigger it.
-		WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache( $post );
+		WP_event_Manager_Cache_Helper::flush_get_event_listings_cache( $post );
 
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertLessThan( $after_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache
+	 * @covers WP_event_Manager_Cache_Helper::flush_get_event_listings_cache
 	 */
-	public function test_flush_get_job_listings_cache_action_trigger() {
+	public function test_flush_get_event_listings_cache_action_trigger() {
 		/**
 		 * @var WP_Post $post
 		 */
-		$post = get_post( $this->factory->job_listing->create() );
+		$post = get_post( $this->factory->event_listing->create() );
 
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $initial_version, $middle_version );
 
-		// This should trigger `WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache()`.
+		// This should trigger `WP_event_Manager_Cache_Helper::flush_get_event_listings_cache()`.
 		$post->post_title = 'Cool Dinosaur';
 		wp_update_post( $post );
 
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertLessThan( $after_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache
+	 * @covers WP_event_Manager_Cache_Helper::flush_get_event_listings_cache
 	 */
-	public function test_flush_get_job_listings_cache_action_bad_trigger() {
+	public function test_flush_get_event_listings_cache_action_bad_trigger() {
 		/**
 		 * @var WP_Post $post
 		 */
 		$post = get_post( $this->factory->post->create() );
 
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $initial_version, $middle_version );
 
-		// This should NOT trigger `WP_Job_Manager_Cache_Helper::flush_get_job_listings_cache()`.
+		// This should NOT trigger `WP_event_Manager_Cache_Helper::flush_get_event_listings_cache()`.
 		$post->post_title = 'Cool Dinosaur';
 		wp_update_post( $post );
 
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $after_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::job_manager_my_job_do_action
+	 * @covers WP_event_Manager_Cache_Helper::event_manager_my_event_do_action
 	 */
-	public function test_job_manager_my_job_do_action() {
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+	public function test_event_manager_my_event_do_action() {
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $initial_version, $middle_version );
 
 		// Manually trigger with bad action.
-		WP_Job_Manager_Cache_Helper::job_manager_my_job_do_action( 'bad_action' );
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		WP_event_Manager_Cache_Helper::event_manager_my_event_do_action( 'bad_action' );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertEquals( $after_version, $initial_version );
 
 		// Manually trigger with good action 'mark_filled'.
-		WP_Job_Manager_Cache_Helper::job_manager_my_job_do_action( 'mark_filled' );
-		$after_version_mark_filled = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		WP_event_Manager_Cache_Helper::event_manager_my_event_do_action( 'mark_filled' );
+		$after_version_mark_filled = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertLessThan( $after_version_mark_filled, $initial_version );
 
 		$this->wee_sleep();
 
 		// Manually trigger with good action 'mark_not_filled'.
-		WP_Job_Manager_Cache_Helper::job_manager_my_job_do_action( 'mark_not_filled' );
-		$after_version_mark_not_filled = WP_Job_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_JOB_LISTINGS );
+		WP_event_Manager_Cache_Helper::event_manager_my_event_do_action( 'mark_not_filled' );
+		$after_version_mark_not_filled = WP_event_Manager_Cache_Helper::get_transient_version( self::GROUP_CACHE_KEY_event_LISTINGS );
 		$this->assertLessThan( $after_version_mark_not_filled, $after_version_mark_filled );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::set_term
+	 * @covers WP_event_Manager_Cache_Helper::set_term
 	 */
 	public function test_set_term() {
 		/**
@@ -126,27 +126,27 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$term = get_term( $this->factory->term->create() );
 
 		$taxonomy_slug     = 'post_tag';
-		$cache_key         = self::GROUP_CACHE_KEY_PREFIX_JOB_TERMS . sanitize_text_field( $taxonomy_slug );
+		$cache_key         = self::GROUP_CACHE_KEY_PREFIX_event_TERMS . sanitize_text_field( $taxonomy_slug );
 		$taxonomy_term_ids = [ $term->ID ];
 
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertEquals( $initial_version, $middle_version );
 
 		// wp_set_object_terms( $post->ID, $term->ID, $taxonomy_slug );.
-		WP_Job_Manager_Cache_Helper::set_term( $post->ID, 'a_test_term', [ $term ], $taxonomy_slug );
+		WP_event_Manager_Cache_Helper::set_term( $post->ID, 'a_test_term', [ $term ], $taxonomy_slug );
 
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertLessThan( $after_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::edited_term
+	 * @covers WP_event_Manager_Cache_Helper::edited_term
 	 */
 	public function test_edited_term() {
 		/**
@@ -160,60 +160,60 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$term = get_term( $this->factory->term->create() );
 
 		$taxonomy_slug     = 'post_tag';
-		$cache_key         = self::GROUP_CACHE_KEY_PREFIX_JOB_TERMS . sanitize_text_field( $taxonomy_slug );
+		$cache_key         = self::GROUP_CACHE_KEY_PREFIX_event_TERMS . sanitize_text_field( $taxonomy_slug );
 		$taxonomy_term_ids = [ $term->ID ];
 
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertEquals( $initial_version, $middle_version );
 
-		WP_Job_Manager_Cache_Helper::edited_term( $post->ID, [ $term ], $taxonomy_slug );
+		WP_event_Manager_Cache_Helper::edited_term( $post->ID, [ $term ], $taxonomy_slug );
 
-		$after_version = WP_Job_Manager_Cache_Helper::get_transient_version( $cache_key );
+		$after_version = WP_event_Manager_Cache_Helper::get_transient_version( $cache_key );
 		$this->assertLessThan( $after_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::get_transient_version
+	 * @covers WP_event_Manager_Cache_Helper::get_transient_version
 	 */
 	public function test_get_transient_version() {
 		$test_group      = 'test_group';
-		$initial_version = WP_Job_Manager_Cache_Helper::get_transient_version( $test_group );
+		$initial_version = WP_event_Manager_Cache_Helper::get_transient_version( $test_group );
 		$this->assertGreaterThanOrEqual( time() - 1, $initial_version );
 		$this->assertLessThanOrEqual( time(), $initial_version );
 
 		$this->wee_sleep();
-		$middle_version = WP_Job_Manager_Cache_Helper::get_transient_version( $test_group );
+		$middle_version = WP_event_Manager_Cache_Helper::get_transient_version( $test_group );
 		$this->assertEquals( $initial_version, $middle_version );
 
-		$refresh_version = WP_Job_Manager_Cache_Helper::get_transient_version( $test_group, true );
+		$refresh_version = WP_event_Manager_Cache_Helper::get_transient_version( $test_group, true );
 		$this->assertLessThan( $refresh_version, $initial_version );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::get_listings_count
+	 * @covers WP_event_Manager_Cache_Helper::get_listings_count
 	 */
 	public function test_get_listings_count_default_args() {
 		global $wpdb;
-		$posts_pending   = $this->factory->job_listing->create_many( 3, [ 'post_status' => 'pending' ] );
-		$posts_published = $this->factory->job_listing->create_many( 5, [ 'post_status' => 'publish' ] );
+		$posts_pending   = $this->factory->event_listing->create_many( 3, [ 'post_status' => 'pending' ] );
+		$posts_published = $this->factory->event_listing->create_many( 5, [ 'post_status' => 'publish' ] );
 		$posts_shifted   = [];
 
-		$initial_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$initial_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ), $initial_count );
 
 		$this->wee_sleep();
 
 		// Create posts with normal actions fired.
-		$posts_pending_round_two = $this->factory->job_listing->create_many( 2, [ 'post_status' => 'pending' ] );
+		$posts_pending_round_two = $this->factory->event_listing->create_many( 2, [ 'post_status' => 'pending' ] );
 
-		$middle_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$middle_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ) + count( $posts_pending_round_two ), $middle_count );
 
 		// Covertly change post from published to pending.
@@ -221,19 +221,19 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$published_post_id = $posts_shifted[] = array_pop( $posts_published );
 		$wpdb->update( $wpdb->posts, [ 'post_status' => 'pending' ], [ 'ID' => $published_post_id ] );
 
-		$second_middle_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$second_middle_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( $middle_count, $second_middle_count );
 
 		// Call the function that should have fired earlier.
-		WP_Job_Manager_Cache_Helper::maybe_clear_count_transients( 'pending', 'publish', get_post( $published_post_id ) );
+		WP_event_Manager_Cache_Helper::maybe_clear_count_transients( 'pending', 'publish', get_post( $published_post_id ) );
 
-		$final_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$final_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ) + count( $posts_pending_round_two ) + count( $posts_shifted ), $final_count );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::get_listings_count
+	 * @covers WP_event_Manager_Cache_Helper::get_listings_count
 	 */
 	public function test_get_listings_count_nonstandard_args() {
 		global $wpdb;
@@ -243,7 +243,7 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$posts_published = $this->factory->post->create_many( 2, [ 'post_status' => 'publish' ] );
 		$posts_shifted   = [];
 
-		$initial_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
+		$initial_count = WP_event_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
 		$this->assertEquals( count( $posts_published ), $initial_count );
 
 		$this->wee_sleep();
@@ -251,7 +251,7 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		// Create posts with normal actions fired.
 		$posts_published_round_two = $this->factory->post->create_many( 2, [ 'post_status' => 'publish' ] );
 
-		$middle_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
+		$middle_count = WP_event_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
 		$this->assertEquals( count( $posts_published ) + count( $posts_published_round_two ), $middle_count );
 
 		// Covertly change post from published to pending.
@@ -259,27 +259,27 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$published_post_id = $posts_shifted[] = array_pop( $posts_published );
 		$wpdb->update( $wpdb->posts, [ 'post_status' => 'pending' ], [ 'ID' => $published_post_id ] );
 
-		$second_middle_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
+		$second_middle_count = WP_event_Manager_Cache_Helper::get_listings_count( 'post', 'publish' );
 		$this->assertEquals( $middle_count, $second_middle_count );
 
-		$final_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'post', 'publish', true );
+		$final_count = WP_event_Manager_Cache_Helper::get_listings_count( 'post', 'publish', true );
 		$this->assertEquals( count( $posts_published ) + count( $posts_published_round_two ) + count( $posts_shifted ), $final_count );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Cache_Helper::maybe_clear_count_transients
+	 * @covers WP_event_Manager_Cache_Helper::maybe_clear_count_transients
 	 */
 	public function test_maybe_clear_count_transients() {
 		global $wpdb;
-		$posts_pending   = $this->factory->job_listing->create_many( 3, [ 'post_status' => 'pending' ] );
-		$posts_published = $this->factory->job_listing->create_many( 5, [ 'post_status' => 'publish' ] );
-		$posts_expired   = $this->factory->job_listing->create_many( 5, [ 'post_status' => 'expired' ] );
+		$posts_pending   = $this->factory->event_listing->create_many( 3, [ 'post_status' => 'pending' ] );
+		$posts_published = $this->factory->event_listing->create_many( 5, [ 'post_status' => 'publish' ] );
+		$posts_expired   = $this->factory->event_listing->create_many( 5, [ 'post_status' => 'expired' ] );
 		$posts_shifted   = [];
 
-		$expired_count   = WP_Job_Manager_Cache_Helper::get_listings_count( 'job_listing', 'expired' );
-		$published_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'job_listing', 'publish' );
-		$initial_count   = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$expired_count   = WP_event_Manager_Cache_Helper::get_listings_count( 'event_listing', 'expired' );
+		$published_count = WP_event_Manager_Cache_Helper::get_listings_count( 'event_listing', 'publish' );
+		$initial_count   = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ), $initial_count );
 
 		// Covertly change post from published to pending.
@@ -290,24 +290,24 @@ class WP_Test_WP_Job_Manager_Cache_Helper extends WPJM_BaseTest {
 		$published_to_expired_post_id = array_pop( $posts_published );
 		$wpdb->update( $wpdb->posts, [ 'post_status' => 'expired' ], [ 'ID' => $published_to_expired_post_id ] );
 
-		$second_middle_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$second_middle_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ), $second_middle_count );
 
 		// Unhandled status.
-		WP_Job_Manager_Cache_Helper::maybe_clear_count_transients( 'expired', 'publish', get_post( $published_post_id ) );
-		$middle_expired_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'job_listing', 'expired' );
+		WP_event_Manager_Cache_Helper::maybe_clear_count_transients( 'expired', 'publish', get_post( $published_post_id ) );
+		$middle_expired_count = WP_event_Manager_Cache_Helper::get_listings_count( 'event_listing', 'expired' );
 		$this->assertEquals( $expired_count, $middle_expired_count );
 
 		add_filter( 'wpjm_count_cache_supported_statuses', [ $this, 'helper_add_expired_status' ] );
 
-		WP_Job_Manager_Cache_Helper::maybe_clear_count_transients( 'expired', 'publish', get_post( $published_post_id ) );
-		$second_middle_expired_count = WP_Job_Manager_Cache_Helper::get_listings_count( 'job_listing', 'expired' );
+		WP_event_Manager_Cache_Helper::maybe_clear_count_transients( 'expired', 'publish', get_post( $published_post_id ) );
+		$second_middle_expired_count = WP_event_Manager_Cache_Helper::get_listings_count( 'event_listing', 'expired' );
 		$this->assertLessThan( $second_middle_expired_count, $middle_expired_count );
 
 		// Legit call for method.
-		WP_Job_Manager_Cache_Helper::maybe_clear_count_transients( 'pending', 'publish', get_post( $published_post_id ) );
+		WP_event_Manager_Cache_Helper::maybe_clear_count_transients( 'pending', 'publish', get_post( $published_post_id ) );
 
-		$final_count = WP_Job_Manager_Cache_Helper::get_listings_count();
+		$final_count = WP_event_Manager_Cache_Helper::get_listings_count();
 		$this->assertEquals( count( $posts_pending ) + count( $posts_shifted ), $final_count );
 	}
 

@@ -15,9 +15,9 @@ require 'includes/class-wp-event-manager-data-cleaner.php';
 if ( ! is_multisite() ) {
 
 	// Only do deletion if the setting is true.
-	$do_deletion = get_option( 'job_manager_delete_data_on_uninstall' );
+	$do_deletion = get_option( 'event_manager_delete_data_on_uninstall' );
 	if ( $do_deletion ) {
-		WP_Job_Manager_Data_Cleaner::cleanup_all();
+		WP_event_Manager_Data_Cleaner::cleanup_all();
 	}
 } elseif ( function_exists( 'get_sites' ) ) {
 	$blog_ids = get_sites(
@@ -33,9 +33,9 @@ if ( ! is_multisite() ) {
 		switch_to_blog( $current_blog_id );
 
 		// Only do deletion if the setting is true.
-		$do_deletion = get_option( 'job_manager_delete_data_on_uninstall' );
+		$do_deletion = get_option( 'event_manager_delete_data_on_uninstall' );
 		if ( $do_deletion ) {
-			WP_Job_Manager_Data_Cleaner::cleanup_all();
+			WP_event_Manager_Data_Cleaner::cleanup_all();
 		}
 	}
 
@@ -43,4 +43,4 @@ if ( ! is_multisite() ) {
 }
 
 require dirname( __FILE__ ) . '/includes/class-wp-event-manager-usage-tracking.php';
-WP_Job_Manager_Usage_Tracking::get_instance()->clear_options();
+WP_event_Manager_Usage_Tracking::get_instance()->clear_options();

@@ -61,12 +61,12 @@ class WPJM_REST_TestCase extends WPJM_BaseTest {
 		}
 
 		$this->reregister_post_type();
-		$this->disable_manage_job_listings_cap();
+		$this->disable_manage_event_listings_cap();
 
-		WP_Job_Manager_REST_API::init();
+		WP_event_Manager_REST_API::init();
 
 		// Ensure the role gets created.
-		WP_Job_Manager_Install::install();
+		WP_event_Manager_Install::install();
 		wp_roles()->init_roles();
 		wp_cache_flush();
 
@@ -87,9 +87,9 @@ class WPJM_REST_TestCase extends WPJM_BaseTest {
 	/**
 	 * Expect a model is valid
 	 *
-	 * @param WP_Job_Manager_REST_Interfaces_Model $model The model.
+	 * @param WP_event_Manager_REST_Interfaces_Model $model The model.
 	 *
-	 * @throws WP_Job_Manager_REST_Exception
+	 * @throws WP_event_Manager_REST_Exception
 	 */
 	protected function assertModelValid( $model ) {
 		$this->assertTrue( $model->validate() );

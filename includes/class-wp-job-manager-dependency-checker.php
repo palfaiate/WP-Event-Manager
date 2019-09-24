@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Dependency_Checker.
+ * File containing the class WP_event_Manager_Dependency_Checker.
  *
  * @package wp-event-manager
  * @since   1.33.0
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.33.0
  */
-class WP_Job_Manager_Dependency_Checker {
+class WP_event_Manager_Dependency_Checker {
 	const MINIMUM_PHP_VERSION = '5.6.20';
 	const MINIMUM_WP_VERSION  = '4.9.0';
 
@@ -26,15 +26,15 @@ class WP_Job_Manager_Dependency_Checker {
 	 */
 	public static function check_dependencies() {
 		if ( ! self::check_php() ) {
-			add_action( 'admin_notices', array( 'WP_Job_Manager_Dependency_Checker', 'add_php_notice' ) );
+			add_action( 'admin_notices', array( 'WP_event_Manager_Dependency_Checker', 'add_php_notice' ) );
 			add_action( 'admin_init', array( __CLASS__, 'deactivate_self' ) );
 
 			return false;
 		}
 
 		if ( ! self::check_wp() ) {
-			add_action( 'admin_notices', array( 'WP_Job_Manager_Dependency_Checker', 'add_wp_notice' ) );
-			add_filter( 'plugin_action_links_' . JOB_MANAGER_PLUGIN_BASENAME, array( 'WP_Job_Manager_Dependency_Checker', 'wp_version_plugin_action_notice' ) );
+			add_action( 'admin_notices', array( 'WP_event_Manager_Dependency_Checker', 'add_wp_notice' ) );
+			add_filter( 'plugin_action_links_' . event_MANAGER_PLUGIN_BASENAME, array( 'WP_event_Manager_Dependency_Checker', 'wp_version_plugin_action_notice' ) );
 		}
 
 		return true;
@@ -85,7 +85,7 @@ class WP_Job_Manager_Dependency_Checker {
 	 * Deactivate self.
 	 */
 	public static function deactivate_self() {
-		deactivate_plugins( JOB_MANAGER_PLUGIN_BASENAME );
+		deactivate_plugins( event_MANAGER_PLUGIN_BASENAME );
 	}
 
 	/**
@@ -146,6 +146,6 @@ class WP_Job_Manager_Dependency_Checker {
 	 * @return array
 	 */
 	private static function get_critical_screen_ids() {
-		return array( 'dashboard', 'plugins', 'plugins-network', 'edit-job_listing', 'job_listing_page_job-manager-settings' );
+		return array( 'dashboard', 'plugins', 'plugins-network', 'edit-event_listing', 'event_listing_page_event-manager-settings' );
 	}
 }

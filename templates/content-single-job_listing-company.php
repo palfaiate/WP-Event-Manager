@@ -2,11 +2,11 @@
 /**
  * Single view Company information box
  *
- * Hooked into single_job_listing_start priority 30
+ * Hooked into single_event_listing_start priority 30
  *
- * This template can be overridden by copying it to yourtheme/job_manager/content-single-job_listing-company.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/content-single-event_listing-company.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template

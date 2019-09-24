@@ -192,7 +192,7 @@ module.exports = function( grunt ) {
 		},
 
 		addtextdomain: {
-			wpjobmanager: {
+			wpeventmanager: {
 				options: {
 					textdomain: 'wp-event-manager',
 				},

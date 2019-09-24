@@ -1,10 +1,10 @@
 <?php
 /**
- * Pagination - Show numbered pagination for the `[jobs]` shortcode.
+ * Pagination - Show numbered pagination for the `[events]` shortcode.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/job-pagination.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/event-pagination.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -28,7 +28,7 @@ $mid_pages   = range( $current_page - $mid_size, $current_page + $mid_size );
 $pages       = array_intersect( range( 1, $max_num_pages ), array_merge( $start_pages, $end_pages, $mid_pages ) );
 $prev_page   = 0;
 ?>
-<nav class="job-manager-pagination">
+<nav class="event-manager-pagination">
 	<ul>
 		<?php if ( $current_page && $current_page > 1 ) : ?>
 			<li><a href="#" data-page="<?php echo esc_attr( $current_page - 1 ); ?>">&larr;</a></li>

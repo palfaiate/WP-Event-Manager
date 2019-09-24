@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Admin_Notices.
+ * File containing the class WP_event_Manager_Admin_Notices.
  *
  * @package wp-event-manager
  */
@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WP_Job_Manager_Admin_Notices class.
+ * WP_event_Manager_Admin_Notices class.
  *
  * @since 1.32.0
  */
-class WP_Job_Manager_Admin_Notices {
-	const STATE_OPTION      = 'job_manager_admin_notices';
+class WP_event_Manager_Admin_Notices {
+	const STATE_OPTION      = 'event_manager_admin_notices';
 	const NOTICE_CORE_SETUP = 'core_setup';
 
 	/**
@@ -29,7 +29,7 @@ class WP_Job_Manager_Admin_Notices {
 	 * Initialize admin notice handling.
 	 */
 	public static function init() {
-		add_action( 'job_manager_init_admin_notices', [ __CLASS__, 'init_core_notices' ] );
+		add_action( 'event_manager_init_admin_notices', [ __CLASS__, 'init_core_notices' ] );
 		add_action( 'admin_notices', [ __CLASS__, 'display_notices' ] );
 		add_action( 'wp_loaded', [ __CLASS__, 'dismiss_notices' ] );
 	}
@@ -97,7 +97,7 @@ class WP_Job_Manager_Admin_Notices {
 	 */
 	public static function init_core_notices() {
 		// core_setup: Notice is used when first activating WP Event Manager.
-		add_action( 'job_manager_admin_notice_' . self::NOTICE_CORE_SETUP, [ __CLASS__, 'display_core_setup' ] );
+		add_action( 'event_manager_admin_notice_' . self::NOTICE_CORE_SETUP, [ __CLASS__, 'display_core_setup' ] );
 	}
 
 	/**
@@ -105,7 +105,7 @@ class WP_Job_Manager_Admin_Notices {
 	 */
 	public static function dismiss_notices() {
 		if ( isset( $_GET['wpjm_hide_notice'] ) && isset( $_GET['_wpjm_notice_nonce'] ) ) {
-			if ( ! wp_verify_nonce( wp_unslash( $_GET['_wpjm_notice_nonce'] ), 'job_manager_hide_notices_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
+			if ( ! wp_verify_nonce( wp_unslash( $_GET['_wpjm_notice_nonce'] ), 'event_manager_hide_notices_nonce' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
 				wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'wp-event-manager' ) );
 			}
 
@@ -134,7 +134,7 @@ class WP_Job_Manager_Admin_Notices {
 		 *
 		 * @since 1.32.0
 		 */
-		do_action( 'job_manager_init_admin_notices' );
+		do_action( 'event_manager_init_admin_notices' );
 
 		$notice_state = self::get_notice_state();
 		foreach ( $notice_state as $notice ) {
@@ -146,7 +146,7 @@ class WP_Job_Manager_Admin_Notices {
 			 * @param bool $do_show_notice Set to false to prevent an admin notice from showing up.
 			 */
 
-			if ( ! apply_filters( 'job_manager_show_admin_notice_' . $notice, true ) ) {
+			if ( ! apply_filters( 'event_manager_show_admin_notice_' . $notice, true ) ) {
 				continue;
 			}
 
@@ -155,26 +155,26 @@ class WP_Job_Manager_Admin_Notices {
 			 *
 			 * @since 1.32.0
 			 */
-			do_action( 'job_manager_admin_notice_' . $notice );
+			do_action( 'event_manager_admin_notice_' . $notice );
 		}
 	}
 
 	/**
-	 * Helper for display functions to check if current request is for admin on a job manager screen.
+	 * Helper for display functions to check if current request is for admin on a event manager screen.
 	 *
 	 * @param array $additional_screens Screen IDs to also show a notice on.
 	 * @return bool
 	 */
-	public static function is_admin_on_standard_job_manager_screen( $additional_screens = [] ) {
+	public static function is_admin_on_standard_event_manager_screen( $additional_screens = [] ) {
 		$screen          = get_current_screen();
 		$screen_id       = $screen ? $screen->id : '';
 		$show_on_screens = array_merge(
 			[
-				'edit-job_listing',
-				'edit-job_listing_category',
-				'edit-job_listing_type',
-				'job_listing_page_job-manager-addons',
-				'job_listing_page_job-manager-settings',
+				'edit-event_listing',
+				'edit-event_listing_category',
+				'edit-event_listing_type',
+				'event_listing_page_event-manager-addons',
+				'event_listing_page_event-manager-settings',
 			],
 			$additional_screens
 		);
@@ -196,7 +196,7 @@ class WP_Job_Manager_Admin_Notices {
 	 * Note: For internal use only. Do not call manually.
 	 */
 	public static function display_core_setup() {
-		if ( ! self::is_admin_on_standard_job_manager_screen( [ 'plugins', 'dashboard' ] ) ) {
+		if ( ! self::is_admin_on_standard_event_manager_screen( [ 'plugins', 'dashboard' ] ) ) {
 			return;
 		}
 		include dirname( __FILE__ ) . '/views/html-admin-notice-core-setup.php';
@@ -229,4 +229,4 @@ class WP_Job_Manager_Admin_Notices {
 	}
 }
 
-WP_Job_Manager_Admin_Notices::init();
+WP_event_Manager_Admin_Notices::init();

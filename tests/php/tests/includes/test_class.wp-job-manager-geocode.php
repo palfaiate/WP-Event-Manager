@@ -3,151 +3,151 @@
 /**
  * @group geocode
  */
-class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
+class WP_Test_WP_event_Manager_Geocode extends WPJM_BaseTest {
 
 	public function setUp() {
 		parent::setUp();
-		add_filter( 'job_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
-		add_filter( 'job_manager_geolocation_enabled', '__return_true' );
+		add_filter( 'event_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 10 );
+		add_filter( 'event_manager_geolocation_enabled', '__return_true' );
 		$this->enable_transport_faker();
 	}
 
 	/**
-	 * Tests the WP_Job_Manager_Geocode::instance() always returns the same `WP_Job_Manager_Geocode` instance.
+	 * Tests the WP_event_Manager_Geocode::instance() always returns the same `WP_event_Manager_Geocode` instance.
 	 *
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::instance
+	 * @covers WP_event_Manager_Geocode::instance
 	 */
-	public function test_wp_job_manager_api_instance() {
-		$instance = WP_Job_Manager_Geocode::instance();
+	public function test_wp_event_manager_api_instance() {
+		$instance = WP_event_Manager_Geocode::instance();
 		// check the class.
-		$this->assertInstanceOf( 'WP_Job_Manager_Geocode', $instance, 'Job Manager Geocode object is instance of WP_Job_Manager_Geocode class' );
+		$this->assertInstanceOf( 'WP_event_Manager_Geocode', $instance, 'event Manager Geocode object is instance of WP_event_Manager_Geocode class' );
 
 		// check it always returns the same object.
-		$this->assertSame( WP_Job_Manager_Geocode::instance(), $instance, 'WP_Job_Manager_Geocode::instance() must always return the same object' );
+		$this->assertSame( WP_event_Manager_Geocode::instance(), $instance, 'WP_event_Manager_Geocode::instance() must always return the same object' );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::update_location_data
+	 * @covers WP_event_Manager_Geocode::update_location_data
 	 * @dataProvider get_location_data
 	 */
 	public function test_update_location_data( $test_data ) {
 		$this->set_expected_responses( $test_data );
-		$instance = WP_Job_Manager_Geocode::instance();
-		$job_id   = $this->factory->job_listing->create();
-		$values   = [ 'job' => [ 'job_location' => $test_data['location'] ] ];
-		$instance->update_location_data( $job_id, $values );
-		$this->check_test_data( $job_id, $test_data );
+		$instance = WP_event_Manager_Geocode::instance();
+		$event_id   = $this->factory->event_listing->create();
+		$values   = [ 'event' => [ 'event_location' => $test_data['location'] ] ];
+		$instance->update_location_data( $event_id, $values );
+		$this->check_test_data( $event_id, $test_data );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::update_location_data
+	 * @covers WP_event_Manager_Geocode::update_location_data
 	 */
 	public function test_update_location_data_disabled() {
 		$test_data = $this->get_valid_location_data();
 		$this->set_expected_responses( $test_data );
-		$instance = WP_Job_Manager_Geocode::instance();
-		$job_id   = $this->factory->job_listing->create();
-		$values   = [ 'job' => [ 'job_location' => $test_data['location'] ] ];
-		add_filter( 'job_manager_geolocation_enabled', '__return_false' );
-		$instance->update_location_data( $job_id, $values );
-		add_filter( 'job_manager_geolocation_enabled', '__return_true' );
-		$this->check_test_data( $job_id, $this->get_invalid_location_data() );
+		$instance = WP_event_Manager_Geocode::instance();
+		$event_id   = $this->factory->event_listing->create();
+		$values   = [ 'event' => [ 'event_location' => $test_data['location'] ] ];
+		add_filter( 'event_manager_geolocation_enabled', '__return_false' );
+		$instance->update_location_data( $event_id, $values );
+		add_filter( 'event_manager_geolocation_enabled', '__return_true' );
+		$this->check_test_data( $event_id, $this->get_invalid_location_data() );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::update_location_data
+	 * @covers WP_event_Manager_Geocode::update_location_data
 	 */
 	public function test_update_location_data_not_set() {
-		$instance = WP_Job_Manager_Geocode::instance();
-		$job_id   = $this->factory->job_listing->create();
-		$values   = [ 'job' => [] ];
-		$instance->update_location_data( $job_id, $values );
-		$this->check_test_data( $job_id, $this->get_invalid_location_data() );
+		$instance = WP_event_Manager_Geocode::instance();
+		$event_id   = $this->factory->event_listing->create();
+		$values   = [ 'event' => [] ];
+		$instance->update_location_data( $event_id, $values );
+		$this->check_test_data( $event_id, $this->get_invalid_location_data() );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::update_location_data
+	 * @covers WP_event_Manager_Geocode::update_location_data
 	 * @dataProvider get_location_data
 	 */
 	public function test_change_location_data( $test_data ) {
 		$other_test_data = $this->get_other_valid_location_data();
 		$this->set_expected_responses( $test_data );
 		$this->set_expected_responses( $other_test_data );
-		$instance = WP_Job_Manager_Geocode::instance();
-		$job_id   = $this->factory->job_listing->create();
+		$instance = WP_event_Manager_Geocode::instance();
+		$event_id   = $this->factory->event_listing->create();
 
 		// Set the initial location data.
-		$values = [ 'job' => [ 'job_location' => $other_test_data['location'] ] ];
-		$instance->update_location_data( $job_id, $values );
-		$this->check_test_data( $job_id, $other_test_data );
+		$values = [ 'event' => [ 'event_location' => $other_test_data['location'] ] ];
+		$instance->update_location_data( $event_id, $values );
+		$this->check_test_data( $event_id, $other_test_data );
 
 		// Set the new location data and verify that everything is valid.
-		$instance->change_location_data( $job_id, $test_data['location'] );
-		$this->check_test_data( $job_id, $test_data );
+		$instance->change_location_data( $event_id, $test_data['location'] );
+		$this->check_test_data( $event_id, $test_data );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::has_location_data
+	 * @covers WP_event_Manager_Geocode::has_location_data
 	 */
 	public function test_has_location_data() {
 		$test_data = $this->get_valid_location_data();
 		$this->set_expected_responses( $test_data );
-		$instance = WP_Job_Manager_Geocode::instance();
-		$job_id   = $this->factory->job_listing->create();
-		$values   = [ 'job' => [ 'job_location' => $test_data['location'] ] ];
-		$instance->update_location_data( $job_id, $values );
-		$this->assertNotEmpty( get_post_meta( $job_id, 'geolocation_city', true ) );
-		$this->assertTrue( WP_Job_Manager_Geocode::has_location_data( $job_id ) );
+		$instance = WP_event_Manager_Geocode::instance();
+		$event_id   = $this->factory->event_listing->create();
+		$values   = [ 'event' => [ 'event_location' => $test_data['location'] ] ];
+		$instance->update_location_data( $event_id, $values );
+		$this->assertNotEmpty( get_post_meta( $event_id, 'geolocation_city', true ) );
+		$this->assertTrue( WP_event_Manager_Geocode::has_location_data( $event_id ) );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::has_location_data
+	 * @covers WP_event_Manager_Geocode::has_location_data
 	 */
 	public function test_has_location_data_nope() {
-		$job_id = $this->factory->job_listing->create();
-		$this->assertEmpty( get_post_meta( $job_id, 'geolocation_city', true ) );
-		$this->assertFalse( WP_Job_Manager_Geocode::has_location_data( $job_id ) );
+		$event_id = $this->factory->event_listing->create();
+		$this->assertEmpty( get_post_meta( $event_id, 'geolocation_city', true ) );
+		$this->assertFalse( WP_event_Manager_Geocode::has_location_data( $event_id ) );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::generate_location_data
+	 * @covers WP_event_Manager_Geocode::generate_location_data
 	 * @dataProvider get_location_data
 	 */
 	public function test_generate_location_data( $test_data ) {
 		$this->set_expected_responses( $test_data );
-		$job_id = $this->factory->job_listing->create();
-		WP_Job_Manager_Geocode::generate_location_data( $job_id, $test_data['location'] );
-		$this->check_test_data( $job_id, $test_data );
+		$event_id = $this->factory->event_listing->create();
+		WP_event_Manager_Geocode::generate_location_data( $event_id, $test_data['location'] );
+		$this->check_test_data( $event_id, $test_data );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::clear_location_data
+	 * @covers WP_event_Manager_Geocode::clear_location_data
 	 */
 	public function test_clear_location_data() {
 		$test_data = $this->get_valid_location_data();
 		$this->set_expected_responses( $test_data );
-		$job_id = $this->factory->job_listing->create();
-		WP_Job_Manager_Geocode::generate_location_data( $job_id, $test_data['location'] );
-		$this->check_test_data( $job_id, $test_data );
-		WP_Job_Manager_Geocode::clear_location_data( $job_id );
-		$this->check_test_data( $job_id, $this->get_invalid_location_data() );
+		$event_id = $this->factory->event_listing->create();
+		WP_event_Manager_Geocode::generate_location_data( $event_id, $test_data['location'] );
+		$this->check_test_data( $event_id, $test_data );
+		WP_event_Manager_Geocode::clear_location_data( $event_id );
+		$this->check_test_data( $event_id, $this->get_invalid_location_data() );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::save_location_data
+	 * @covers WP_event_Manager_Geocode::save_location_data
 	 */
 	public function test_save_location_data() {
-		$job_id    = $this->factory->job_listing->create();
+		$event_id    = $this->factory->event_listing->create();
 		$test_data = [
 			'city'              => 'City',
 			'country_long'      => 'Country Long',
@@ -162,38 +162,38 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 			'zipcode'           => '11111',
 			'postcode'          => '22222',
 		];
-		WP_Job_Manager_Geocode::save_location_data( $job_id, $test_data );
+		WP_event_Manager_Geocode::save_location_data( $event_id, $test_data );
 		foreach ( $test_data as $key => $value ) {
-			$this->assertEquals( $value, get_post_meta( $job_id, 'geolocation_' . $key, true ) );
+			$this->assertEquals( $value, get_post_meta( $event_id, 'geolocation_' . $key, true ) );
 		}
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::get_google_maps_api_key
+	 * @covers WP_event_Manager_Geocode::get_google_maps_api_key
 	 */
 	public function test_get_google_maps_api_key() {
 		$test_key = '_BEST_KEY_EVER_';
-		$instance = WP_Job_Manager_Geocode::instance();
-		update_option( 'job_manager_google_maps_api_key', $test_key );
+		$instance = WP_event_Manager_Geocode::instance();
+		update_option( 'event_manager_google_maps_api_key', $test_key );
 		$this->assertEquals( $test_key, $instance->get_google_maps_api_key( '' ) );
-		update_option( 'job_manager_google_maps_api_key', '' );
+		update_option( 'event_manager_google_maps_api_key', '' );
 	}
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::add_geolocation_endpoint_query_args
+	 * @covers WP_event_Manager_Geocode::add_geolocation_endpoint_query_args
 	 */
 	public function test_add_geolocation_endpoint_query_args() {
 		$test_url      = 'http://www.example.com/provider';
 		$test_location = 'Mars 00000';
-		$instance      = WP_Job_Manager_Geocode::instance();
-		add_filter( 'job_manager_geolocation_api_key', [ $this, 'helper_add_api_key' ] );
-		add_filter( 'job_manager_geolocation_region_cctld', [ $this, 'helper_add_region_cctld' ] );
+		$instance      = WP_event_Manager_Geocode::instance();
+		add_filter( 'event_manager_geolocation_api_key', [ $this, 'helper_add_api_key' ] );
+		add_filter( 'event_manager_geolocation_region_cctld', [ $this, 'helper_add_region_cctld' ] );
 		$result = $instance->add_geolocation_endpoint_query_args( $test_url, $test_location );
 
-		remove_filter( 'job_manager_geolocation_api_key', [ $this, 'helper_add_api_key' ] );
-		remove_filter( 'job_manager_geolocation_region_cctld', [ $this, 'helper_add_region_cctld' ] );
+		remove_filter( 'event_manager_geolocation_api_key', [ $this, 'helper_add_api_key' ] );
+		remove_filter( 'event_manager_geolocation_region_cctld', [ $this, 'helper_add_region_cctld' ] );
 		$this->assertContains( $test_url, $result );
 		$this->assertContains( urlencode( $test_location ), $result );
 		$this->assertContains( 'key=' . urlencode( $this->helper_add_api_key( '' ) ), $result );
@@ -205,12 +205,12 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::get_location_data
+	 * @covers WP_event_Manager_Geocode::get_location_data
 	 * @dataProvider get_location_data
 	 */
 	public function test_get_location_data_simple_local( $test_data ) {
 		$this->set_expected_responses( $test_data );
-		$location_data = WP_Job_Manager_Geocode::get_location_data( $test_data['location'] );
+		$location_data = WP_event_Manager_Geocode::get_location_data( $test_data['location'] );
 
 		if ( isset( $test_data['expects_location_data'] ) && true === $test_data['expects_location_data'] ) {
 			$this->assertNotEmpty( $location_data );
@@ -229,14 +229,14 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 
 	/**
 	 * @since 1.27.0
-	 * @covers WP_Job_Manager_Geocode::get_location_data
+	 * @covers WP_event_Manager_Geocode::get_location_data
 	 * @dataProvider get_location_data
 	 * @group google-api
 	 */
 	public function test_get_location_data_simple_live( $test_data ) {
 		$this->use_live_google_api();
 		$this->set_expected_responses( $test_data );
-		$location_data = WP_Job_Manager_Geocode::get_location_data( $test_data['location'] );
+		$location_data = WP_event_Manager_Geocode::get_location_data( $test_data['location'] );
 		if ( isset( $test_data['expects_location_data'] ) && true === $test_data['expects_location_data'] ) {
 			$this->assertNotEmpty( $location_data );
 		} elseif ( isset( $test_data['expects_location_data'] ) && false === $test_data['expects_location_data'] ) {
@@ -254,12 +254,12 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 
 	/**
 	 * @since 1.29.1
-	 * @covers WP_Job_Manager_Geocode::get_location_data
+	 * @covers WP_event_Manager_Geocode::get_location_data
 	 * @group google-api
 	 */
 	public function test_get_location_data_error_live() {
 		$this->use_live_google_api();
-		$location_data = WP_Job_Manager_Geocode::get_location_data( md5( 'Brigadoon' ) );
+		$location_data = WP_event_Manager_Geocode::get_location_data( md5( 'Brigadoon' ) );
 		$this->assertTrue( $location_data instanceof  WP_Error );
 	}
 
@@ -299,15 +299,15 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 		return getenv( 'WPJM_PHPUNIT_GOOGLE_GEOCODE_API_KEY' );
 	}
 
-	protected function check_test_data( $job_id, $test_data ) {
-		$instance = WP_Job_Manager_Geocode::instance();
+	protected function check_test_data( $event_id, $test_data ) {
+		$instance = WP_event_Manager_Geocode::instance();
 		if ( isset( $test_data['expects_location_data'] ) && true === $test_data['expects_location_data'] ) {
-			$this->assertTrue( $instance->has_location_data( $job_id ) );
+			$this->assertTrue( $instance->has_location_data( $event_id ) );
 		} elseif ( isset( $test_data['expects_location_data'] ) && false === $test_data['expects_location_data'] ) {
-			$this->assertFalse( $instance->has_location_data( $job_id ) );
+			$this->assertFalse( $instance->has_location_data( $event_id ) );
 		}
 		foreach ( $test_data['location_data'] as $key => $expected_value ) {
-			$this->assertEquals( $expected_value, get_post_meta( $job_id, 'geolocation_' . $key, true ) );
+			$this->assertEquals( $expected_value, get_post_meta( $event_id, 'geolocation_' . $key, true ) );
 		}
 	}
 
@@ -376,7 +376,7 @@ class WP_Test_WP_Job_Manager_Geocode extends WPJM_BaseTest {
 			'#' => '',
 		];
 		$location      = trim( strtolower( str_replace( array_keys( $invalid_chars ), array_values( $invalid_chars ), $location ) ) );
-		return apply_filters( 'job_manager_geolocation_endpoint', WP_Job_Manager_Geocode::GOOGLE_MAPS_GEOCODE_API_URL, $location );
+		return apply_filters( 'event_manager_geolocation_endpoint', WP_event_Manager_Geocode::GOOGLE_MAPS_GEOCODE_API_URL, $location );
 	}
 
 	protected function get_valid_location_data() {

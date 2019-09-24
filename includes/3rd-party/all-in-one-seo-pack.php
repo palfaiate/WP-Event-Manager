@@ -6,14 +6,14 @@
  */
 
 /**
- * Skip filled job listings.
+ * Skip filled event listings.
  *
  * @param WP_Post[] $posts
  * @return WP_Post[]
  */
-function wpjm_aiosp_sitemap_filter_filled_jobs( $posts ) {
+function wpjm_aiosp_sitemap_filter_filled_events( $posts ) {
 	foreach ( $posts as $index => $post ) {
-		if ( $post instanceof WP_Post && 'job_listing' !== $post->post_type ) {
+		if ( $post instanceof WP_Post && 'event_listing' !== $post->post_type ) {
 			continue;
 		}
 		if ( is_position_filled( $post ) ) {
@@ -22,4 +22,4 @@ function wpjm_aiosp_sitemap_filter_filled_jobs( $posts ) {
 	}
 	return $posts;
 }
-add_action( 'aiosp_sitemap_post_filter', 'wpjm_aiosp_sitemap_filter_filled_jobs', 10, 3 );
+add_action( 'aiosp_sitemap_post_filter', 'wpjm_aiosp_sitemap_filter_filled_events', 10, 3 );

@@ -1,10 +1,10 @@
 <?php
 /**
- * Single job listing widget content.
+ * Single event listing widget content.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/content-widget-job_listing.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/content-widget-event_listing.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template
@@ -15,8 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 ?>
-<li <?php job_listing_class(); ?>>
-	<a href="<?php the_job_permalink(); ?>">
+<li <?php event_listing_class(); ?>>
+	<a href="<?php the_event_permalink(); ?>">
 		<?php if ( isset( $show_logo ) && $show_logo ) { ?>
 		<div class="image">
 			<?php the_company_logo(); ?>
@@ -24,15 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php } ?>
 		<div class="content">
 			<div class="position">
-				<h3><?php wpjm_the_job_title(); ?></h3>
+				<h3><?php wpjm_the_event_title(); ?></h3>
 			</div>
 			<ul class="meta">
-				<li class="location"><?php the_job_location( false ); ?></li>
+				<li class="location"><?php the_event_location( false ); ?></li>
 				<li class="company"><?php the_company_name(); ?></li>
-				<?php if ( get_option( 'job_manager_enable_types' ) ) { ?>
-					<?php $types = wpjm_get_the_job_types(); ?>
+				<?php if ( get_option( 'event_manager_enable_types' ) ) { ?>
+					<?php $types = wpjm_get_the_event_types(); ?>
 					<?php if ( ! empty( $types ) ) : foreach ( $types as $type ) : ?>
-						<li class="job-type <?php echo esc_attr( sanitize_title( $type->slug ) ); ?>"><?php echo esc_html( $type->name ); ?></li>
+						<li class="event-type <?php echo esc_attr( sanitize_title( $type->slug ) ); ?>"><?php echo esc_html( $type->name ); ?></li>
 					<?php endforeach; endif; ?>
 				<?php } ?>
 			</ul>

@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Email_Employer_Expiring_Job.
+ * File containing the class WP_event_Manager_Email_Employer_Expiring_event.
  *
  * @package wp-event-manager
  */
@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email notification to employers when a job is expiring.
+ * Email notification to employers when a event is expiring.
  *
  * @since 1.31.0
- * @extends WP_Job_Manager_Email
+ * @extends WP_event_Manager_Email
  */
-class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Template {
+class WP_event_Manager_Email_Employer_Expiring_event extends WP_event_Manager_Email_Template {
 	const SETTING_NOTICE_PERIOD_NAME    = 'notice_period_days';
 	const SETTING_NOTICE_PERIOD_DEFAULT = '1';
 
@@ -25,7 +25,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 * @return string
 	 */
 	public static function get_key() {
-		return 'employer_expiring_job';
+		return 'employer_expiring_event';
 	}
 
 	/**
@@ -34,7 +34,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 * @return string
 	 */
 	public static function get_name() {
-		return __( 'Employer Notice of Expiring Job Listings', 'wp-event-manager' );
+		return __( 'Employer Notice of Expiring event Listings', 'wp-event-manager' );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Send notices to employers before a job listing expires.', 'wp-event-manager' );
+		return __( 'Send notices to employers before a event listing expires.', 'wp-event-manager' );
 	}
 
 	/**
@@ -69,14 +69,14 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 		$args = $this->get_args();
 
 		/**
-		 * Job listing post object.
+		 * event listing post object.
 		 *
-		 * @var WP_Post $job
+		 * @var WP_Post $event
 		 */
-		$job = $args['job'];
+		$event = $args['event'];
 
-		// translators: Placeholder %s is the job listing post title.
-		return sprintf( __( 'Job Listing Expiring: %s', 'wp-event-manager' ), $job->post_title );
+		// translators: Placeholder %s is the event listing post title.
+		return sprintf( __( 'event Listing Expiring: %s', 'wp-event-manager' ), $event->post_title );
 	}
 
 	/**
@@ -107,11 +107,11 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	protected function prepare_args( $args ) {
 		$args = parent::prepare_args( $args );
 
-		if ( isset( $args['job'] ) ) {
+		if ( isset( $args['event'] ) ) {
 			$args['expiring_today'] = false;
 			$today                  = date( 'Y-m-d', current_time( 'timestamp' ) );
-			$expiring_date          = date( 'Y-m-d', strtotime( $args['job']->_job_expires ) );
-			if ( ! empty( $args['job']->_job_expires ) && $today === $expiring_date ) {
+			$expiring_date          = date( 'Y-m-d', strtotime( $args['event']->_event_expires ) );
+			if ( ! empty( $args['event']->_event_expires ) && $today === $expiring_date ) {
 				$args['expiring_today'] = true;
 			}
 		}
@@ -153,8 +153,8 @@ class WP_Job_Manager_Email_Employer_Expiring_Job extends WP_Job_Manager_Email_Te
 	 */
 	public function is_valid() {
 		$args = $this->get_args();
-		return isset( $args['job'] )
-					&& $args['job'] instanceof WP_Post
+		return isset( $args['event'] )
+					&& $args['event'] instanceof WP_Post
 					&& isset( $args['author'] )
 					&& $args['author'] instanceof WP_User
 					&& ! empty( $args['author']->user_email );

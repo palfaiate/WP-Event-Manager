@@ -1,6 +1,6 @@
 @import "mixins";
 @import "icons";
-@import "job-listings";
+@import "event-listings";
 
 @primary: 			#999999; 									/* Primary colour for buttons (alt) */
 @primarytext: 		desaturate(lighten(@primary,50%),18%);		/* Text on primary colour bg */
@@ -20,7 +20,7 @@
 	height: 16px;
 	-webkit-font-smoothing: antialiased;
 	font-size: 16px;
-	font-family: "job-manager" !important;
+	font-family: "event-manager" !important;
 	text-decoration: none;
 	font-weight: normal;
 	font-style: normal;
@@ -35,7 +35,7 @@
 
 /* =Global styles/layout
 -------------------------------------------------------------- */
-.job-manager-message, .job-manager-error, .job-manager-info {
+.event-manager-message, .event-manager-error, .event-manager-info {
 	padding: 1em 2em 1em 3.5em !important;
 	margin: 0 0 2em !important;
 	position: relative;
@@ -59,14 +59,14 @@
 		padding-left: 0 !important;
 		margin-left: 0 !important;
 	}
-	&.job-manager-message {
+	&.event-manager-message {
 		border-top-color: #8fae1b;
 		&:before {
 			color:#8fae1b;
 			content: "\2713";
 		}
 	}
-	&.job-manager-info {
+	&.event-manager-info {
 		border-top-color: #1e85be;
 		&:before {
 			color:#1e85be;
@@ -75,7 +75,7 @@
 			font-style: italic;
 		}
 	}
-	&.job-manager-error {
+	&.event-manager-error {
 		border-top-color: #b81c23;
 		&:before {
 			color:#b81c23;
@@ -85,7 +85,7 @@
 	}
 }
 
-.job-manager-form {
+.event-manager-form {
 	fieldset {
 		margin: 0 0 1em 0;
 		padding: 0 0 1em 0;
@@ -144,14 +144,14 @@
 			display: block;
 			line-height: 1.2em;
 		}
-		.job-manager-uploaded-files {
+		.event-manager-uploaded-files {
 			display: table;
-			.job-manager-uploaded-file {
+			.event-manager-uploaded-file {
 				line-height: 2em;
 				font-style: italic;
 				margin-bottom: 1em;
 				display: block;
-				.job-manager-uploaded-file-preview {
+				.event-manager-uploaded-file-preview {
 					img {
 						height: 64px;
 						margin: 0;
@@ -163,16 +163,16 @@
 						padding: 0 0 0 1em;
 					}
 				}
-				.job-manager-uploaded-file-name {
+				.event-manager-uploaded-file-name {
 					display: block;
 				}
 			}
 		}
 	}
-	.submit-job {
+	.submit-event {
 		padding: 1em 0;
 	}
-	.job-manager-term-checklist {
+	.event-manager-term-checklist {
 		list-style: none outside;
 		max-height: 200px;
 		overflow: auto;
@@ -210,14 +210,14 @@
 		visibility: visible;
 	}
 }
-div.job_listings {
+div.event_listings {
 	margin-bottom: 1em;
-	ul.job_listings {
+	ul.event_listings {
 		margin: 0;
 	}
 }
 
-.single_job_listing {
+.single_event_listing {
 	.company {
 		position: relative;
 		border: 1px solid #eee;
@@ -299,7 +299,7 @@ div.job_listings {
 			line-height: 1em;
 			color: #999;
 		}
-		.job-type {
+		.event-type {
 			color: #fff;
 			background-color: @part-time;
 		}
@@ -334,11 +334,11 @@ div.job_listings {
 			content: '\e80e';
 		}
 	}
-	.job_description {
+	.event_description {
 		margin: 0 0 1.5em;
 	}
 }
-.job-manager-application-wrapper {
+.event-manager-application-wrapper {
 	clear: both;
 	border: 1px solid #eee;
 	padding: .75em 1em 0;
@@ -348,7 +348,7 @@ div.job_listings {
 	position: relative;
 	box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
-.single_job_listing, .job-manager-application-wrapper {
+.single_event_listing, .event-manager-application-wrapper {
 	.application {
 		padding: 0;
 		margin: 0 0 1em;
@@ -409,11 +409,11 @@ div.job_listings {
 		}
 	}
 }
-.job_filters {
+.event_filters {
 	background: #eee;
 	.clearfix;
 
-	.search_jobs {
+	.search_events {
 		padding: 1em;
 		.clearfix;
 		div {
@@ -442,7 +442,7 @@ div.job_listings {
 			&.search_submit {
 				padding-top: .5em;
 			}
-			.showing_jobs {
+			.showing_events {
 				a {
 					padding: .25em;
 				}
@@ -459,7 +459,7 @@ div.job_listings {
 			width: 100%;
 		}
 	}
-	.job_types {
+	.event_types {
 		list-style: none outside;
 		margin: 0;
 		padding: 0;
@@ -479,7 +479,7 @@ div.job_listings {
 		}
 	}
 
-	.showing_jobs {
+	.showing_events {
 		padding: .5em 1em;
 		display: none;
 		font-size: 0.83em;
@@ -493,8 +493,8 @@ div.job_listings {
 		}
 	}
 }
-div.job_listings {
-	.job-manager-pagination {
+div.event_listings {
+	.event-manager-pagination {
 		text-align: center;
 		display: block;
 		padding: 1em 0 1em 0;
@@ -504,10 +504,10 @@ div.job_listings {
 	.load_previous {
 		border-top: 1px solid #eee;
 	}
-	.load_more_jobs + ul.job_listings {
+	.load_more_events + ul.event_listings {
 		border-top: 0;
 	}
-	.load_more_jobs {
+	.load_more_events {
 		text-align: center;
 		display: block;
 		padding: 1em 1em 1em 2em;
@@ -525,15 +525,15 @@ div.job_listings {
 		}
 	}
 }
-.job_listing_preview {
+.event_listing_preview {
 	padding: 0 1em 1em;
 	border: 5px solid #eee;
 }
-.single-job_listing .entry-header .attachment-post-thumbnail,
-.single-job_listing .job_listing.has-post-thumbnail .post-thumbnail {
+.single-event_listing .entry-header .attachment-post-thumbnail,
+.single-event_listing .event_listing.has-post-thumbnail .post-thumbnail {
 	display: none;
 }
-.job_listing_preview_title, .entry-content .job_listing_preview_title {
+.event_listing_preview_title, .entry-content .event_listing_preview_title {
 	padding: .5em 1em;
 	vertical-align: middle;
 	position: relative;
@@ -547,7 +547,7 @@ div.job_listings {
 		margin-left: .25em;
 	}
 }
-.job_summary_shortcode {
+.event_summary_shortcode {
 	border: 1px solid #ccc;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -596,7 +596,7 @@ div.job_listings {
 		box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
 	}
 
-	.job_summary_content {
+	.event_summary_content {
 		padding: 0 1em;
 	}
 
@@ -605,7 +605,7 @@ div.job_listings {
 		color: #777;
 	}
 
-	.job-type {
+	.event-type {
 		-moz-border-radius: 1em;
 		-webkit-border-radius: 1em;
 		border-radius: 1em;
@@ -643,7 +643,7 @@ div.job_listings {
 	}
 }
 
-#job-manager-job-dashboard {
+#event-manager-event-dashboard {
 	.account-sign-in {
 		.button {
 			margin-right: .5em;
@@ -654,7 +654,7 @@ div.job_listings {
 		}
 	}
 	table {
-		ul.job-dashboard-actions {
+		ul.event-dashboard-actions {
 			margin: 0;
 			padding:0;
 			visibility: hidden;
@@ -674,23 +674,23 @@ div.job_listings {
 				&:last-child:after {
 					content: '';
 				}
-				.job-dashboard-action-delete {
+				.event-dashboard-action-delete {
 					color: red;
 				}
 			}
 		}
 		tr:hover, tr:focus {
-			ul.job-dashboard-actions {
+			ul.event-dashboard-actions {
 				visibility: visible;
 			}
 		}
 		td, th {
 			padding: .5em 1em .5em 0;
 		}
-		.job_title small {
+		.event_title small {
 			color: #999;
 		}
-		.featured-job-icon {
+		.featured-event-icon {
 			&:before {
 				content: '\e803';
 				.jm-icon;
@@ -702,7 +702,7 @@ div.job_listings {
 	}
 }
 
-nav.job-manager-pagination, #content nav.job-manager-pagination {
+nav.event-manager-pagination, #content nav.event-manager-pagination {
 	text-align: center;
 	ul {
 		display: inline-block;
@@ -747,13 +747,13 @@ nav.job-manager-pagination, #content nav.job-manager-pagination {
 
 // Default theme fixes
 .twenty-ten {
-	.job_types, .chosen-choices {
+	.event_types, .chosen-choices {
 		margin: 0 !important;
 	}
 }
 
 .rtl {
-	.job-manager-form {
+	.event-manager-form {
 		label {
 			float: right;
 		}
@@ -761,12 +761,12 @@ nav.job-manager-pagination, #content nav.job-manager-pagination {
 			float: left;
 		}
 	}
-	.job_listing_preview_title, .entry-content .job_listing_preview_title {
+	.event_listing_preview_title, .entry-content .event_listing_preview_title {
 		.button {
 			float: left;
 		}
 	}
-	.single_job_listing {
+	.single_event_listing {
 		.meta {
 			li {
 				float: right;

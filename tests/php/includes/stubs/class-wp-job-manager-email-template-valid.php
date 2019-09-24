@@ -1,5 +1,5 @@
 <?php
-class WP_Job_Manager_Email_Template_Valid extends WP_Job_Manager_Email_Template {
+class WP_event_Manager_Email_Template_Valid extends WP_event_Manager_Email_Template {
 	/**
 	 * Get the unique email notification key.
 	 *

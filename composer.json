@@ -1,7 +1,7 @@
 {
   "name"       : "automattic/wp-event-manager",
-  "description": "WP Event Manager is a lightweight job listing plugin for adding job-board like functionality to your WordPress site. Being shortcode based, it can work with any theme and is really simple to setup.",
-  "homepage"   : "http://wpjobmanager.com/",
+  "description": "WP Event Manager is a lightweight event listing plugin for adding event-board like functionality to your WordPress site. Being shortcode based, it can work with any theme and is really simple to setup.",
+  "homepage"   : "http://hl2it.com/",
   "type"       : "wordpress-plugin",
   "license"    : "GPL-3.0+",
   "require-dev"    : {

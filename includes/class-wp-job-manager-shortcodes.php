@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Shortcodes.
+ * File containing the class WP_event_Manager_Shortcodes.
  *
  * @package wp-event-manager
  */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class WP_Job_Manager_Shortcodes {
+class WP_event_Manager_Shortcodes {
 
 	/**
 	 * Dashboard message.
@@ -22,7 +22,7 @@ class WP_Job_Manager_Shortcodes {
 	 * @access private
 	 * @var string
 	 */
-	private $job_dashboard_message = '';
+	private $event_dashboard_message = '';
 
 	/**
 	 * The single instance of the class.
@@ -51,16 +51,16 @@ class WP_Job_Manager_Shortcodes {
 	 */
 	public function __construct() {
 		add_action( 'wp', [ $this, 'shortcode_action_handler' ] );
-		add_action( 'job_manager_job_dashboard_content_edit', [ $this, 'edit_job' ] );
-		add_action( 'job_manager_job_filters_end', [ $this, 'job_filter_job_types' ], 20 );
-		add_action( 'job_manager_job_filters_end', [ $this, 'job_filter_results' ], 30 );
-		add_action( 'job_manager_output_jobs_no_results', [ $this, 'output_no_results' ] );
-		add_shortcode( 'submit_job_form', [ $this, 'submit_job_form' ] );
-		add_shortcode( 'job_dashboard', [ $this, 'job_dashboard' ] );
-		add_shortcode( 'jobs', [ $this, 'output_jobs' ] );
-		add_shortcode( 'job', [ $this, 'output_job' ] );
-		add_shortcode( 'job_summary', [ $this, 'output_job_summary' ] );
-		add_shortcode( 'job_apply', [ $this, 'output_job_apply' ] );
+		add_action( 'event_manager_event_dashboard_content_edit', [ $this, 'edit_event' ] );
+		add_action( 'event_manager_event_filters_end', [ $this, 'event_filter_event_types' ], 20 );
+		add_action( 'event_manager_event_filters_end', [ $this, 'event_filter_results' ], 30 );
+		add_action( 'event_manager_output_events_no_results', [ $this, 'output_no_results' ] );
+		add_shortcode( 'submit_event_form', [ $this, 'submit_event_form' ] );
+		add_shortcode( 'event_dashboard', [ $this, 'event_dashboard' ] );
+		add_shortcode( 'events', [ $this, 'output_events' ] );
+		add_shortcode( 'event', [ $this, 'output_event' ] );
+		add_shortcode( 'event_summary', [ $this, 'output_event_summary' ] );
+		add_shortcode( 'event_apply', [ $this, 'output_event_apply' ] );
 	}
 
 	/**
@@ -69,109 +69,109 @@ class WP_Job_Manager_Shortcodes {
 	public function shortcode_action_handler() {
 		global $post;
 
-		if ( is_page() && has_shortcode( $post->post_content, 'job_dashboard' ) ) {
-			$this->job_dashboard_handler();
+		if ( is_page() && has_shortcode( $post->post_content, 'event_dashboard' ) ) {
+			$this->event_dashboard_handler();
 		}
 	}
 
 	/**
-	 * Shows the job submission form.
+	 * Shows the event submission form.
 	 *
 	 * @param array $atts
 	 * @return string|null
 	 */
-	public function submit_job_form( $atts = [] ) {
-		return $GLOBALS['job_manager']->forms->get_form( 'submit-job', $atts );
+	public function submit_event_form( $atts = [] ) {
+		return $GLOBALS['event_manager']->forms->get_form( 'submit-event', $atts );
 	}
 
 	/**
-	 * Handles actions on job dashboard.
+	 * Handles actions on event dashboard.
 	 *
 	 * @throws Exception On action handling error.
 	 */
-	public function job_dashboard_handler() {
+	public function event_dashboard_handler() {
 		if (
 			! empty( $_REQUEST['action'] )
 			&& ! empty( $_REQUEST['_wpnonce'] )
-			&& wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), 'job_manager_my_job_actions' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
+			&& wp_verify_nonce( wp_unslash( $_REQUEST['_wpnonce'] ), 'event_manager_my_event_actions' ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce should not be modified.
 		) {
 
 			$action = sanitize_title( wp_unslash( $_REQUEST['action'] ) );
-			$job_id = isset( $_REQUEST['job_id'] ) ? absint( $_REQUEST['job_id'] ) : 0;
+			$event_id = isset( $_REQUEST['event_id'] ) ? absint( $_REQUEST['event_id'] ) : 0;
 
 			try {
-				// Get Job.
-				$job = get_post( $job_id );
+				// Get event.
+				$event = get_post( $event_id );
 
 				// Check ownership.
-				if ( ! job_manager_user_can_edit_job( $job_id ) ) {
+				if ( ! event_manager_user_can_edit_event( $event_id ) ) {
 					throw new Exception( __( 'Invalid ID', 'wp-event-manager' ) );
 				}
 
 				switch ( $action ) {
 					case 'mark_filled':
 						// Check status.
-						if ( 1 === intval( $job->_filled ) ) {
+						if ( 1 === intval( $event->_filled ) ) {
 							throw new Exception( __( 'This position has already been filled', 'wp-event-manager' ) );
 						}
 
 						// Update.
-						update_post_meta( $job_id, '_filled', 1 );
+						update_post_meta( $event_id, '_filled', 1 );
 
 						// Message.
-						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been filled', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						// translators: Placeholder %s is the event listing title.
+						$this->event_dashboard_message = '<div class="event-manager-message">' . esc_html( sprintf( __( '%s has been filled', 'wp-event-manager' ), wpjm_get_the_event_title( $event ) ) ) . '</div>';
 						break;
 					case 'mark_not_filled':
 						// Check status.
-						if ( 1 !== intval( $job->_filled ) ) {
+						if ( 1 !== intval( $event->_filled ) ) {
 							throw new Exception( __( 'This position is not filled', 'wp-event-manager' ) );
 						}
 
 						// Update.
-						update_post_meta( $job_id, '_filled', 0 );
+						update_post_meta( $event_id, '_filled', 0 );
 
 						// Message.
-						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been marked as not filled', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						// translators: Placeholder %s is the event listing title.
+						$this->event_dashboard_message = '<div class="event-manager-message">' . esc_html( sprintf( __( '%s has been marked as not filled', 'wp-event-manager' ), wpjm_get_the_event_title( $event ) ) ) . '</div>';
 						break;
 					case 'delete':
 						// Trash it.
-						wp_trash_post( $job_id );
+						wp_trash_post( $event_id );
 
 						// Message.
-						// translators: Placeholder %s is the job listing title.
-						$this->job_dashboard_message = '<div class="job-manager-message">' . esc_html( sprintf( __( '%s has been deleted', 'wp-event-manager' ), wpjm_get_the_job_title( $job ) ) ) . '</div>';
+						// translators: Placeholder %s is the event listing title.
+						$this->event_dashboard_message = '<div class="event-manager-message">' . esc_html( sprintf( __( '%s has been deleted', 'wp-event-manager' ), wpjm_get_the_event_title( $event ) ) ) . '</div>';
 
 						break;
 					case 'duplicate':
-						if ( ! job_manager_get_permalink( 'submit_job_form' ) ) {
+						if ( ! event_manager_get_permalink( 'submit_event_form' ) ) {
 							throw new Exception( __( 'Missing submission page.', 'wp-event-manager' ) );
 						}
 
-						$new_job_id = job_manager_duplicate_listing( $job_id );
+						$new_event_id = event_manager_duplicate_listing( $event_id );
 
-						if ( $new_job_id ) {
-							wp_safe_redirect( add_query_arg( [ 'job_id' => absint( $new_job_id ) ], job_manager_get_permalink( 'submit_job_form' ) ) );
+						if ( $new_event_id ) {
+							wp_safe_redirect( add_query_arg( [ 'event_id' => absint( $new_event_id ) ], event_manager_get_permalink( 'submit_event_form' ) ) );
 							exit;
 						}
 
 						break;
 					case 'relist':
 					case 'continue':
-						if ( ! job_manager_get_permalink( 'submit_job_form' ) ) {
+						if ( ! event_manager_get_permalink( 'submit_event_form' ) ) {
 							throw new Exception( __( 'Missing submission page.', 'wp-event-manager' ) );
 						}
 
 						// redirect to post page.
-						wp_safe_redirect( add_query_arg( [ 'job_id' => absint( $job_id ) ], job_manager_get_permalink( 'submit_job_form' ) ) );
+						wp_safe_redirect( add_query_arg( [ 'event_id' => absint( $event_id ) ], event_manager_get_permalink( 'submit_event_form' ) ) );
 						exit;
 					default:
-						do_action( 'job_manager_job_dashboard_do_action_' . $action, $job_id );
+						do_action( 'event_manager_event_dashboard_do_action_' . $action, $event_id );
 						break;
 				}
 
-				do_action( 'job_manager_my_job_do_action', $action, $job_id );
+				do_action( 'event_manager_my_event_do_action', $action, $event_id );
 
 				/**
 				 * Set a success message for a custom dashboard action handler.
@@ -182,28 +182,28 @@ class WP_Job_Manager_Shortcodes {
 				 *
 				 * @param string  $message  Text for the success message. Default: empty string.
 				 * @param string  $action   The name of the custom action.
-				 * @param int     $job_id   The ID for the job that's been altered.
+				 * @param int     $event_id   The ID for the event that's been altered.
 				 */
-				$success_message = apply_filters( 'job_manager_job_dashboard_success_message', '', $action, $job_id );
+				$success_message = apply_filters( 'event_manager_event_dashboard_success_message', '', $action, $event_id );
 				if ( $success_message ) {
-					$this->job_dashboard_message = '<div class="job-manager-message">' . $success_message . '</div>';
+					$this->event_dashboard_message = '<div class="event-manager-message">' . $success_message . '</div>';
 				}
 			} catch ( Exception $e ) {
-				$this->job_dashboard_message = '<div class="job-manager-error">' . wp_kses_post( $e->getMessage() ) . '</div>';
+				$this->event_dashboard_message = '<div class="event-manager-error">' . wp_kses_post( $e->getMessage() ) . '</div>';
 			}
 		}
 	}
 
 	/**
-	 * Handles shortcode which lists the logged in user's jobs.
+	 * Handles shortcode which lists the logged in user's events.
 	 *
 	 * @param array $atts
 	 * @return string
 	 */
-	public function job_dashboard( $atts ) {
+	public function event_dashboard( $atts ) {
 		if ( ! is_user_logged_in() ) {
 			ob_start();
-			get_job_manager_template( 'job-dashboard-login.php' );
+			get_event_manager_template( 'event-dashboard-login.php' );
 			return ob_get_clean();
 		}
 
@@ -215,7 +215,7 @@ class WP_Job_Manager_Shortcodes {
 		);
 		$posts_per_page = $new_atts['posts_per_page'];
 
-		wp_enqueue_script( 'wp-event-manager-job-dashboard' );
+		wp_enqueue_script( 'wp-event-manager-event-dashboard' );
 
 		ob_start();
 
@@ -224,18 +224,18 @@ class WP_Job_Manager_Shortcodes {
 		$action = isset( $_REQUEST['action'] ) ? sanitize_title( wp_unslash( $_REQUEST['action'] ) ) : false;
 		if ( ! empty( $action ) ) {
 			// Show alternative content if a plugin wants to.
-			if ( has_action( 'job_manager_job_dashboard_content_' . $action ) ) {
-				do_action( 'job_manager_job_dashboard_content_' . $action, $atts );
+			if ( has_action( 'event_manager_event_dashboard_content_' . $action ) ) {
+				do_action( 'event_manager_event_dashboard_content_' . $action, $atts );
 
 				return ob_get_clean();
 			}
 		}
 
-		// ....If not show the job dashboard.
+		// ....If not show the event dashboard.
 		$args = apply_filters(
-			'job_manager_get_dashboard_jobs_args',
+			'event_manager_get_dashboard_events_args',
 			[
-				'post_type'           => 'job_listing',
+				'post_type'           => 'event_listing',
 				'post_status'         => [ 'publish', 'expired', 'pending', 'draft', 'preview' ],
 				'ignore_sticky_posts' => 1,
 				'posts_per_page'      => $posts_per_page,
@@ -246,26 +246,26 @@ class WP_Job_Manager_Shortcodes {
 			]
 		);
 
-		$jobs = new WP_Query();
+		$events = new WP_Query();
 
-		echo wp_kses_post( $this->job_dashboard_message );
+		echo wp_kses_post( $this->event_dashboard_message );
 
-		$job_dashboard_columns = apply_filters(
-			'job_manager_job_dashboard_columns',
+		$event_dashboard_columns = apply_filters(
+			'event_manager_event_dashboard_columns',
 			[
-				'job_title' => __( 'Title', 'wp-event-manager' ),
+				'event_title' => __( 'Title', 'wp-event-manager' ),
 				'filled'    => __( 'Filled?', 'wp-event-manager' ),
 				'date'      => __( 'Date Posted', 'wp-event-manager' ),
 				'expires'   => __( 'Listing Expires', 'wp-event-manager' ),
 			]
 		);
 
-		get_job_manager_template(
-			'job-dashboard.php',
+		get_event_manager_template(
+			'event-dashboard.php',
 			[
-				'jobs'                  => $jobs->query( $args ),
-				'max_num_pages'         => $jobs->max_num_pages,
-				'job_dashboard_columns' => $job_dashboard_columns,
+				'events'                  => $events->query( $args ),
+				'max_num_pages'         => $events->max_num_pages,
+				'event_dashboard_columns' => $event_dashboard_columns,
 			]
 		);
 
@@ -273,42 +273,42 @@ class WP_Job_Manager_Shortcodes {
 	}
 
 	/**
-	 * Displays edit job form.
+	 * Displays edit event form.
 	 */
-	public function edit_job() {
-		global $job_manager;
+	public function edit_event() {
+		global $event_manager;
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output should be appropriately escaped in the form generator.
-		echo $job_manager->forms->get_form( 'edit-job' );
+		echo $event_manager->forms->get_form( 'edit-event' );
 	}
 
 	/**
-	 * Lists all job listings.
+	 * Lists all event listings.
 	 *
 	 * @param array $atts
 	 * @return string
 	 */
-	public function output_jobs( $atts ) {
+	public function output_events( $atts ) {
 		ob_start();
 
 		$atts = shortcode_atts(
 			apply_filters(
-				'job_manager_output_jobs_defaults',
+				'event_manager_output_events_defaults',
 				[
-					'per_page'                  => get_option( 'job_manager_per_page' ),
+					'per_page'                  => get_option( 'event_manager_per_page' ),
 					'orderby'                   => 'featured',
 					'order'                     => 'DESC',
 
 					// Filters + cats.
 					'show_filters'              => true,
 					'show_categories'           => true,
-					'show_category_multiselect' => get_option( 'job_manager_enable_default_category_multiselect', false ),
+					'show_category_multiselect' => get_option( 'event_manager_enable_default_category_multiselect', false ),
 					'show_pagination'           => false,
 					'show_more'                 => true,
 
-					// Limit what jobs are shown based on category, post status, and type.
+					// Limit what events are shown based on category, post status, and type.
 					'categories'                => '',
-					'job_types'                 => '',
+					'event_types'                 => '',
 					'post_status'               => '',
 					'featured'                  => null, // True to show only featured, false to hide featured, leave null to show both.
 					'filled'                    => null, // True to show only filled, false to hide filled, leave null to show both/use the settings.
@@ -317,13 +317,13 @@ class WP_Job_Manager_Shortcodes {
 					'location'                  => '',
 					'keywords'                  => '',
 					'selected_category'         => '',
-					'selected_job_types'        => implode( ',', array_values( get_job_listing_types( 'id=>slug' ) ) ),
+					'selected_event_types'        => implode( ',', array_values( get_event_listing_types( 'id=>slug' ) ) ),
 				]
 			),
 			$atts
 		);
 
-		if ( ! get_option( 'job_manager_enable_categories' ) ) {
+		if ( ! get_option( 'event_manager_enable_categories' ) ) {
 			$atts['show_categories'] = false;
 		}
 
@@ -353,23 +353,23 @@ class WP_Job_Manager_Shortcodes {
 		if ( ! empty( $_GET['search_category'] ) ) {
 			$atts['selected_category'] = sanitize_text_field( wp_unslash( $_GET['search_category'] ) );
 		}
-		if ( ! empty( $_GET['search_job_type'] ) ) {
-			$atts['selected_job_types'] = sanitize_text_field( wp_unslash( $_GET['search_job_type'] ) );
+		if ( ! empty( $_GET['search_event_type'] ) ) {
+			$atts['selected_event_types'] = sanitize_text_field( wp_unslash( $_GET['search_event_type'] ) );
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		// Array handling.
 		$atts['categories']         = is_array( $atts['categories'] ) ? $atts['categories'] : array_filter( array_map( 'trim', explode( ',', $atts['categories'] ) ) );
 		$atts['selected_category']  = is_array( $atts['selected_category'] ) ? $atts['selected_category'] : array_filter( array_map( 'trim', explode( ',', $atts['selected_category'] ) ) );
-		$atts['job_types']          = is_array( $atts['job_types'] ) ? $atts['job_types'] : array_filter( array_map( 'trim', explode( ',', $atts['job_types'] ) ) );
+		$atts['event_types']          = is_array( $atts['event_types'] ) ? $atts['event_types'] : array_filter( array_map( 'trim', explode( ',', $atts['event_types'] ) ) );
 		$atts['post_status']        = is_array( $atts['post_status'] ) ? $atts['post_status'] : array_filter( array_map( 'trim', explode( ',', $atts['post_status'] ) ) );
-		$atts['selected_job_types'] = is_array( $atts['selected_job_types'] ) ? $atts['selected_job_types'] : array_filter( array_map( 'trim', explode( ',', $atts['selected_job_types'] ) ) );
+		$atts['selected_event_types'] = is_array( $atts['selected_event_types'] ) ? $atts['selected_event_types'] : array_filter( array_map( 'trim', explode( ',', $atts['selected_event_types'] ) ) );
 
 		// Normalize field for categories.
 		if ( ! empty( $atts['selected_category'] ) ) {
 			foreach ( $atts['selected_category'] as $cat_index => $category ) {
 				if ( ! is_numeric( $category ) ) {
-					$term = get_term_by( 'slug', $category, 'job_listing_category' );
+					$term = get_term_by( 'slug', $category, 'event_listing_category' );
 
 					if ( $term ) {
 						$atts['selected_category'][ $cat_index ] = $term->term_id;
@@ -390,8 +390,8 @@ class WP_Job_Manager_Shortcodes {
 		];
 
 		if ( $atts['show_filters'] ) {
-			get_job_manager_template(
-				'job-filters.php',
+			get_event_manager_template(
+				'event-filters.php',
 				[
 					'per_page'                  => $atts['per_page'],
 					'orderby'                   => $atts['orderby'],
@@ -399,31 +399,31 @@ class WP_Job_Manager_Shortcodes {
 					'show_categories'           => $atts['show_categories'],
 					'categories'                => $atts['categories'],
 					'selected_category'         => $atts['selected_category'],
-					'job_types'                 => $atts['job_types'],
+					'event_types'                 => $atts['event_types'],
 					'atts'                      => $atts,
 					'location'                  => $atts['location'],
 					'keywords'                  => $atts['keywords'],
-					'selected_job_types'        => $atts['selected_job_types'],
+					'selected_event_types'        => $atts['selected_event_types'],
 					'show_category_multiselect' => $atts['show_category_multiselect'],
 				]
 			);
 
-			get_job_manager_template( 'job-listings-start.php' );
-			get_job_manager_template( 'job-listings-end.php' );
+			get_event_manager_template( 'event-listings-start.php' );
+			get_event_manager_template( 'event-listings-end.php' );
 
 			if ( ! $atts['show_pagination'] && $atts['show_more'] ) {
-				echo '<a class="load_more_jobs" href="#" style="display:none;"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
+				echo '<a class="load_more_events" href="#" style="display:none;"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
 			}
 		} else {
-			$jobs = get_job_listings(
+			$events = get_event_listings(
 				apply_filters(
-					'job_manager_output_jobs_args',
+					'event_manager_output_events_args',
 					[
 						'search_location'   => $atts['location'],
 						'search_keywords'   => $atts['keywords'],
 						'post_status'       => $atts['post_status'],
 						'search_categories' => $atts['categories'],
-						'job_types'         => $atts['job_types'],
+						'event_types'         => $atts['event_types'],
 						'orderby'           => $atts['orderby'],
 						'order'             => $atts['order'],
 						'posts_per_page'    => $atts['per_page'],
@@ -433,28 +433,28 @@ class WP_Job_Manager_Shortcodes {
 				)
 			);
 
-			if ( ! empty( $atts['job_types'] ) ) {
-				$data_attributes['job_types'] = implode( ',', $atts['job_types'] );
+			if ( ! empty( $atts['event_types'] ) ) {
+				$data_attributes['event_types'] = implode( ',', $atts['event_types'] );
 			}
 
-			if ( $jobs->have_posts() ) {
-				get_job_manager_template( 'job-listings-start.php' );
-				while ( $jobs->have_posts() ) {
-					$jobs->the_post();
-					get_job_manager_template_part( 'content', 'job_listing' );
+			if ( $events->have_posts() ) {
+				get_event_manager_template( 'event-listings-start.php' );
+				while ( $events->have_posts() ) {
+					$events->the_post();
+					get_event_manager_template_part( 'content', 'event_listing' );
 				}
-				get_job_manager_template( 'job-listings-end.php' );
-				if ( $jobs->found_posts > $atts['per_page'] && $atts['show_more'] ) {
+				get_event_manager_template( 'event-listings-end.php' );
+				if ( $events->found_posts > $atts['per_page'] && $atts['show_more'] ) {
 					wp_enqueue_script( 'wp-event-manager-ajax-filters' );
 					if ( $atts['show_pagination'] ) {
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template output.
-						echo get_job_listing_pagination( $jobs->max_num_pages );
+						echo get_event_listing_pagination( $events->max_num_pages );
 					} else {
-						echo '<a class="load_more_jobs" href="#"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
+						echo '<a class="load_more_events" href="#"><strong>' . esc_html__( 'Load more listings', 'wp-event-manager' ) . '</strong></a>';
 					}
 				}
 			} else {
-				do_action( 'job_manager_output_jobs_no_results' );
+				do_action( 'event_manager_output_events_no_results' );
 			}
 			wp_reset_postdata();
 		}
@@ -473,7 +473,7 @@ class WP_Job_Manager_Shortcodes {
 		$data_attributes['post_id'] = isset( $GLOBALS['post'] ) ? $GLOBALS['post']->ID : 0;
 
 		/**
-		 * Pass additional data to the job listings <div> wrapper.
+		 * Pass additional data to the event listings <div> wrapper.
 		 *
 		 * @since 1.34.0
 		 *
@@ -484,22 +484,22 @@ class WP_Job_Manager_Shortcodes {
 		 * }
 		 * @param array $atts            Attributes for the shortcode.
 		 */
-		$data_attributes = apply_filters( 'job_manager_jobs_shortcode_data_attributes', $data_attributes, $atts );
+		$data_attributes = apply_filters( 'event_manager_events_shortcode_data_attributes', $data_attributes, $atts );
 
 		foreach ( $data_attributes as $key => $value ) {
 			$data_attributes_string .= 'data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
 		}
 
-		$job_listings_output = apply_filters( 'job_manager_job_listings_output', ob_get_clean() );
+		$event_listings_output = apply_filters( 'event_manager_event_listings_output', ob_get_clean() );
 
-		return '<div class="job_listings" ' . $data_attributes_string . '>' . $job_listings_output . '</div>';
+		return '<div class="event_listings" ' . $data_attributes_string . '>' . $event_listings_output . '</div>';
 	}
 
 	/**
 	 * Displays some content when no results were found.
 	 */
 	public function output_no_results() {
-		get_job_manager_template( 'content-no-jobs-found.php' );
+		get_event_manager_template( 'content-no-events-found.php' );
 	}
 
 	/**
@@ -513,20 +513,20 @@ class WP_Job_Manager_Shortcodes {
 	}
 
 	/**
-	 * Shows job types.
+	 * Shows event types.
 	 *
 	 * @param  array $atts
 	 */
-	public function job_filter_job_types( $atts ) {
-		$job_types          = is_array( $atts['job_types'] ) ? $atts['job_types'] : array_filter( array_map( 'trim', explode( ',', $atts['job_types'] ) ) );
-		$selected_job_types = is_array( $atts['selected_job_types'] ) ? $atts['selected_job_types'] : array_filter( array_map( 'trim', explode( ',', $atts['selected_job_types'] ) ) );
+	public function event_filter_event_types( $atts ) {
+		$event_types          = is_array( $atts['event_types'] ) ? $atts['event_types'] : array_filter( array_map( 'trim', explode( ',', $atts['event_types'] ) ) );
+		$selected_event_types = is_array( $atts['selected_event_types'] ) ? $atts['selected_event_types'] : array_filter( array_map( 'trim', explode( ',', $atts['selected_event_types'] ) ) );
 
-		get_job_manager_template(
-			'job-filter-job-types.php',
+		get_event_manager_template(
+			'event-filter-event-types.php',
 			[
-				'job_types'          => $job_types,
+				'event_types'          => $event_types,
 				'atts'               => $atts,
-				'selected_job_types' => $selected_job_types,
+				'selected_event_types' => $selected_event_types,
 			]
 		);
 	}
@@ -534,17 +534,17 @@ class WP_Job_Manager_Shortcodes {
 	/**
 	 * Shows results div.
 	 */
-	public function job_filter_results() {
-		echo '<div class="showing_jobs"></div>';
+	public function event_filter_results() {
+		echo '<div class="showing_events"></div>';
 	}
 
 	/**
-	 * Shows a single job.
+	 * Shows a single event.
 	 *
 	 * @param array $atts
 	 * @return string|null
 	 */
-	public function output_job( $atts ) {
+	public function output_event( $atts ) {
 		$atts = shortcode_atts(
 			[
 				'id' => '',
@@ -559,33 +559,33 @@ class WP_Job_Manager_Shortcodes {
 		ob_start();
 
 		$args = [
-			'post_type'   => 'job_listing',
+			'post_type'   => 'event_listing',
 			'post_status' => 'publish',
 			'p'           => $atts['id'],
 		];
 
-		$jobs = new WP_Query( $args );
+		$events = new WP_Query( $args );
 
-		if ( $jobs->have_posts() ) {
-			while ( $jobs->have_posts() ) {
-				$jobs->the_post();
-				echo '<h1>' . esc_html( wpjm_get_the_job_title() ) . '</h1>';
-				get_job_manager_template_part( 'content-single', 'job_listing' );
+		if ( $events->have_posts() ) {
+			while ( $events->have_posts() ) {
+				$events->the_post();
+				echo '<h1>' . esc_html( wpjm_get_the_event_title() ) . '</h1>';
+				get_event_manager_template_part( 'content-single', 'event_listing' );
 			}
 		}
 
 		wp_reset_postdata();
 
-		return '<div class="job_shortcode single_job_listing">' . ob_get_clean() . '</div>';
+		return '<div class="event_shortcode single_event_listing">' . ob_get_clean() . '</div>';
 	}
 
 	/**
-	 * Handles the Job Summary shortcode.
+	 * Handles the event Summary shortcode.
 	 *
 	 * @param array $atts
 	 * @return string
 	 */
-	public function output_job_summary( $atts ) {
+	public function output_event_summary( $atts ) {
 		$atts = shortcode_atts(
 			[
 				'id'       => '',
@@ -600,7 +600,7 @@ class WP_Job_Manager_Shortcodes {
 		ob_start();
 
 		$args = [
-			'post_type'   => 'job_listing',
+			'post_type'   => 'event_listing',
 			'post_status' => 'publish',
 		];
 
@@ -620,14 +620,14 @@ class WP_Job_Manager_Shortcodes {
 			$args['p'] = absint( $atts['id'] );
 		}
 
-		$jobs = new WP_Query( $args );
+		$events = new WP_Query( $args );
 
-		if ( $jobs->have_posts() ) {
-			while ( $jobs->have_posts() ) {
-				$jobs->the_post();
+		if ( $events->have_posts() ) {
+			while ( $events->have_posts() ) {
+				$events->the_post();
 				$width = $atts['width'] ? $atts['width'] : 'auto';
-				echo '<div class="job_summary_shortcode align' . esc_attr( $atts['align'] ) . '" style="width: ' . esc_attr( $width ) . '">';
-				get_job_manager_template_part( 'content-summary', 'job_listing' );
+				echo '<div class="event_summary_shortcode align' . esc_attr( $atts['align'] ) . '" style="width: ' . esc_attr( $width ) . '">';
+				get_event_manager_template_part( 'content-summary', 'event_listing' );
 				echo '</div>';
 			}
 		}
@@ -643,7 +643,7 @@ class WP_Job_Manager_Shortcodes {
 	 * @param array $atts
 	 * @return string
 	 */
-	public function output_job_apply( $atts ) {
+	public function output_event_apply( $atts ) {
 		$new_atts = shortcode_atts(
 			[
 				'id' => '',
@@ -655,7 +655,7 @@ class WP_Job_Manager_Shortcodes {
 		ob_start();
 
 		$args = [
-			'post_type'   => 'job_listing',
+			'post_type'   => 'event_listing',
 			'post_status' => 'publish',
 		];
 
@@ -665,19 +665,19 @@ class WP_Job_Manager_Shortcodes {
 			$args['p'] = absint( $id );
 		}
 
-		$jobs = new WP_Query( $args );
+		$events = new WP_Query( $args );
 
-		if ( $jobs->have_posts() ) {
-			while ( $jobs->have_posts() ) {
-				$jobs->the_post();
-				$apply = get_the_job_application_method();
-				do_action( 'job_manager_before_job_apply_' . absint( $id ) );
-				if ( apply_filters( 'job_manager_show_job_apply_' . absint( $id ), true ) ) {
-					echo '<div class="job-manager-application-wrapper">';
-					do_action( 'job_manager_application_details_' . $apply->type, $apply );
+		if ( $events->have_posts() ) {
+			while ( $events->have_posts() ) {
+				$events->the_post();
+				$apply = get_the_event_application_method();
+				do_action( 'event_manager_before_event_apply_' . absint( $id ) );
+				if ( apply_filters( 'event_manager_show_event_apply_' . absint( $id ), true ) ) {
+					echo '<div class="event-manager-application-wrapper">';
+					do_action( 'event_manager_application_details_' . $apply->type, $apply );
 					echo '</div>';
 				}
-				do_action( 'job_manager_after_job_apply_' . absint( $id ) );
+				do_action( 'event_manager_after_event_apply_' . absint( $id ) );
 			}
 			wp_reset_postdata();
 		}
@@ -686,4 +686,4 @@ class WP_Job_Manager_Shortcodes {
 	}
 }
 
-WP_Job_Manager_Shortcodes::instance();
+WP_event_Manager_Shortcodes::instance();

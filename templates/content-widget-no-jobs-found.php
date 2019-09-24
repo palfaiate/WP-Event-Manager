@@ -1,10 +1,10 @@
 <?php
 /**
- * Placeholder if no jobs are found in featured jobs widget.
+ * Placeholder if no events are found in featured events widget.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/content-widget-no-jobs-found.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/content-widget-no-events-found.php.
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template

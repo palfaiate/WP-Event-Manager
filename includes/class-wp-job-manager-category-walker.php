@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Category_Walker.
+ * File containing the class WP_event_Manager_Category_Walker.
  *
  * @package wp-event-manager
  */
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package wp-event-manager
  * @since 1.0.0
  */
-class WP_Job_Manager_Category_Walker extends Walker {
+class WP_event_Manager_Category_Walker extends Walker {
 
 	/**
 	 * Tree type that the class handles.

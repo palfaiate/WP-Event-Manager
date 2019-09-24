@@ -1,8 +1,8 @@
 <?php
 /**
- * Shows the `radio` form field on job listing forms.
+ * Shows the `radio` form field on event listing forms.
  *
- * This template can be overridden by copying it to yourtheme/job_manager/form-fields/radio-field.php.
+ * This template can be overridden by copying it to yourtheme/event_manager/form-fields/radio-field.php.
  *
  * Example definition:
  *
@@ -18,7 +18,7 @@
  * 		)
  * 	)
  *
- * @see         https://wpjobmanager.com/document/template-overrides/
+ * @see         https://wpeventmanager.com/document/template-overrides/
  * @author      Automattic
  * @package     wp-event-manager
  * @category    Template

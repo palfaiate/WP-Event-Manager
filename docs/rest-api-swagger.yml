@@ -11,7 +11,7 @@ consumes:
 produces:
   - application/json
 paths:
-  /wp/v2/job-listings:
+  /wp/v2/event-listings:
     get:
       tags:
         - Accessible Logged Out
@@ -108,28 +108,28 @@ paths:
             - publish
           items:
             type: string
-        - name: job-categories
+        - name: event-categories
           type: array
           in: query
-          description: Limit result set to all items that have the specified term assigned in the job-categories taxonomy.
+          description: Limit result set to all items that have the specified term assigned in the event-categories taxonomy.
           items:
             type: string
-        - name: job-categories_exclude
+        - name: event-categories_exclude
           type: array
           in: query
-          description: Limit result set to all items except those that have the specified term assigned in the job-categories taxonomy.
+          description: Limit result set to all items except those that have the specified term assigned in the event-categories taxonomy.
           items:
             type: string
-        - name: job-types
+        - name: event-types
           type: array
           in: query
-          description: Limit result set to all items that have the specified term assigned in the job-types taxonomy.
+          description: Limit result set to all items that have the specified term assigned in the event-types taxonomy.
           items:
             type: string
-        - name: job-types_exclude
+        - name: event-types_exclude
           type: array
           in: query
-          description: Limit result set to all items except those that have the specified term assigned in the job-types taxonomy.
+          description: Limit result set to all items except those that have the specified term assigned in the event-types taxonomy.
           items:
             type: string
       security:
@@ -140,15 +140,15 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/job_listing'
+              $ref: '#/definitions/event_listing'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-listings
+      operationId: GetWpV2event-listings
     post:
       tags:
-        - cap:edit_job_listing
+        - cap:edit_event_listing
       parameters:
         - name: date
           type: string
@@ -206,16 +206,16 @@ paths:
           type: string
           in: formData
           description: The theme file to use to display the object.
-        - name: job-categories
+        - name: event-categories
           type: array
           in: formData
-          description: The terms assigned to the object in the job_listing_category taxonomy.
+          description: The terms assigned to the object in the event_listing_category taxonomy.
           items:
             type: string
-        - name: job-types
+        - name: event-types
           type: array
           in: formData
-          description: The terms assigned to the object in the job_listing_type taxonomy.
+          description: The terms assigned to the object in the event_listing_type taxonomy.
           items:
             type: string
         - name: fields
@@ -227,17 +227,17 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing'
+            $ref: '#/definitions/event_listing'
         '201':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing'
+            $ref: '#/definitions/event_listing'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-listings
-  '/wp/v2/job-listings/{id}':
+      operationId: PostWpV2event-listings
+  '/wp/v2/event-listings/{id}':
     get:
       tags:
         - Accessible Logged Out
@@ -269,15 +269,15 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing'
+            $ref: '#/definitions/event_listing'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-listingsById
+      operationId: GetWpV2event-listingsById
     post:
       tags:
-        - cap:edit_job_listing
+        - cap:edit_event_listing
       parameters:
         - name: id
           type: string
@@ -343,16 +343,16 @@ paths:
           type: string
           in: formData
           description: The theme file to use to display the object.
-        - name: job-categories
+        - name: event-categories
           type: array
           in: formData
-          description: The terms assigned to the object in the job_listing_category taxonomy.
+          description: The terms assigned to the object in the event_listing_category taxonomy.
           items:
             type: string
-        - name: job-types
+        - name: event-types
           type: array
           in: formData
-          description: The terms assigned to the object in the job_listing_type taxonomy.
+          description: The terms assigned to the object in the event_listing_type taxonomy.
           items:
             type: string
         - name: fields
@@ -364,12 +364,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing'
+            $ref: '#/definitions/event_listing'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-listingsById
+      operationId: PostWpV2event-listingsById
     delete:
       parameters:
         - name: id
@@ -390,13 +390,13 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing'
+            $ref: '#/definitions/event_listing'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: DeleteWpV2Job-listingsById
-  /wp/v2/job-categories:
+      operationId: DeleteWpV2event-listingsById
+  /wp/v2/event-categories:
     get:
       tags:
         - Accessible Logged Out
@@ -489,12 +489,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/job_listing_category'
+              $ref: '#/definitions/event_listing_category'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-categories
+      operationId: GetWpV2event-categories
     post:
       parameters:
         - name: description
@@ -527,21 +527,21 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_category'
+            $ref: '#/definitions/event_listing_category'
         '201':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_category'
+            $ref: '#/definitions/event_listing_category'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-categories
-  '/wp/v2/job-categories/{id}':
+      operationId: PostWpV2event-categories
+  '/wp/v2/event-categories/{id}':
     get:
       tags:
         - Accessible Logged Out
-        - cap:read_job_listing
+        - cap:read_event_listing
       parameters:
         - name: id
           type: string
@@ -566,12 +566,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_category'
+            $ref: '#/definitions/event_listing_category'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-categoriesById
+      operationId: GetWpV2event-categoriesById
     post:
       parameters:
         - name: id
@@ -611,12 +611,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_category'
+            $ref: '#/definitions/event_listing_category'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-categoriesById
+      operationId: PostWpV2event-categoriesById
     delete:
       parameters:
         - name: id
@@ -637,13 +637,13 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_category'
+            $ref: '#/definitions/event_listing_category'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: DeleteWpV2Job-categoriesById
-  /wp/v2/job-types:
+      operationId: DeleteWpV2event-categoriesById
+  /wp/v2/event-types:
     get:
       tags:
         - Accessible Logged Out
@@ -736,12 +736,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/job_listing_type'
+              $ref: '#/definitions/event_listing_type'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-types
+      operationId: GetWpV2event-types
     post:
       parameters:
         - name: description
@@ -774,17 +774,17 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_type'
+            $ref: '#/definitions/event_listing_type'
         '201':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_type'
+            $ref: '#/definitions/event_listing_type'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-types
-  '/wp/v2/job-types/{id}':
+      operationId: PostWpV2event-types
+  '/wp/v2/event-types/{id}':
     get:
       tags:
         - Accessible Logged Out
@@ -812,12 +812,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_type'
+            $ref: '#/definitions/event_listing_type'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: GetWpV2Job-typesById
+      operationId: GetWpV2event-typesById
     post:
       parameters:
         - name: id
@@ -857,12 +857,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_type'
+            $ref: '#/definitions/event_listing_type'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: PostWpV2Job-typesById
+      operationId: PostWpV2event-typesById
     delete:
       parameters:
         - name: id
@@ -883,12 +883,12 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/job_listing_type'
+            $ref: '#/definitions/event_listing_type'
         default:
           description: error
           schema:
             $ref: '#/definitions/error'
-      operationId: DeleteWpV2Job-typesById
+      operationId: DeleteWpV2event-typesById
 definitions:
   error:
     properties:
@@ -901,7 +901,7 @@ definitions:
         properties:
           status:
             type: integer
-  job_listing:
+  event_listing:
     type: object
     properties:
       date:
@@ -996,20 +996,20 @@ definitions:
       template:
         description: The theme file to use to display the object.
         type: string
-      job-categories:
-        description: The terms assigned to the object in the job_listing_category taxonomy.
+      event-categories:
+        description: The terms assigned to the object in the event_listing_category taxonomy.
         type: array
         items:
           type: string
-      job-types:
-        description: The terms assigned to the object in the job_listing_type taxonomy.
+      event-types:
+        description: The terms assigned to the object in the event_listing_type taxonomy.
         type: array
         items:
           type: string
       fields:
         type: object
         properties:
-          _job_location:
+          _event_location:
             type: string
             description: Leave this blank if the location is not important.
           _application:
@@ -1036,13 +1036,13 @@ definitions:
           _featured:
             type: boolean
             description: Featured Listing
-          _job_expires:
+          _event_expires:
             type: string
             description: Listing Expiry Date
-          _job_author:
+          _event_author:
             type: string
             description: Posted by
-  job_listing_category:
+  event_listing_category:
     type: object
     properties:
       id:
@@ -1073,8 +1073,8 @@ definitions:
           - nav_menu
           - link_category
           - post_format
-          - job_listing_category
-          - job_listing_type
+          - event_listing_category
+          - event_listing_type
       parent:
         description: The parent term ID.
         type: integer
@@ -1083,10 +1083,10 @@ definitions:
         type: object
         properties: {}
       fields:
-        title: wp_job_manager_models_job_categories_custom_fields
+        title: wp_event_manager_models_event_categories_custom_fields
         type: object
         properties: {}
-  job_listing_type:
+  event_listing_type:
     type: object
     properties:
       id:
@@ -1117,8 +1117,8 @@ definitions:
           - nav_menu
           - link_category
           - post_format
-          - job_listing_category
-          - job_listing_type
+          - event_listing_category
+          - event_listing_type
       parent:
         description: The parent term ID.
         type: integer

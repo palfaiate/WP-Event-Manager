@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the class WP_Job_Manager_Geocode.
+ * File containing the class WP_event_Manager_Geocode.
  *
  * @package wp-event-manager
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Obtains Geolocation data for posted jobs from Google.
+ * Obtains Geolocation data for posted events from Google.
  *
  * @since 1.6.1
  */
-class WP_Job_Manager_Geocode {
+class WP_event_Manager_Geocode {
 
 	const GOOGLE_MAPS_GEOCODE_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 
@@ -44,95 +44,95 @@ class WP_Job_Manager_Geocode {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'job_manager_geolocation_endpoint', [ $this, 'add_geolocation_endpoint_query_args' ], 0, 2 );
-		add_filter( 'job_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 0 );
-		add_action( 'job_manager_update_job_data', [ $this, 'update_location_data' ], 20, 2 );
-		add_action( 'job_manager_job_location_edited', [ $this, 'change_location_data' ], 20, 2 );
+		add_filter( 'event_manager_geolocation_endpoint', [ $this, 'add_geolocation_endpoint_query_args' ], 0, 2 );
+		add_filter( 'event_manager_geolocation_api_key', [ $this, 'get_google_maps_api_key' ], 0 );
+		add_action( 'event_manager_update_event_data', [ $this, 'update_location_data' ], 20, 2 );
+		add_action( 'event_manager_event_location_edited', [ $this, 'change_location_data' ], 20, 2 );
 	}
 
 	/**
-	 * Updates location data when submitting a job.
+	 * Updates location data when submitting a event.
 	 *
-	 * @param int   $job_id
+	 * @param int   $event_id
 	 * @param array $values
 	 */
-	public function update_location_data( $job_id, $values ) {
-		if ( apply_filters( 'job_manager_geolocation_enabled', true ) && isset( $values['job']['job_location'] ) ) {
-			$address_data = self::get_location_data( $values['job']['job_location'] );
-			self::save_location_data( $job_id, $address_data );
+	public function update_location_data( $event_id, $values ) {
+		if ( apply_filters( 'event_manager_geolocation_enabled', true ) && isset( $values['event']['event_location'] ) ) {
+			$address_data = self::get_location_data( $values['event']['event_location'] );
+			self::save_location_data( $event_id, $address_data );
 		}
 	}
 
 	/**
-	 * Changes a jobs location data upon editing.
+	 * Changes a events location data upon editing.
 	 *
-	 * @param  int    $job_id
+	 * @param  int    $event_id
 	 * @param  string $new_location
 	 */
-	public function change_location_data( $job_id, $new_location ) {
-		if ( apply_filters( 'job_manager_geolocation_enabled', true ) ) {
+	public function change_location_data( $event_id, $new_location ) {
+		if ( apply_filters( 'event_manager_geolocation_enabled', true ) ) {
 			$address_data = self::get_location_data( $new_location );
-			self::clear_location_data( $job_id );
-			self::save_location_data( $job_id, $address_data );
+			self::clear_location_data( $event_id );
+			self::save_location_data( $event_id, $address_data );
 		}
 	}
 
 	/**
-	 * Checks if a job has location data or not.
+	 * Checks if a event has location data or not.
 	 *
-	 * @param  int $job_id
+	 * @param  int $event_id
 	 * @return boolean
 	 */
-	public static function has_location_data( $job_id ) {
-		return 1 === intval( get_post_meta( $job_id, 'geolocated', true ) );
+	public static function has_location_data( $event_id ) {
+		return 1 === intval( get_post_meta( $event_id, 'geolocated', true ) );
 	}
 
 	/**
 	 * Generates location data and saves to a post.
 	 *
-	 * @param  int    $job_id
+	 * @param  int    $event_id
 	 * @param  string $location
 	 */
-	public static function generate_location_data( $job_id, $location ) {
+	public static function generate_location_data( $event_id, $location ) {
 		$address_data = self::get_location_data( $location );
-		self::save_location_data( $job_id, $address_data );
+		self::save_location_data( $event_id, $address_data );
 	}
 
 	/**
-	 * Deletes a job's location data.
+	 * Deletes a event's location data.
 	 *
-	 * @param  int $job_id
+	 * @param  int $event_id
 	 */
-	public static function clear_location_data( $job_id ) {
-		delete_post_meta( $job_id, 'geolocated' );
-		delete_post_meta( $job_id, 'geolocation_city' );
-		delete_post_meta( $job_id, 'geolocation_country_long' );
-		delete_post_meta( $job_id, 'geolocation_country_short' );
-		delete_post_meta( $job_id, 'geolocation_formatted_address' );
-		delete_post_meta( $job_id, 'geolocation_lat' );
-		delete_post_meta( $job_id, 'geolocation_long' );
-		delete_post_meta( $job_id, 'geolocation_state_long' );
-		delete_post_meta( $job_id, 'geolocation_state_short' );
-		delete_post_meta( $job_id, 'geolocation_street' );
-		delete_post_meta( $job_id, 'geolocation_street_number' );
-		delete_post_meta( $job_id, 'geolocation_zipcode' );
-		delete_post_meta( $job_id, 'geolocation_postcode' );
+	public static function clear_location_data( $event_id ) {
+		delete_post_meta( $event_id, 'geolocated' );
+		delete_post_meta( $event_id, 'geolocation_city' );
+		delete_post_meta( $event_id, 'geolocation_country_long' );
+		delete_post_meta( $event_id, 'geolocation_country_short' );
+		delete_post_meta( $event_id, 'geolocation_formatted_address' );
+		delete_post_meta( $event_id, 'geolocation_lat' );
+		delete_post_meta( $event_id, 'geolocation_long' );
+		delete_post_meta( $event_id, 'geolocation_state_long' );
+		delete_post_meta( $event_id, 'geolocation_state_short' );
+		delete_post_meta( $event_id, 'geolocation_street' );
+		delete_post_meta( $event_id, 'geolocation_street_number' );
+		delete_post_meta( $event_id, 'geolocation_zipcode' );
+		delete_post_meta( $event_id, 'geolocation_postcode' );
 	}
 
 	/**
 	 * Saves any returned data to post meta.
 	 *
-	 * @param  int   $job_id
+	 * @param  int   $event_id
 	 * @param  array $address_data
 	 */
-	public static function save_location_data( $job_id, $address_data ) {
+	public static function save_location_data( $event_id, $address_data ) {
 		if ( ! is_wp_error( $address_data ) && $address_data ) {
 			foreach ( $address_data as $key => $value ) {
 				if ( $value ) {
-					update_post_meta( $job_id, 'geolocation_' . $key, $value );
+					update_post_meta( $event_id, 'geolocation_' . $key, $value );
 				}
 			}
-			update_post_meta( $job_id, 'geolocated', 1 );
+			update_post_meta( $event_id, 'geolocated', 1 );
 		}
 	}
 
@@ -143,7 +143,7 @@ class WP_Job_Manager_Geocode {
 	 * @return string
 	 */
 	public function get_google_maps_api_key( $key ) {
-		return get_option( 'job_manager_google_maps_api_key' );
+		return get_option( 'event_manager_google_maps_api_key' );
 	}
 
 	/**
@@ -155,7 +155,7 @@ class WP_Job_Manager_Geocode {
 	 */
 	public function add_geolocation_endpoint_query_args( $geocode_endpoint_url, $raw_address ) {
 		// Add an API key if available.
-		$api_key = apply_filters( 'job_manager_geolocation_api_key', '', $raw_address );
+		$api_key = apply_filters( 'event_manager_geolocation_api_key', '', $raw_address );
 
 		if ( '' !== $api_key ) {
 			$geocode_endpoint_url = add_query_arg( 'key', rawurlencode( $api_key ), $geocode_endpoint_url );
@@ -168,7 +168,7 @@ class WP_Job_Manager_Geocode {
 			$geocode_endpoint_url = add_query_arg( 'language', substr( $locale, 0, 2 ), $geocode_endpoint_url );
 		}
 
-		$region = apply_filters( 'job_manager_geolocation_region_cctld', '', $raw_address );
+		$region = apply_filters( 'event_manager_geolocation_region_cctld', '', $raw_address );
 		if ( '' !== $region ) {
 			$geocode_endpoint_url = add_query_arg( 'region', rawurlencode( $region ), $geocode_endpoint_url );
 		}
@@ -209,7 +209,7 @@ class WP_Job_Manager_Geocode {
 			return false;
 		}
 
-		$geocode_api_url = apply_filters( 'job_manager_geolocation_endpoint', self::GOOGLE_MAPS_GEOCODE_API_URL, $raw_address );
+		$geocode_api_url = apply_filters( 'event_manager_geolocation_endpoint', self::GOOGLE_MAPS_GEOCODE_API_URL, $raw_address );
 		if ( false === $geocode_api_url ) {
 			return false;
 		}
@@ -222,7 +222,7 @@ class WP_Job_Manager_Geocode {
 						'timeout'     => 5,
 						'redirection' => 1,
 						'httpversion' => '1.1',
-						'user-agent'  => 'WordPress/wp-event-manager-' . JOB_MANAGER_VERSION . '; ' . get_bloginfo( 'url' ),
+						'user-agent'  => 'WordPress/wp-event-manager-' . event_MANAGER_VERSION . '; ' . get_bloginfo( 'url' ),
 						'sslverify'   => false,
 					]
 				);
@@ -293,8 +293,8 @@ class WP_Job_Manager_Geocode {
 			}
 		}
 
-		return apply_filters( 'job_manager_geolocation_get_location_data', $address, $geocoded_address );
+		return apply_filters( 'event_manager_geolocation_get_location_data', $address, $geocoded_address );
 	}
 }
 
-WP_Job_Manager_Geocode::instance();
+WP_event_Manager_Geocode::instance();

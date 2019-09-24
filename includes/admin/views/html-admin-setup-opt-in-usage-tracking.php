@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<label>
 		<input
 			type="checkbox"
-			name="job_manager_usage_tracking_enabled"
+			name="event_manager_usage_tracking_enabled"
 			value="1" />
 		<?php
 		echo wp_kses(
