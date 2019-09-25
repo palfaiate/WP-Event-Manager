@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	<?php endforeach; ?>
-		<div class="notice notice-info inline"><p><?php printf( 'Lost your license key? <a href="%s">Retrieve it here</a>.', 'https://wpeventmanager.com/lost-licence-key/' ); ?></p></div>
+		<div class="notice notice-info inline"><p><?php printf( 'Lost your license key? <a href="%s">Retrieve it here</a>.', 'https://hl2it.com/lost-licence-key/' ); ?></p></div>
 	<?php else : ?>
 		<div class="notice notice-warning inline"><p><?php esc_html_e( 'No plugins are activated that have licenses managed by WP Event Manager.', 'wp-event-manager' ); ?></p></div>
 	<?php endif; ?>
